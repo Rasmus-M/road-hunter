@@ -1,0 +1,141 @@
+BOFFS  EQU	>2A				* Bank offset where data starts
+BOFFSL EQU	>116			* Bank offset for highest bank
+BSIZE  EQU	>2000			* Bank size
+BDATA  EQU	BSIZE-BOFFS		* Bank space for data and programs
+
+ROMCPP EQU	>8320			* Address of ROM copy routine in PAD
+
+HSTART EQU	>A000			* High memory start	   
+LSTART EQU	>2800			* Low memory start
+
+VDPWD  EQU  >8C00			* VDP write data
+VDPWA  EQU  >8C02			* VDP set read/write address	   
+	   
+SFIRST AORG	>6000
+
+***************************************************************
+*
+* Cartridge header
+*
+ROMHDR BYTE >AA,1,1,0
+	   DATA 0
+       DATA RDHHDR
+       DATA 0,0
+RDHHDR DATA	0
+       DATA PRGRDH
+	   BYTE 11
+	   TEXT 'ROAD HUNTER'
+
+***************************************************************
+*
+* Program stubs
+*
+
+*	   Road Hunter
+PRGRDH LWPI >8300
+	   LI	R12,DATRDH
+	   SETO	@>6000
+	   JMP	MAIN
+	   
+***************************************************************
+*
+* Main program starts here
+* (loaded into highest ROM bank only)
+*	   
+MAIN   LIMI	0
+*	   Test for 32K RAM
+	   LI	R0,>1234
+	   MOV	R0,@HSTART
+	   C	@HSTART,R0
+	   JNE	ERR32K
+*	   Copy ROM copy to scratch pad
+	   LI	R0,ROMCPP
+	   LI	R1,ROMCPY
+	   LI	R2,ROMCPE-ROMCPY
+MAIN1  MOV	*R1+,*R0+
+	   DECT	R2
+	   JNE	MAIN1
+*	   High memory copy
+	   BL	@ROMCPP
+*	   Low memory copy
+	   AI	R12,CSIZE
+	   BL	@ROMCPP
+*	   Run program
+RUN	   B	@HSTART
+
+***************************************************************
+*
+*	   ROM to RAM copy
+*
+* R12: Contains address of copy info structure
+*
+ROMCPY MOV	@CBANK(R12),R3		* Bank
+	   JEQ	ROMCP4				* Skip if null
+	   LI	R0,>6000			* Source address
+	   A	@COFFS(R12),R0		* Add offset in bank
+	   MOV	@CLEN(R12),R4		* Total bytes to copy
+	   LI	R2,BSIZE			* Max bytes to copy in bank
+	   S	@COFFS(R12),R2		* Bank size minus offset
+	   MOV	@CDEST(R12),R1		* Destination address
+ROMCP1 MOV	*R3,*R3				* Select ROM bank   
+ROMCP2 MOVB	*R0+,*R1+			* Copy byte to RAM
+	   DEC	R4
+	   JEQ	ROMCP4				* End of data?
+	   DEC	R2
+	   JNE	ROMCP2				* End of bank?
+	   DECT	R3					* Next bank
+	   LI	R2,BDATA			* Max bytes to copy in bank
+	   CI	R3,>6000			* Check for highest bank
+	   JEQ	ROMCP3
+	   LI	R0,>6000+BOFFS		* Reset source address
+	   JMP	ROMCP1
+ROMCP3 LI	R0,>6000+BOFFSL		* Reset source address	   
+	   JMP	ROMCP1	   
+ROMCP4 SETO	@>6000				* Select highest ROM bank
+	   B	*R11				* Return
+ROMCPE
+
+***************************************************************
+*
+*	   Error - no 32K
+*
+ERR32K LI	R0,11*32+>4000		* VDP RAM write address
+	   SWPB	R0
+	   MOVB R0,@VDPWA			* Send low byte of VDP RAM write address
+	   SWPB	R0
+	   MOVB R0,@VDPWA			* Send high byte of VDP RAM write address
+*	   Display error message
+	   LI	R1,MSG
+	   LI	R2,32
+ERR1   MOVB	*R1+,@VDPWD
+	   DEC	R2
+	   JNE	ERR1
+*	   Wait for Quit
+ERR2   CLR  R0                  * Test column 0
+       LI   R12,>0024           * Address for column selection
+       LDCR R0,3                * Select column
+       LI   R12,>0006           * Address to read rows
+       STCR R0,8
+	   ANDI	R0,>1100
+	   JNE	ERR2
+*	   Quit
+QUIT   LWPI	>83E0
+	   LIMI	2					
+	   BLWP @>0000
+MSG    TEXT	" 32K MEMORY EXPANSION REQUIRED. "
+
+***************************************************************
+*
+* Copy info structure
+*
+CBANK  EQU	0	* Bank select address
+COFFS  EQU	2	* Bank offset
+CLEN   EQU	4	* Total size
+CDEST  EQU	6   * Destination address
+CSIZE  EQU	8	* Structure size
+
+*	   Road Hunter
+DATRDH DATA >6004,>2fc,>E114,>A000	* High memory
+	   DATA >0000,>0000,>0000,>0000	* Low memory
+	 
+SLAST  END
