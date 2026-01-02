@@ -3873,27 +3873,18 @@ romcp3:
 romcp4:
        b    *r11                               ; Return
 
-* Single cart
-* CMAP1A DATA >600e,>002a,>1f80,MAP_A
-* CMAP1B DATA >600e,>1faa,>1680,MAP_B
-* CMAP2A DATA >600c,>1654,>1f80,MAP_A
-* CMAP2B DATA >600a,>15fe,>1680,MAP_B
-* CMAP3A DATA >6008,>0ca8,>1f80,MAP_A
-* CMAP3B DATA >6006,>0c52,>1680,MAP_B
-
-* Scrolling trilogy cart
 cmap1a:
-       data >6010,>1f48,>1f80,map_a
+       data >6008,>0080,>1f80,map_a
 cmap1b:
-       data >600e,>1f2c,>1680,map_b
+       data >600a,>0080,>1680,map_b
 cmap2a:
-       data >600c,>1610,>1f80,map_a
+       data >6010,>0080,>1f80,map_a
 cmap2b:
-       data >600a,>15f4,>1680,map_b
+       data >6012,>0080,>1680,map_b
 cmap3a:
-       data >6008,>0cd8,>1f80,map_a
+       data >6014,>0080,>1f80,map_a
 cmap3b:
-       data >6006,>0cbc,>1680,map_b
+       data >6016,>0080,>1680,map_b
 
 * // ROMCPY
 
