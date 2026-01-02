@@ -1,1050 +1,1334 @@
 ****************************************
-* Original Character Patterns (shared)           
+* Original Character Patterns (shared)
 ****************************************
-PAT0   DATA >0000,>0000,>0000,>0000    ; 
-PAT1   DATA >FFFF,>FFFF,>FFFF,>FFFF    ; 
-PAT2   DATA >7F7F,>7F7F,>7F7F,>7F7F    ; 
-PAT3   DATA >3F3F,>152A,>152A,>3F3F    ; 
-PAT4   DATA >1F1F,>1F1F,>1F1F,>1F1F    ; 
-PAT5   DATA >0F0F,>0F0F,>0F0F,>0F0F    ; 
-PAT6   DATA >0707,>0707,>0707,>0707    ; 
-PAT7   DATA >0303,>0102,>0102,>0303    ; 
-PAT8   DATA >0101,>0101,>0101,>0101    ; 
-PAT9   DATA >8080,>8080,>8080,>8080    ; 
-PAT10  DATA >C0C0,>4080,>4080,>C0C0    ; 
-PAT11  DATA >E0E0,>E0E0,>E0E0,>E0E0    ; 
-PAT12  DATA >F0F0,>F0F0,>F0F0,>F0F0    ; 
-PAT13  DATA >F8F8,>F8F8,>F8F8,>F8F8    ; 
-PAT14  DATA >FCFC,>54A8,>54A8,>FCFC    ; 
-PAT15  DATA >FEFE,>FEFE,>FEFE,>FEFE    ; 
-PAT16  DATA >FFC3,>91A1,>8181,>C3FF    ; 
-PAT17  DATA >0000,>4428,>1028,>4400    ; unused
-PAT18  DATA >0000,>4428,>1028,>4400    ; unused
-PAT19  DATA >0000,>4428,>1028,>4400    ; unused
-PAT20  DATA >0000,>4428,>1028,>4400    ; unused
-PAT21  DATA >0000,>4428,>1028,>4400    ; unused
-PAT22  DATA >0000,>4428,>1028,>4400    ; unused
-PAT23  DATA >0000,>4428,>1028,>4400    ; unused
-PAT24  DATA >C0C0,>C0C0,>C0C0,>C0C0    ; 
-PAT25  DATA >6060,>6060,>6060,>6060    ; 
-PAT26  DATA >3030,>3030,>3030,>3030    ; 
-PAT27  DATA >1818,>1818,>1818,>1818    ; 
-PAT28  DATA >0C0C,>0C0C,>0C0C,>0C0C    ; 
-PAT29  DATA >0606,>0606,>0606,>0606    ; 
-PAT30  DATA >0303,>0303,>0303,>0303    ; 
-PAT31  DATA >F0F0,>F0F0,>0F0F,>0F0F    ; 
-PAT32  DATA >0004,>8000,>0020,>0000    ; 
-PAT33  DATA >8082,>8080,>8090,>8080    ; 
-PAT34  DATA >C0C0,>4880,>4080,>C1C0    ; 
-PAT35  DATA >E0E0,>E4E0,>E0E0,>E1E0    ; 
-PAT36  DATA >F0F0,>F0F2,>F0F0,>F0F0    ; 
-PAT37  DATA >F8F8,>F8F8,>F8F9,>F8F8    ; 
-PAT38  DATA >FCFC,>54A8,>54A8,>FCFC    ; 
-PAT39  DATA >FEFE,>FEFE,>FEFE,>FEFE    ; 
-PAT40  DATA >7F7F,>7F7F,>7F7F,>7F7F    ; 
-PAT41  DATA >3F3F,>152A,>152A,>3F3F    ; 
-PAT42  DATA >1F1F,>5F1F,>1F1F,>1F1F    ; 
-PAT43  DATA >0F0F,>4F0F,>0F0F,>0F0F    ; 
-PAT44  DATA >0707,>0727,>0707,>0707    ; 
-PAT45  DATA >0303,>1102,>0102,>4303    ; 
-PAT46  DATA >0121,>0101,>0109,>0101    ; 
-PAT47  DATA >0000,>0000,>0000,>0000    ; 
-PAT48
+pat0:
+       data >0000,>0000,>0000,>0000    ;
+pat1:
+       data >ffff,>ffff,>ffff,>ffff    ;
+pat2:
+       data >7f7f,>7f7f,>7f7f,>7f7f    ;
+pat3:
+       data >3f3f,>152a,>152a,>3f3f    ;
+pat4:
+       data >1f1f,>1f1f,>1f1f,>1f1f    ;
+pat5:
+       data >0f0f,>0f0f,>0f0f,>0f0f    ;
+pat6:
+       data >0707,>0707,>0707,>0707    ;
+pat7:
+       data >0303,>0102,>0102,>0303    ;
+pat8:
+       data >0101,>0101,>0101,>0101    ;
+pat9:
+       data >8080,>8080,>8080,>8080    ;
+pat10:
+       data >c0c0,>4080,>4080,>c0c0    ;
+pat11:
+       data >e0e0,>e0e0,>e0e0,>e0e0    ;
+pat12:
+       data >f0f0,>f0f0,>f0f0,>f0f0    ;
+pat13:
+       data >f8f8,>f8f8,>f8f8,>f8f8    ;
+pat14:
+       data >fcfc,>54a8,>54a8,>fcfc    ;
+pat15:
+       data >fefe,>fefe,>fefe,>fefe    ;
+pat16:
+       data >ffc3,>91a1,>8181,>c3ff    ;
+pat17:
+       data >0000,>4428,>1028,>4400            ; unused
+pat18:
+       data >0000,>4428,>1028,>4400            ; unused
+pat19:
+       data >0000,>4428,>1028,>4400            ; unused
+pat20:
+       data >0000,>4428,>1028,>4400            ; unused
+pat21:
+       data >0000,>4428,>1028,>4400            ; unused
+pat22:
+       data >0000,>4428,>1028,>4400            ; unused
+pat23:
+       data >0000,>4428,>1028,>4400            ; unused
+pat24:
+       data >c0c0,>c0c0,>c0c0,>c0c0    ;
+pat25:
+       data >6060,>6060,>6060,>6060    ;
+pat26:
+       data >3030,>3030,>3030,>3030    ;
+pat27:
+       data >1818,>1818,>1818,>1818    ;
+pat28:
+       data >0c0c,>0c0c,>0c0c,>0c0c    ;
+pat29:
+       data >0606,>0606,>0606,>0606    ;
+pat30:
+       data >0303,>0303,>0303,>0303    ;
+pat31:
+       data >f0f0,>f0f0,>0f0f,>0f0f    ;
+pat32:
+       data >0004,>8000,>0020,>0000    ;
+pat33:
+       data >8082,>8080,>8090,>8080    ;
+pat34:
+       data >c0c0,>4880,>4080,>c1c0    ;
+pat35:
+       data >e0e0,>e4e0,>e0e0,>e1e0    ;
+pat36:
+       data >f0f0,>f0f2,>f0f0,>f0f0    ;
+pat37:
+       data >f8f8,>f8f8,>f8f9,>f8f8    ;
+pat38:
+       data >fcfc,>54a8,>54a8,>fcfc    ;
+pat39:
+       data >fefe,>fefe,>fefe,>fefe    ;
+pat40:
+       data >7f7f,>7f7f,>7f7f,>7f7f    ;
+pat41:
+       data >3f3f,>152a,>152a,>3f3f    ;
+pat42:
+       data >1f1f,>5f1f,>1f1f,>1f1f    ;
+pat43:
+       data >0f0f,>4f0f,>0f0f,>0f0f    ;
+pat44:
+       data >0707,>0727,>0707,>0707    ;
+pat45:
+       data >0303,>1102,>0102,>4303    ;
+pat46:
+       data >0121,>0101,>0109,>0101    ;
+pat47:
+       data >0000,>0000,>0000,>0000    ;
+pat48:
+       equ  $
 
 ****************************************
-*
-*	   Level data
-*
+* 
+* Level data
+* 
 ****************************************
 
-SCRL_  EQU	0				* Address of screen list
-RDDXL_ EQU	2				* Address of road direction list
-ROADX_ EQU	4				* Initial pixel position of left side of road
-ROADW_ EQU	6				* Width of road in pixels - 16
-CLRST_ EQU	8				* Address of color set (24 bytes)
-TCHNM_ EQU	10				* Number of transition character pairs
-TCHAR_ EQU	12				* Address of list of transition character pairs
-PATS_  EQU	14				* Offset to pattern definitions beyond 48
-LVLSIZ EQU	16				* Size of structure
+scrl_:
+       equ  0                                  ; Address of screen list
+rddxl_:
+       equ  2                                  ; Address of road direction list
+roadx_:
+       equ  4                                  ; Initial pixel position of left side of road
+roadw_:
+       equ  6                                  ; Width of road in pixels - 16
+clrst_:
+       equ  8                                  ; Address of color set (24 bytes)
+tchnm_:
+       equ  10                                 ; Number of transition character pairs
+tchar_:
+       equ  12                                 ; Address of list of transition character pairs
+pats_:
+       equ  14                                 ; Offset to pattern definitions beyond 48
+lvlsiz:
+       equ  16                                 ; Size of structure
 
-LEVELS
-LEVEL0 DATA	SCRL0,RDDXL0,64,56,CLRSET,180,TCHARS,PAT480-PAT48
-LEVEL1 DATA	SCRL1,RDDXL1,72,40,CLRSET1,190,TCHARS1,PAT481-PAT48
-LEVEL2 DATA	SCRL2,RDDXL2,72,40,CLRSET2,192,TCHARS2,PAT482-PAT48
+levels:
+       equ  $
+level0:
+       data scrl0,rddxl0,64,56,clrset,180,tchars,pat480-pat48
+level1:
+       data scrl1,rddxl1,72,40,clrset1,190,tchars1,pat481-pat48
+level2:
+       data scrl2,rddxl2,72,40,clrset2,192,tchars2,pat482-pat48
 
 ****************************************
 * Level 0
 ****************************************
 
-*	   Screen list
-SCRL0  DATA SCR000,SCR001,SCR003,SCR003
-       DATA SCR002,SCR003,SCR001,SCR003
-       DATA SCR004,SCR005,SCR006,SCR007
-       DATA SCR008,SCR008,SCR009,SCR008
-       DATA SCR010,SCR011,SCR012,SCR013
-       DATA SCR003,SCR003,SCR002,SCR001
-       DATA SCR002,SCR001,SCR003,SCR014
-       DATA SCR015,SCR016,SCR017,SCR019
-       DATA SCR019,SCR018,SCR019,SCR019
-       DATA SCR018,SCR018,SCR020,SCR021
-       DATA SCR022,SCR023,SCR014,SCR015
-       DATA SCR016,SCR017,SCR020,SCR021
-       DATA SCR022,SCR023,SCR004,SCR005
-       DATA SCR006,SCR007,SCR010,SCR011
-       DATA SCR012,SCR013,SCR001,SCR003
-       DATA SCR001,SCR002,SCR001,SCR004
-       DATA SCR005,SCR006,SCR007,SCR008
-       DATA SCR009,SCR008,SCR009,SCR010
-       DATA SCR011,SCR012,SCR013,SCR004
-       DATA SCR005,SCR006,SCR007,SCR010
-       DATA SCR011,SCR012,SCR013,SCR014
-       DATA SCR015,SCR016,SCR017,SCR018
-       DATA SCR019,SCR018,SCR019,SCR020
-       DATA SCR021,SCR022,SCR023,SCR003
-       DATA SCR003,SCR003,SCR002,SCR003
-       DATA SCR001,SCR002,SCR003,SCR003
-	   DATA SCR000
+* Screen list
+scrl0:
+       data scr000,scr001,scr003,scr003
+       data scr002,scr003,scr001,scr003
+       data scr004,scr005,scr006,scr007
+       data scr008,scr008,scr009,scr008
+       data scr010,scr011,scr012,scr013
+       data scr003,scr003,scr002,scr001
+       data scr002,scr001,scr003,scr014
+       data scr015,scr016,scr017,scr019
+       data scr019,scr018,scr019,scr019
+       data scr018,scr018,scr020,scr021
+       data scr022,scr023,scr014,scr015
+       data scr016,scr017,scr020,scr021
+       data scr022,scr023,scr004,scr005
+       data scr006,scr007,scr010,scr011
+       data scr012,scr013,scr001,scr003
+       data scr001,scr002,scr001,scr004
+       data scr005,scr006,scr007,scr008
+       data scr009,scr008,scr009,scr010
+       data scr011,scr012,scr013,scr004
+       data scr005,scr006,scr007,scr010
+       data scr011,scr012,scr013,scr014
+       data scr015,scr016,scr017,scr018
+       data scr019,scr018,scr019,scr020
+       data scr021,scr022,scr023,scr003
+       data scr003,scr003,scr002,scr003
+       data scr001,scr002,scr003,scr003
+       data scr000
 
-*	   Road direction list
-*	   Number of pixels to add to the x position
-*	   each time the y position changes 8 pixels
-*	   -1 = left, 0 = straight, 1 = right  
-RDDXL0 DATA 00,00,00,00,00,00,00,00
-	   DATA 00,-1,-1,00,00,00,00,00
-	   DATA 00,01,01,00,00,00,00,00
-	   DATA 00,00,00,00,01,01,00,00
-	   DATA 00,00,00,00,00,00,00,-1
-	   DATA -1,00,00,01,01,00,00,-1
-	   DATA -1,00,00,-1,-1,00,00,01
-	   DATA 01,00,00,00,00,00,00,00
-	   DATA -1,-1,00,00,00,00,00,00
-	   DATA 01,01,00,00,-1,-1,00,00
-	   DATA 01,01,00,00,01,01,00,00
-	   DATA 00,00,00,00,-1,-1,00,00
-	   DATA 00,00,00,00,00,00,00,00
-	   DATA 00
-
-****************************************
-* Colorset Definitions                  
-****************************************
-CLRSET BYTE >62,>72,>72,>82            ;
-       BYTE >B1,>B1,>B2,>B2            ;
-       BYTE >BA,>C2,>C2,>F2            ;
-       BYTE >F2,>F2,>F2,>F2            ;
-       BYTE >FE,>FE,>FE,>FE            ;
-       BYTE >FE,>FE,>FE,>00            ;
+* Road direction list
+* Number of pixels to add to the x position
+* each time the y position changes 8 pixels
+* -1 = left, 0 = straight, 1 = right
+rddxl0:
+       data 00,00,00,00,00,00,00,00
+       data 00,-1,-1,00,00,00,00,00
+       data 00,01,01,00,00,00,00,00
+       data 00,00,00,00,01,01,00,00
+       data 00,00,00,00,00,00,00,-1
+       data -1,00,00,01,01,00,00,-1
+       data -1,00,00,-1,-1,00,00,01
+       data 01,00,00,00,00,00,00,00
+       data -1,-1,00,00,00,00,00,00
+       data 01,01,00,00,-1,-1,00,00
+       data 01,01,00,00,01,01,00,00
+       data 00,00,00,00,-1,-1,00,00
+       data 00,00,00,00,00,00,00,00
+       data 00
 
 ****************************************
-* Original Character Patterns           
+* Colorset Definitions
 ****************************************
-PAT480 DATA >55AA,>D5EA,>FFFF,>FFFF    ; 
-PAT49  DATA >FFFF,>FCFD,>FDFC,>FFFF    ; 
-PAT50  DATA >FFFF,>FFFF,>EAD5,>AA55    ; 
-PAT51  DATA >2070,>D03A,>1D77,>51E0    ; 
-PAT52  DATA >0000,>0000,>0000,>0000    ; unused
-PAT53  DATA >0000,>0000,>0000,>0000    ; unused
-PAT54  DATA >0000,>0000,>0000,>0000    ; unused
-PAT55  DATA >0000,>0000,>0000,>0000    ; unused
-PAT56  DATA >55AB,>57AF,>FFFF,>FFFF    ; 
-PAT57  DATA >FFFF,>3FBF,>BF3F,>FFFF    ; 
-PAT58  DATA >FFFF,>FFFF,>AF57,>AB55    ; 
-PAT59  DATA >0800,>9028,>1200,>4800    ; 
-PAT60  DATA >0000,>0000,>0000,>0000    ; unused
-PAT61  DATA >0000,>0000,>0000,>0000    ; unused
-PAT62  DATA >0000,>0000,>0000,>0000    ; unused
-PAT63  DATA >0000,>0000,>0000,>0000    ; unused
-PAT64  DATA >0B35,>2052,>9CCA,>279A    ; 
-PAT65  DATA >604C,>9262,>0DB6,>E1C5    ; 
-PAT66  DATA >A311,>DFB8,>1245,>300B    ; 
-PAT67  DATA >CBE4,>69B3,>6E90,>0CA0    ; 
-PAT68  DATA >0108,>4822,>6E2B,>7FFF    ; 
-PAT69  DATA >FFFF,>6F2E,>6A54,>4400    ; 
-PAT70  DATA >0030,>FF30,>FF30,>FF30    ; 
-PAT71  DATA >0000,>4428,>1028,>4400    ; unused
-PAT72  DATA >0101,>0306,>0D3D,>726F    ; 
-PAT73  DATA >29DB,>BE41,>FFF7,>FFFF    ; 
-PAT74  DATA >90C0,>C270,>BC4E,>F7F7    ; 
-PAT75  DATA >7F3F,>0F07,>0703,>0300    ; 
-PAT76  DATA >FF7F,>FBFF,>FFFF,>FB92    ; 
-PAT77  DATA >FFFB,>FEEE,>FCF8,>C084    ; 
-PAT78  DATA >FFFD,>FFDF,>FFFF,>FFFF    ; 
-PAT79  DATA >0000,>4428,>1028,>4400    ; unused
-PAT80  DATA >FFFF,>FFFF,>FFFF,>FFFF    ; 
-PAT81  DATA >FFFF,>FFE7,>D3FF,>FFFF    ; 
-PAT82  DATA >F3E1,>E1F3,>F3E1,>C0C0    ; 
-PAT83  DATA >C0E1,>F3F3,>F3E1,>E1F3    ; 
-PAT84  DATA >CBDD,>225C,>D63B,>95E3    ; 
-PAT85  DATA >0000,>4428,>1028,>4400    ; unused
-PAT86  DATA >0000,>4428,>1028,>4400    ; unused
-PAT87  DATA >0000,>4428,>1028,>4400    ; unused
-PAT88  DATA >F0E0,>E0E7,>E780,>0000    ; 
-PAT89  DATA >0000,>F9F9,>F9F8,>F8FC    ; 
-PAT90  DATA >0F0F,>FFFF,>FF07,>0101    ; 
-PAT91  DATA >0107,>FFFF,>FFFF,>1F0F    ; 
-PAT92  DATA >CFAB,>7519,>552B,>B5D7    ; 
-PAT93  DATA >0000,>4428,>1028,>4400    ; unused
-PAT94  DATA >0000,>4428,>1028,>4400    ; unused
-PAT95  DATA >0000,>4428,>1028,>4400    ; unused
-PAT96  DATA >FFFF,>FFFF,>FFFF,>FFFF    ; 
-PAT97  DATA >0B3D,>5F77,>FF5F,>FFFF    ; 
-PAT98  DATA >DFEF,>7FDF,>6E7B,>3F0D    ; 
-PAT99  DATA >A0C8,>B0F0,>FCA0,>78FC    ; 
-PAT100 DATA >E8FC,>B0F8,>E050,>E880    ; 
-PAT101 DATA >1834,>38DC,>F61D,>3A30    ; 
+clrset:
+       byte >62,>72,>72,>82            ;
+       byte >b1,>b1,>b2,>b2            ;
+       byte >ba,>c2,>c2,>f2            ;
+       byte >f2,>f2,>f2,>f2            ;
+       byte >fe,>fe,>fe,>fe            ;
+       byte >fe,>fe,>fe,>00            ;
 
 ****************************************
-* Transition Character Pairs (from, to) 
+* Original Character Patterns
 ****************************************
-TCHARS BYTE >3B,>2F                    ; #00 color 6/2
-       BYTE >2F,>3B                    ; #01 color 6/2
-       BYTE >38,>2F                    ; #02 color 6/2
-       BYTE >39,>38                    ; #03 color 6/2
-       BYTE >3A,>39                    ; #04 color 6/2
-       BYTE >2F,>3A                    ; #05 color 6/2
-       BYTE >39,>39                    ; #06 color 6/2
-       BYTE >FF,>FF                    ; #07 unused
-       BYTE >4A,>2F                    ; #08 color 7/2
-       BYTE >4E,>4A                    ; #09 color 7/2
-       BYTE >4E,>4E                    ; #0A color 7/2
-       BYTE >48,>2F                    ; #0B color 7/2
-       BYTE >49,>2F                    ; #0C color 7/2
-       BYTE >4E,>48                    ; #0D color 7/2
-       BYTE >4E,>49                    ; #0E color 7/2
-       BYTE >4C,>4E                    ; #0F color 7/2
-       BYTE >4D,>4E                    ; #10 color 7/2
-       BYTE >2F,>4C                    ; #11 color 7/2
-       BYTE >4B,>4E                    ; #12 color 7/2
-       BYTE >2F,>4D                    ; #13 color 7/2
-       BYTE >2F,>4B                    ; #14 color 7/2
-       BYTE >FF,>FF                    ; #15 unused
-       BYTE >FF,>FF                    ; #16 unused
-       BYTE >FF,>FF                    ; #17 unused
-       BYTE >33,>2F                    ; #18 color 8/2
-       BYTE >2F,>33                    ; #19 color 8/2
-       BYTE >30,>2F                    ; #1A color 8/2
-       BYTE >31,>30                    ; #1B color 8/2
-       BYTE >32,>31                    ; #1C color 8/2
-       BYTE >2F,>32                    ; #1D color 8/2
-       BYTE >31,>31                    ; #1E color 8/2
-       BYTE >FF,>FF                    ; #1F unused
-       BYTE >51,>50                    ; #20 color B/1
-       BYTE >51,>51                    ; #21 color B/1
-       BYTE >50,>51                    ; #22 color B/1
-       BYTE >50,>50                    ; #23 color B/1
-       BYTE >52,>50                    ; #24 color B/1
-       BYTE >53,>52                    ; #25 color B/1
-       BYTE >50,>53                    ; #26 color B/1
-       BYTE >54,>50                    ; #27 color B/1
-       BYTE >50,>54                    ; #28 color B/1
-       BYTE >FF,>FF                    ; #29 unused
-       BYTE >FF,>FF                    ; #2A unused
-       BYTE >FF,>FF                    ; #2B unused
-       BYTE >FF,>FF                    ; #2C unused
-       BYTE >FF,>FF                    ; #2D unused
-       BYTE >FF,>FF                    ; #2E unused
-       BYTE >FF,>FF                    ; #2F unused
-       BYTE >40,>2F                    ; #30 color B/2
-       BYTE >41,>2F                    ; #31 color B/2
-       BYTE >42,>40                    ; #32 color B/2
-       BYTE >43,>41                    ; #33 color B/2
-       BYTE >2F,>42                    ; #34 color B/2
-       BYTE >2F,>43                    ; #35 color B/2
-       BYTE >46,>2F                    ; #36 color B/2
-       BYTE >2F,>46                    ; #37 color B/2
-       BYTE >44,>2F                    ; #38 color B/2
-       BYTE >50,>44                    ; #39 color B/2
-       BYTE >45,>50                    ; #3A color B/2
-       BYTE >2F,>45                    ; #3B color B/2
-       BYTE >FF,>FF                    ; #3C unused
-       BYTE >FF,>FF                    ; #3D unused
-       BYTE >FF,>FF                    ; #3E unused
-       BYTE >FF,>FF                    ; #3F unused
-       BYTE >58,>50                    ; #40 color B/A
-       BYTE >5A,>50                    ; #41 color B/A
-       BYTE >59,>58                    ; #42 color B/A
-       BYTE >5B,>5A                    ; #43 color B/A
-       BYTE >50,>59                    ; #44 color B/A
-       BYTE >50,>5B                    ; #45 color B/A
-       BYTE >5C,>50                    ; #46 color B/A
-       BYTE >50,>5C                    ; #47 color B/A
-       BYTE >61,>2F                    ; #48 color C/2
-       BYTE >63,>2F                    ; #49 color C/2
-       BYTE >65,>2F                    ; #4A color C/2
-       BYTE >62,>61                    ; #4B color C/2
-       BYTE >64,>63                    ; #4C color C/2
-       BYTE >2F,>65                    ; #4D color C/2
-       BYTE >2F,>62                    ; #4E color C/2
-       BYTE >2F,>64                    ; #4F color C/2
-       BYTE >60,>2F                    ; #50 color C/2
-       BYTE >60,>60                    ; #51 color C/2
-       BYTE >2F,>60                    ; #52 color C/2
-       BYTE >FF,>FF                    ; #53 unused
-       BYTE >FF,>FF                    ; #54 unused
-       BYTE >FF,>FF                    ; #55 unused
-       BYTE >FF,>FF                    ; #56 unused
-       BYTE >FF,>FF                    ; #57 unused
-       BYTE >2F,>20                    ; #58 color F/2
-       BYTE >20,>2F                    ; #59 color F/2
-       BYTE >2F,>2F                    ; #5A color F/2
-       BYTE >20,>20                    ; #5B color F/2
-       BYTE >28,>01                    ; #5C color F/2
-       BYTE >21,>20                    ; #5D color F/2
-       BYTE >29,>28                    ; #5E color F/2
-       BYTE >22,>21                    ; #5F color F/2
-       BYTE >2A,>29                    ; #60 color F/2
-       BYTE >23,>22                    ; #61 color F/2
-       BYTE >2B,>2A                    ; #62 color F/2
-       BYTE >24,>23                    ; #63 color F/2
-       BYTE >2C,>2B                    ; #64 color F/2
-       BYTE >25,>24                    ; #65 color F/2
-       BYTE >2D,>2C                    ; #66 color F/2
-       BYTE >26,>25                    ; #67 color F/2
-       BYTE >2E,>2D                    ; #68 color F/2
-       BYTE >27,>26                    ; #69 color F/2
-       BYTE >20,>2E                    ; #6A color F/2
-       BYTE >01,>27                    ; #6B color F/2
-       BYTE >2E,>20                    ; #6C color F/2
-       BYTE >27,>01                    ; #6D color F/2
-       BYTE >2D,>2E                    ; #6E color F/2
-       BYTE >26,>27                    ; #6F color F/2
-       BYTE >2C,>2D                    ; #70 color F/2
-       BYTE >25,>26                    ; #71 color F/2
-       BYTE >2B,>2C                    ; #72 color F/2
-       BYTE >24,>25                    ; #73 color F/2
-       BYTE >2A,>2B                    ; #74 color F/2
-       BYTE >23,>24                    ; #75 color F/2
-       BYTE >29,>2A                    ; #76 color F/2
-       BYTE >22,>23                    ; #77 color F/2
-       BYTE >28,>29                    ; #78 color F/2
-       BYTE >21,>22                    ; #79 color F/2
-       BYTE >01,>28                    ; #7A color F/2
-       BYTE >20,>21                    ; #7B color F/2
-       BYTE >FF,>FF                    ; #7C unused
-       BYTE >FF,>FF                    ; #7D unused
-       BYTE >FF,>FF                    ; #7E unused
-       BYTE >FF,>FF                    ; #7F unused
-       BYTE >01,>01                    ; #80 color F/E
-       BYTE >00,>00                    ; #81 color F/E
-       BYTE >1B,>00                    ; #82 color F/E
-       BYTE >1B,>1B                    ; #83 color F/E
-       BYTE >10,>01                    ; #84 color F/E
-       BYTE >00,>1B                    ; #85 color F/E
-       BYTE >01,>10                    ; #86 color F/E
-       BYTE >09,>00                    ; #87 color F/E
-       BYTE >1C,>1B                    ; #88 color F/E
-       BYTE >02,>01                    ; #89 color F/E
-       BYTE >0A,>09                    ; #8A color F/E
-       BYTE >00,>1C                    ; #8B color F/E
-       BYTE >03,>02                    ; #8C color F/E
-       BYTE >0B,>0A                    ; #8D color F/E
-       BYTE >04,>03                    ; #8E color F/E
-       BYTE >0C,>0B                    ; #8F color F/E
-       BYTE >18,>00                    ; #90 color F/E
-       BYTE >05,>04                    ; #91 color F/E
-       BYTE >0D,>0C                    ; #92 color F/E
-       BYTE >19,>18                    ; #93 color F/E
-       BYTE >06,>05                    ; #94 color F/E
-       BYTE >0E,>0D                    ; #95 color F/E
-       BYTE >00,>19                    ; #96 color F/E
-       BYTE >07,>06                    ; #97 color F/E
-       BYTE >0F,>0E                    ; #98 color F/E
-       BYTE >08,>07                    ; #99 color F/E
-       BYTE >01,>0F                    ; #9A color F/E
-       BYTE >00,>08                    ; #9B color F/E
-       BYTE >0F,>01                    ; #9C color F/E
-       BYTE >1A,>1B                    ; #9D color F/E
-       BYTE >08,>00                    ; #9E color F/E
-       BYTE >0E,>0F                    ; #9F color F/E
-       BYTE >00,>1A                    ; #A0 color F/E
-       BYTE >07,>08                    ; #A1 color F/E
-       BYTE >0D,>0E                    ; #A2 color F/E
-       BYTE >06,>07                    ; #A3 color F/E
-       BYTE >0C,>0D                    ; #A4 color F/E
-       BYTE >1E,>00                    ; #A5 color F/E
-       BYTE >05,>06                    ; #A6 color F/E
-       BYTE >0B,>0C                    ; #A7 color F/E
-       BYTE >1D,>1E                    ; #A8 color F/E
-       BYTE >04,>05                    ; #A9 color F/E
-       BYTE >0A,>0B                    ; #AA color F/E
-       BYTE >00,>1D                    ; #AB color F/E
-       BYTE >03,>04                    ; #AC color F/E
-       BYTE >09,>0A                    ; #AD color F/E
-       BYTE >02,>03                    ; #AE color F/E
-       BYTE >00,>09                    ; #AF color F/E
-       BYTE >01,>02                    ; #B0 color F/E
-       BYTE >1F,>00                    ; #B1 color F/E
-       BYTE >1F,>1F                    ; #B2 color F/E
-       BYTE >00,>1F                    ; #B3 color F/E
-	 
-****************************************
-*	   Level 1
-****************************************
-
-SCRL1  DATA SCR000,SCR003,SCR003,SCR001
-       DATA SCR003,SCR002,SCR003,SCR001
-       DATA SCR001,SCR003,SCR002,SCR003
-       DATA SCR001,SCR004,SCR005,SCR006
-       DATA SCR007,SCR008,SCR009,SCR008
-       DATA SCR008,SCR008,SCR009,SCR009
-       DATA SCR009,SCR010,SCR011,SCR012
-       DATA SCR013,SCR002,SCR002,SCR014
-       DATA SCR015,SCR016,SCR017,SCR018
-       DATA SCR018,SCR018,SCR019,SCR020
-       DATA SCR021,SCR022,SCR023,SCR003
-       DATA SCR001,SCR003,SCR001,SCR004
-       DATA SCR005,SCR006,SCR007,SCR010
-       DATA SCR011,SCR012,SCR013,SCR014
-       DATA SCR015,SCR016,SCR017,SCR019
-       DATA SCR020,SCR021,SCR022,SCR023
-       DATA SCR004,SCR005,SCR006,SCR007
-       DATA SCR009,SCR009,SCR009,SCR009
-       DATA SCR008,SCR009,SCR009,SCR010
-       DATA SCR011,SCR012,SCR013,SCR002
-       DATA SCR002,SCR002,SCR002,SCR002
-       DATA SCR003,SCR001,SCR002,SCR001
-       DATA SCR003,SCR014,SCR015,SCR016
-       DATA SCR017,SCR018,SCR018,SCR018
-       DATA SCR018,SCR018,SCR018,SCR019
-       DATA SCR020,SCR021,SCR022,SCR023
-	   DATA SCR000	   
-
-*	   Road direction list
-RDDXL1 DATA 00,00,00,00,00,00,00,00
-	   DATA 00,00,00,00,00,00,01,01
-	   DATA 00,00,00,00,00,00,00,00
-	   DATA 00,00,-1,-1,00,00,00,00
-	   DATA -1,-1,00,00,00,00,00,01
-	   DATA 01,00,00,00,00,00,00,00
-	   DATA 01,01,00,00,-1,-1,00,00
-	   DATA -1,-1,00,00,01,01,00,00
-	   DATA 00,01,01,00,00,00,00,00
-	   DATA 00,00,00,00,-1,-1,00,00
-	   DATA 00,00,00,00,00,00,00,00
-	   DATA 00,00,-1,-1,00,00,00,00
-	   DATA 00,00,00,00,01,01,00,00
-	   DATA 00
+pat480:
+       data >55aa,>d5ea,>ffff,>ffff    ;
+pat49:
+       data >ffff,>fcfd,>fdfc,>ffff    ;
+pat50:
+       data >ffff,>ffff,>ead5,>aa55    ;
+pat51:
+       data >2070,>d03a,>1d77,>51e0    ;
+pat52:
+       data >0000,>0000,>0000,>0000            ; unused
+pat53:
+       data >0000,>0000,>0000,>0000            ; unused
+pat54:
+       data >0000,>0000,>0000,>0000            ; unused
+pat55:
+       data >0000,>0000,>0000,>0000            ; unused
+pat56:
+       data >55ab,>57af,>ffff,>ffff    ;
+pat57:
+       data >ffff,>3fbf,>bf3f,>ffff    ;
+pat58:
+       data >ffff,>ffff,>af57,>ab55    ;
+pat59:
+       data >0800,>9028,>1200,>4800    ;
+pat60:
+       data >0000,>0000,>0000,>0000            ; unused
+pat61:
+       data >0000,>0000,>0000,>0000            ; unused
+pat62:
+       data >0000,>0000,>0000,>0000            ; unused
+pat63:
+       data >0000,>0000,>0000,>0000            ; unused
+pat64:
+       data >0b35,>2052,>9cca,>279a    ;
+pat65:
+       data >604c,>9262,>0db6,>e1c5    ;
+pat66:
+       data >a311,>dfb8,>1245,>300b    ;
+pat67:
+       data >cbe4,>69b3,>6e90,>0ca0    ;
+pat68:
+       data >0108,>4822,>6e2b,>7fff    ;
+pat69:
+       data >ffff,>6f2e,>6a54,>4400    ;
+pat70:
+       data >0030,>ff30,>ff30,>ff30    ;
+pat71:
+       data >0000,>4428,>1028,>4400            ; unused
+pat72:
+       data >0101,>0306,>0d3d,>726f    ;
+pat73:
+       data >29db,>be41,>fff7,>ffff    ;
+pat74:
+       data >90c0,>c270,>bc4e,>f7f7    ;
+pat75:
+       data >7f3f,>0f07,>0703,>0300    ;
+pat76:
+       data >ff7f,>fbff,>ffff,>fb92    ;
+pat77:
+       data >fffb,>feee,>fcf8,>c084    ;
+pat78:
+       data >fffd,>ffdf,>ffff,>ffff    ;
+pat79:
+       data >0000,>4428,>1028,>4400            ; unused
+pat80:
+       data >ffff,>ffff,>ffff,>ffff    ;
+pat81:
+       data >ffff,>ffe7,>d3ff,>ffff    ;
+pat82:
+       data >f3e1,>e1f3,>f3e1,>c0c0    ;
+pat83:
+       data >c0e1,>f3f3,>f3e1,>e1f3    ;
+pat84:
+       data >cbdd,>225c,>d63b,>95e3    ;
+pat85:
+       data >0000,>4428,>1028,>4400            ; unused
+pat86:
+       data >0000,>4428,>1028,>4400            ; unused
+pat87:
+       data >0000,>4428,>1028,>4400            ; unused
+pat88:
+       data >f0e0,>e0e7,>e780,>0000    ;
+pat89:
+       data >0000,>f9f9,>f9f8,>f8fc    ;
+pat90:
+       data >0f0f,>ffff,>ff07,>0101    ;
+pat91:
+       data >0107,>ffff,>ffff,>1f0f    ;
+pat92:
+       data >cfab,>7519,>552b,>b5d7    ;
+pat93:
+       data >0000,>4428,>1028,>4400            ; unused
+pat94:
+       data >0000,>4428,>1028,>4400            ; unused
+pat95:
+       data >0000,>4428,>1028,>4400            ; unused
+pat96:
+       data >ffff,>ffff,>ffff,>ffff    ;
+pat97:
+       data >0b3d,>5f77,>ff5f,>ffff    ;
+pat98:
+       data >dfef,>7fdf,>6e7b,>3f0d    ;
+pat99:
+       data >a0c8,>b0f0,>fca0,>78fc    ;
+pat100:
+       data >e8fc,>b0f8,>e050,>e880    ;
+pat101:
+       data >1834,>38dc,>f61d,>3a30    ;
 
 ****************************************
-* Colorset Definitions                  
+* Transition Character Pairs (from, to)
 ****************************************
-CLRSET1 BYTE >1E,>6B,>6E,>AB            ;
-       BYTE >AB,>CB,>F4,>F4            ;
-       BYTE >F4,>F4,>F4,>FB            ;
-       BYTE >FB,>FB,>FB,>FB            ;
-       BYTE >FB,>FE,>FE,>FE            ;
-       BYTE >FE,>FE,>FE,>FE            ;
+tchars:
+       byte >3b,>2f                            ; #00 color 6/2
+       byte >2f,>3b                            ; #01 color 6/2
+       byte >38,>2f                            ; #02 color 6/2
+       byte >39,>38                            ; #03 color 6/2
+       byte >3a,>39                            ; #04 color 6/2
+       byte >2f,>3a                            ; #05 color 6/2
+       byte >39,>39                            ; #06 color 6/2
+       byte >ff,>ff                            ; #07 unused
+       byte >4a,>2f                            ; #08 color 7/2
+       byte >4e,>4a                            ; #09 color 7/2
+       byte >4e,>4e                            ; #0A color 7/2
+       byte >48,>2f                            ; #0B color 7/2
+       byte >49,>2f                            ; #0C color 7/2
+       byte >4e,>48                            ; #0D color 7/2
+       byte >4e,>49                            ; #0E color 7/2
+       byte >4c,>4e                            ; #0F color 7/2
+       byte >4d,>4e                            ; #10 color 7/2
+       byte >2f,>4c                            ; #11 color 7/2
+       byte >4b,>4e                            ; #12 color 7/2
+       byte >2f,>4d                            ; #13 color 7/2
+       byte >2f,>4b                            ; #14 color 7/2
+       byte >ff,>ff                            ; #15 unused
+       byte >ff,>ff                            ; #16 unused
+       byte >ff,>ff                            ; #17 unused
+       byte >33,>2f                            ; #18 color 8/2
+       byte >2f,>33                            ; #19 color 8/2
+       byte >30,>2f                            ; #1A color 8/2
+       byte >31,>30                            ; #1B color 8/2
+       byte >32,>31                            ; #1C color 8/2
+       byte >2f,>32                            ; #1D color 8/2
+       byte >31,>31                            ; #1E color 8/2
+       byte >ff,>ff                            ; #1F unused
+       byte >51,>50                            ; #20 color B/1
+       byte >51,>51                            ; #21 color B/1
+       byte >50,>51                            ; #22 color B/1
+       byte >50,>50                            ; #23 color B/1
+       byte >52,>50                            ; #24 color B/1
+       byte >53,>52                            ; #25 color B/1
+       byte >50,>53                            ; #26 color B/1
+       byte >54,>50                            ; #27 color B/1
+       byte >50,>54                            ; #28 color B/1
+       byte >ff,>ff                            ; #29 unused
+       byte >ff,>ff                            ; #2A unused
+       byte >ff,>ff                            ; #2B unused
+       byte >ff,>ff                            ; #2C unused
+       byte >ff,>ff                            ; #2D unused
+       byte >ff,>ff                            ; #2E unused
+       byte >ff,>ff                            ; #2F unused
+       byte >40,>2f                            ; #30 color B/2
+       byte >41,>2f                            ; #31 color B/2
+       byte >42,>40                            ; #32 color B/2
+       byte >43,>41                            ; #33 color B/2
+       byte >2f,>42                            ; #34 color B/2
+       byte >2f,>43                            ; #35 color B/2
+       byte >46,>2f                            ; #36 color B/2
+       byte >2f,>46                            ; #37 color B/2
+       byte >44,>2f                            ; #38 color B/2
+       byte >50,>44                            ; #39 color B/2
+       byte >45,>50                            ; #3A color B/2
+       byte >2f,>45                            ; #3B color B/2
+       byte >ff,>ff                            ; #3C unused
+       byte >ff,>ff                            ; #3D unused
+       byte >ff,>ff                            ; #3E unused
+       byte >ff,>ff                            ; #3F unused
+       byte >58,>50                            ; #40 color B/A
+       byte >5a,>50                            ; #41 color B/A
+       byte >59,>58                            ; #42 color B/A
+       byte >5b,>5a                            ; #43 color B/A
+       byte >50,>59                            ; #44 color B/A
+       byte >50,>5b                            ; #45 color B/A
+       byte >5c,>50                            ; #46 color B/A
+       byte >50,>5c                            ; #47 color B/A
+       byte >61,>2f                            ; #48 color C/2
+       byte >63,>2f                            ; #49 color C/2
+       byte >65,>2f                            ; #4A color C/2
+       byte >62,>61                            ; #4B color C/2
+       byte >64,>63                            ; #4C color C/2
+       byte >2f,>65                            ; #4D color C/2
+       byte >2f,>62                            ; #4E color C/2
+       byte >2f,>64                            ; #4F color C/2
+       byte >60,>2f                            ; #50 color C/2
+       byte >60,>60                            ; #51 color C/2
+       byte >2f,>60                            ; #52 color C/2
+       byte >ff,>ff                            ; #53 unused
+       byte >ff,>ff                            ; #54 unused
+       byte >ff,>ff                            ; #55 unused
+       byte >ff,>ff                            ; #56 unused
+       byte >ff,>ff                            ; #57 unused
+       byte >2f,>20                            ; #58 color F/2
+       byte >20,>2f                            ; #59 color F/2
+       byte >2f,>2f                            ; #5A color F/2
+       byte >20,>20                            ; #5B color F/2
+       byte >28,>01                            ; #5C color F/2
+       byte >21,>20                            ; #5D color F/2
+       byte >29,>28                            ; #5E color F/2
+       byte >22,>21                            ; #5F color F/2
+       byte >2a,>29                            ; #60 color F/2
+       byte >23,>22                            ; #61 color F/2
+       byte >2b,>2a                            ; #62 color F/2
+       byte >24,>23                            ; #63 color F/2
+       byte >2c,>2b                            ; #64 color F/2
+       byte >25,>24                            ; #65 color F/2
+       byte >2d,>2c                            ; #66 color F/2
+       byte >26,>25                            ; #67 color F/2
+       byte >2e,>2d                            ; #68 color F/2
+       byte >27,>26                            ; #69 color F/2
+       byte >20,>2e                            ; #6A color F/2
+       byte >01,>27                            ; #6B color F/2
+       byte >2e,>20                            ; #6C color F/2
+       byte >27,>01                            ; #6D color F/2
+       byte >2d,>2e                            ; #6E color F/2
+       byte >26,>27                            ; #6F color F/2
+       byte >2c,>2d                            ; #70 color F/2
+       byte >25,>26                            ; #71 color F/2
+       byte >2b,>2c                            ; #72 color F/2
+       byte >24,>25                            ; #73 color F/2
+       byte >2a,>2b                            ; #74 color F/2
+       byte >23,>24                            ; #75 color F/2
+       byte >29,>2a                            ; #76 color F/2
+       byte >22,>23                            ; #77 color F/2
+       byte >28,>29                            ; #78 color F/2
+       byte >21,>22                            ; #79 color F/2
+       byte >01,>28                            ; #7A color F/2
+       byte >20,>21                            ; #7B color F/2
+       byte >ff,>ff                            ; #7C unused
+       byte >ff,>ff                            ; #7D unused
+       byte >ff,>ff                            ; #7E unused
+       byte >ff,>ff                            ; #7F unused
+       byte >01,>01                            ; #80 color F/E
+       byte >00,>00                            ; #81 color F/E
+       byte >1b,>00                            ; #82 color F/E
+       byte >1b,>1b                            ; #83 color F/E
+       byte >10,>01                            ; #84 color F/E
+       byte >00,>1b                            ; #85 color F/E
+       byte >01,>10                            ; #86 color F/E
+       byte >09,>00                            ; #87 color F/E
+       byte >1c,>1b                            ; #88 color F/E
+       byte >02,>01                            ; #89 color F/E
+       byte >0a,>09                            ; #8A color F/E
+       byte >00,>1c                            ; #8B color F/E
+       byte >03,>02                            ; #8C color F/E
+       byte >0b,>0a                            ; #8D color F/E
+       byte >04,>03                            ; #8E color F/E
+       byte >0c,>0b                            ; #8F color F/E
+       byte >18,>00                            ; #90 color F/E
+       byte >05,>04                            ; #91 color F/E
+       byte >0d,>0c                            ; #92 color F/E
+       byte >19,>18                            ; #93 color F/E
+       byte >06,>05                            ; #94 color F/E
+       byte >0e,>0d                            ; #95 color F/E
+       byte >00,>19                            ; #96 color F/E
+       byte >07,>06                            ; #97 color F/E
+       byte >0f,>0e                            ; #98 color F/E
+       byte >08,>07                            ; #99 color F/E
+       byte >01,>0f                            ; #9A color F/E
+       byte >00,>08                            ; #9B color F/E
+       byte >0f,>01                            ; #9C color F/E
+       byte >1a,>1b                            ; #9D color F/E
+       byte >08,>00                            ; #9E color F/E
+       byte >0e,>0f                            ; #9F color F/E
+       byte >00,>1a                            ; #A0 color F/E
+       byte >07,>08                            ; #A1 color F/E
+       byte >0d,>0e                            ; #A2 color F/E
+       byte >06,>07                            ; #A3 color F/E
+       byte >0c,>0d                            ; #A4 color F/E
+       byte >1e,>00                            ; #A5 color F/E
+       byte >05,>06                            ; #A6 color F/E
+       byte >0b,>0c                            ; #A7 color F/E
+       byte >1d,>1e                            ; #A8 color F/E
+       byte >04,>05                            ; #A9 color F/E
+       byte >0a,>0b                            ; #AA color F/E
+       byte >00,>1d                            ; #AB color F/E
+       byte >03,>04                            ; #AC color F/E
+       byte >09,>0a                            ; #AD color F/E
+       byte >02,>03                            ; #AE color F/E
+       byte >00,>09                            ; #AF color F/E
+       byte >01,>02                            ; #B0 color F/E
+       byte >1f,>00                            ; #B1 color F/E
+       byte >1f,>1f                            ; #B2 color F/E
+       byte >00,>1f                            ; #B3 color F/E
 
 ****************************************
-* Original Character Patterns           
-****************************************
-PAT481  DATA >0008,>0000,>0240,>0000    ; 
-PAT491  DATA >0000,>0000,>0000,>0000    ; 
-PAT501  DATA >8010,>8428,>D5AA,>DFFE    ; 
-PAT511  DATA >0107,>FF3B,>3F6F,>7F1F    ; 
-PAT521  DATA >770D,>0703,>1E07,>2107    ; 
-PAT531  DATA >0141,>011F,>0327,>0FFF    ; 
-PAT541  DATA >2404,>4416,>0224,>8C08    ; 
-PAT551  DATA >BF7B,>EE3D,>495A,>0808    ; 
-PAT561  DATA >0103,>050B,>152B,>55AA    ; 
-PAT571  DATA >AB55,>2A15,>0A05,>0201    ; 
-PAT581  DATA >AA55,>AA55,>AA55,>AA55    ; 
-PAT591  DATA >BDBD,>BDBD,>BDBD,>BDBD    ; 
-PAT601  DATA >FF00,>FFFF,>FFFF,>00FF    ; 
-PAT611  DATA >00FF,>0000,>0000,>00FF    ; 
-PAT621  DATA >4141,>4141,>4141,>4141    ; 
-PAT631  DATA >007E,>4040,>4040,>4000    ; 
-PAT641  DATA >8040,>A050,>A854,>AA55    ; 
-PAT651  DATA >55AA,>54A8,>50A0,>4080    ; 
-PAT661  DATA >0000,>0000,>0000,>0000    ; unused
-PAT671  DATA >0000,>0000,>0000,>0000    ; unused
-PAT681  DATA >0000,>0000,>0000,>0000    ; unused
-PAT691  DATA >0000,>0000,>0000,>0000    ; unused
-PAT701  DATA >0000,>0000,>0000,>0000    ; unused
-PAT711  DATA >0000,>0000,>0000,>0000    ; unused
-PAT721  DATA >0038,>1E07,>0301,>F9FF    ; 
-PAT731  DATA >00C0,>783E,>0E87,>FFFE    ; 
-PAT741  DATA >7F0F,>0101,>0107,>3FFC    ; 
-PAT751  DATA >E0F0,>BCCC,>CEC6,>8604    ; 
-PAT761  DATA >0000,>0000,>0000,>00F0    ; 
-PAT771  DATA >3078,>7C7C,>FEFE,>FEFE    ; 
-PAT781  DATA >FF0F,>0101,>0101,>0100    ; 
-PAT791  DATA >FEFE,>FCFC,>F8F8,>F0E0    ; 
-PAT801  DATA >183C,>1AE7,>371A,>3C18    ; 
-PAT811  DATA >0030,>FF30,>FF30,>FF30    ; 
-PAT821  DATA >0000,>0000,>0000,>0000    ; unused
-PAT831  DATA >0000,>0000,>0000,>0000    ; unused
-PAT841  DATA >0000,>0000,>0000,>0000    ; unused
-PAT851  DATA >0000,>0000,>0000,>0000    ; unused
-PAT861  DATA >0000,>0000,>0000,>0000    ; unused
-PAT871  DATA >0000,>0000,>0000,>0000    ; unused
-PAT881  DATA >3078,>E1E1,>F37B,>3F0F    ; 
-PAT891  DATA >3CF8,>E0C0,>8000,>83CF    ; 
-PAT901  DATA >0F1F,>3D39,>7170,>3C1E    ; 
-PAT911  DATA >FEFC,>B0C0,>E0FC,>3E0C    ; 
-PAT921  DATA >0000,>0000,>0000,>0000    ; unused
-PAT931  DATA >0000,>0000,>0000,>0000    ; unused
-PAT941  DATA >0000,>0000,>0000,>0000    ; unused
-PAT951  DATA >0000,>0000,>0000,>0000    ; unused
-PAT961  DATA >071F,>3F77,>63C3,>F1FD    ; 
-PAT971  DATA >E0F8,>DCCE,>868F,>3FFF    ; 
-PAT981  DATA >FFFC,>F141,>4333,>0F00    ; 
-PAT991  DATA >BF8F,>C3C2,>E2EC,>F000    ; 
-PAT1001 DATA >60B6,>FB6F,>3658,>7830    ; 
-PAT1011 DATA >0000,>0000,>0000,>0000    ; unused
-PAT1021 DATA >0000,>0000,>0000,>0000    ; unused
-PAT1031 DATA >0000,>0000,>0000,>0000    ; unused
-PAT1041 DATA >070C,>0B1F,>1C18,>1F0A    ; 
-PAT1051 DATA >FCFE,>FEFF,>0703,>FFAA    ; 
-PAT1061 DATA >0D0A,>1D1F,>181F,>0F03    ; 
-PAT1071 DATA >56AA,>57FF,>03FF,>FEF8    ; 
-PAT1081 DATA >0000,>0000,>0000,>0000    ; unused
-PAT1091 DATA >0000,>0000,>0000,>0000    ; unused
-PAT1101 DATA >0000,>0000,>0000,>0000    ; unused
-PAT1111 DATA >0000,>0000,>0000,>0000    ; unused
-PAT1121 DATA >6070,>70F0,>D0E8,>D878    ; 
-PAT1131 DATA >7878,>F8F0,>F0F0,>6060    ; 
-PAT1141 DATA >3078,>FC30,>3030,>3030    ; 
-PAT1151 DATA >3030,>3030,>30FC,>7830    ; 
-PAT1161 DATA >0000,>0000,>0000,>0000    ; unused
-PAT1171 DATA >0000,>0000,>0000,>0000    ; unused
-PAT1181 DATA >0000,>0000,>0000,>0000    ; unused
-PAT1191 DATA >0000,>0000,>0000,>0000    ; unused
-PAT1201 DATA >FFFF,>FFFF,>FFFF,>FFFF    ; 
-PAT1211 DATA >0000,>0080,>86CE,>FFFF    ; 
-PAT1221 DATA >00C0,>E0F8,>E0C0,>80E0    ; 
-PAT1231 DATA >FB71,>0120,>0004,>0000    ; 
-
-****************************************
-* Transition Character Pairs (from, to) 
-****************************************
-TCHARS1 BYTE >70,>00                    ; #00 color 1/E
-       BYTE >71,>70                    ; #01 color 1/E
-       BYTE >00,>71                    ; #02 color 1/E
-       BYTE >72,>00                    ; #03 color 1/E
-       BYTE >00,>72                    ; #04 color 1/E
-       BYTE >73,>00                    ; #05 color 1/E
-       BYTE >00,>73                    ; #06 color 1/E
-       BYTE >FF,>FF                    ; #07 unused
-       BYTE >60,>2F                    ; #08 color 6/B
-       BYTE >61,>2F                    ; #09 color 6/B
-       BYTE >62,>60                    ; #0A color 6/B
-       BYTE >63,>61                    ; #0B color 6/B
-       BYTE >2F,>62                    ; #0C color 6/B
-       BYTE >2F,>63                    ; #0D color 6/B
-       BYTE >64,>2F                    ; #0E color 6/B
-       BYTE >2F,>64                    ; #0F color 6/B
-       BYTE >68,>00                    ; #10 color 6/E
-       BYTE >69,>00                    ; #11 color 6/E
-       BYTE >6A,>68                    ; #12 color 6/E
-       BYTE >6B,>69                    ; #13 color 6/E
-       BYTE >00,>6A                    ; #14 color 6/E
-       BYTE >00,>6B                    ; #15 color 6/E
-       BYTE >FF,>FF                    ; #16 unused
-       BYTE >FF,>FF                    ; #17 unused
-       BYTE >4C,>2F                    ; #18 color A/B
-       BYTE >4D,>2F                    ; #19 color A/B
-       BYTE >4E,>4C                    ; #1A color A/B
-       BYTE >4F,>4D                    ; #1B color A/B
-       BYTE >2F,>4E                    ; #1C color A/B
-       BYTE >2F,>4F                    ; #1D color A/B
-       BYTE >48,>2F                    ; #1E color A/B
-       BYTE >49,>2F                    ; #1F color A/B
-       BYTE >4A,>48                    ; #20 color A/B
-       BYTE >4B,>49                    ; #21 color A/B
-       BYTE >2F,>4A                    ; #22 color A/B
-       BYTE >2F,>4B                    ; #23 color A/B
-       BYTE >51,>2F                    ; #24 color A/B
-       BYTE >2F,>51                    ; #25 color A/B
-       BYTE >50,>2F                    ; #26 color A/B
-       BYTE >2F,>50                    ; #27 color A/B
-       BYTE >58,>2F                    ; #28 color C/B
-       BYTE >59,>2F                    ; #29 color C/B
-       BYTE >5A,>58                    ; #2A color C/B
-       BYTE >5B,>59                    ; #2B color C/B
-       BYTE >2F,>5A                    ; #2C color C/B
-       BYTE >2F,>5B                    ; #2D color C/B
-       BYTE >FF,>FF                    ; #2E unused
-       BYTE >FF,>FF                    ; #2F unused
-       BYTE >31,>30                    ; #30 color F/4
-       BYTE >30,>31                    ; #31 color F/4
-       BYTE >30,>30                    ; #32 color F/4
-       BYTE >36,>31                    ; #33 color F/4
-       BYTE >31,>31                    ; #34 color F/4
-       BYTE >31,>36                    ; #35 color F/4
-       BYTE >32,>30                    ; #36 color F/4
-       BYTE >78,>32                    ; #37 color F/4
-       BYTE >36,>30                    ; #38 color F/4
-       BYTE >30,>36                    ; #39 color F/4
-       BYTE >37,>78                    ; #3A color F/4
-       BYTE >30,>37                    ; #3B color F/4
-       BYTE >33,>30                    ; #3C color F/4
-       BYTE >78,>33                    ; #3D color F/4
-       BYTE >33,>33                    ; #3E color F/4
-       BYTE >35,>30                    ; #3F color F/4
-       BYTE >78,>35                    ; #40 color F/4
-       BYTE >30,>33                    ; #41 color F/4
-       BYTE >34,>78                    ; #42 color F/4
-       BYTE >35,>34                    ; #43 color F/4
-       BYTE >33,>78                    ; #44 color F/4
-       BYTE >30,>34                    ; #45 color F/4
-       BYTE >38,>31                    ; #46 color F/4
-       BYTE >3C,>31                    ; #47 color F/4
-       BYTE >40,>31                    ; #48 color F/4
-       BYTE >3B,>38                    ; #49 color F/4
-       BYTE >3A,>3C                    ; #4A color F/4
-       BYTE >3E,>40                    ; #4B color F/4
-       BYTE >3B,>3B                    ; #4C color F/4
-       BYTE >3A,>3A                    ; #4D color F/4
-       BYTE >3E,>3E                    ; #4E color F/4
-       BYTE >39,>3B                    ; #4F color F/4
-       BYTE >3D,>3A                    ; #50 color F/4
-       BYTE >41,>3E                    ; #51 color F/4
-       BYTE >31,>39                    ; #52 color F/4
-       BYTE >31,>3D                    ; #53 color F/4
-       BYTE >31,>41                    ; #54 color F/4
-       BYTE >3F,>3A                    ; #55 color F/4
-       BYTE >3F,>3F                    ; #56 color F/4
-       BYTE >3A,>3F                    ; #57 color F/4
-       BYTE >7B,>78                    ; #58 color F/B
-       BYTE >20,>7B                    ; #59 color F/B
-       BYTE >20,>20                    ; #5A color F/B
-       BYTE >78,>78                    ; #5B color F/B
-       BYTE >2F,>20                    ; #5C color F/B
-       BYTE >2F,>2F                    ; #5D color F/B
-       BYTE >20,>2F                    ; #5E color F/B
-       BYTE >2E,>20                    ; #5F color F/B
-       BYTE >27,>01                    ; #60 color F/B
-       BYTE >2D,>2E                    ; #61 color F/B
-       BYTE >26,>27                    ; #62 color F/B
-       BYTE >2C,>2D                    ; #63 color F/B
-       BYTE >25,>26                    ; #64 color F/B
-       BYTE >2B,>2C                    ; #65 color F/B
-       BYTE >24,>25                    ; #66 color F/B
-       BYTE >2A,>2B                    ; #67 color F/B
-       BYTE >23,>24                    ; #68 color F/B
-       BYTE >29,>2A                    ; #69 color F/B
-       BYTE >22,>23                    ; #6A color F/B
-       BYTE >28,>29                    ; #6B color F/B
-       BYTE >21,>22                    ; #6C color F/B
-       BYTE >01,>28                    ; #6D color F/B
-       BYTE >20,>21                    ; #6E color F/B
-       BYTE >01,>20                    ; #6F color F/B
-       BYTE >20,>01                    ; #70 color F/B
-       BYTE >28,>01                    ; #71 color F/B
-       BYTE >21,>20                    ; #72 color F/B
-       BYTE >29,>28                    ; #73 color F/B
-       BYTE >22,>21                    ; #74 color F/B
-       BYTE >2A,>29                    ; #75 color F/B
-       BYTE >23,>22                    ; #76 color F/B
-       BYTE >2B,>2A                    ; #77 color F/B
-       BYTE >24,>23                    ; #78 color F/B
-       BYTE >2C,>2B                    ; #79 color F/B
-       BYTE >25,>24                    ; #7A color F/B
-       BYTE >2D,>2C                    ; #7B color F/B
-       BYTE >26,>25                    ; #7C color F/B
-       BYTE >2E,>2D                    ; #7D color F/B
-       BYTE >27,>26                    ; #7E color F/B
-       BYTE >20,>2E                    ; #7F color F/B
-       BYTE >01,>27                    ; #80 color F/B
-       BYTE >79,>20                    ; #81 color F/B
-       BYTE >78,>79                    ; #82 color F/B
-       BYTE >7A,>78                    ; #83 color F/B
-       BYTE >7A,>7A                    ; #84 color F/B
-       BYTE >20,>7A                    ; #85 color F/B
-       BYTE >78,>7A                    ; #86 color F/B
-       BYTE >7A,>20                    ; #87 color F/B
-       BYTE >01,>01                    ; #88 color F/E
-       BYTE >00,>00                    ; #89 color F/E
-       BYTE >1B,>00                    ; #8A color F/E
-       BYTE >1B,>1B                    ; #8B color F/E
-       BYTE >10,>01                    ; #8C color F/E
-       BYTE >00,>1B                    ; #8D color F/E
-       BYTE >01,>10                    ; #8E color F/E
-       BYTE >0F,>01                    ; #8F color F/E
-       BYTE >1A,>1B                    ; #90 color F/E
-       BYTE >08,>00                    ; #91 color F/E
-       BYTE >0E,>0F                    ; #92 color F/E
-       BYTE >00,>1A                    ; #93 color F/E
-       BYTE >07,>08                    ; #94 color F/E
-       BYTE >0D,>0E                    ; #95 color F/E
-       BYTE >06,>07                    ; #96 color F/E
-       BYTE >0C,>0D                    ; #97 color F/E
-       BYTE >1E,>00                    ; #98 color F/E
-       BYTE >05,>06                    ; #99 color F/E
-       BYTE >0B,>0C                    ; #9A color F/E
-       BYTE >1D,>1E                    ; #9B color F/E
-       BYTE >04,>05                    ; #9C color F/E
-       BYTE >0A,>0B                    ; #9D color F/E
-       BYTE >00,>1D                    ; #9E color F/E
-       BYTE >03,>04                    ; #9F color F/E
-       BYTE >09,>0A                    ; #A0 color F/E
-       BYTE >02,>03                    ; #A1 color F/E
-       BYTE >00,>09                    ; #A2 color F/E
-       BYTE >01,>02                    ; #A3 color F/E
-       BYTE >00,>01                    ; #A4 color F/E
-       BYTE >01,>00                    ; #A5 color F/E
-       BYTE >09,>00                    ; #A6 color F/E
-       BYTE >1C,>1B                    ; #A7 color F/E
-       BYTE >02,>01                    ; #A8 color F/E
-       BYTE >0A,>09                    ; #A9 color F/E
-       BYTE >00,>1C                    ; #AA color F/E
-       BYTE >03,>02                    ; #AB color F/E
-       BYTE >0B,>0A                    ; #AC color F/E
-       BYTE >04,>03                    ; #AD color F/E
-       BYTE >0C,>0B                    ; #AE color F/E
-       BYTE >18,>00                    ; #AF color F/E
-       BYTE >05,>04                    ; #B0 color F/E
-       BYTE >0D,>0C                    ; #B1 color F/E
-       BYTE >19,>18                    ; #B2 color F/E
-       BYTE >06,>05                    ; #B3 color F/E
-       BYTE >0E,>0D                    ; #B4 color F/E
-       BYTE >00,>19                    ; #B5 color F/E
-       BYTE >07,>06                    ; #B6 color F/E
-       BYTE >0F,>0E                    ; #B7 color F/E
-       BYTE >08,>07                    ; #B8 color F/E
-       BYTE >01,>0F                    ; #B9 color F/E
-       BYTE >00,>08                    ; #BA color F/E
-       BYTE >1F,>00                    ; #BB color F/E
-       BYTE >1F,>1F                    ; #BC color F/E
-       BYTE >00,>1F                    ; #BD color F/E
-
-****************************************
-*	   Level 2
+* Level 1
 ****************************************
 
-SCRL2  DATA SCR000,SCR001,SCR001,SCR001
-       DATA SCR023,SCR023,SCR023,SCR002
-       DATA SCR003,SCR004,SCR005,SCR006
-       DATA SCR007,SCR001,SCR001,SCR002
-       DATA SCR003,SCR004,SCR005,SCR006
-       DATA SCR007,SCR008,SCR009,SCR010
-       DATA SCR011,SCR012,SCR013,SCR001
-       DATA SCR023,SCR001,SCR023,SCR001
-       DATA SCR023,SCR014,SCR015,SCR016
-       DATA SCR017,SCR018,SCR018,SCR018
-       DATA SCR018,SCR019,SCR020,SCR021
-       DATA SCR022,SCR008,SCR009,SCR010
-       DATA SCR011,SCR012,SCR013,SCR002
-       DATA SCR003,SCR004,SCR005,SCR006
-       DATA SCR007,SCR001,SCR023,SCR001
-       DATA SCR023,SCR008,SCR009,SCR010
-       DATA SCR011,SCR012,SCR013,SCR008
-       DATA SCR009,SCR010,SCR011,SCR012
-       DATA SCR013,SCR014,SCR015,SCR016
-       DATA SCR017,SCR018,SCR018,SCR018
-       DATA SCR018,SCR018,SCR019,SCR020
-       DATA SCR021,SCR007,SCR001,SCR001
-       DATA SCR001,SCR001,SCR023,SCR023
-       DATA SCR023,SCR023,SCR008,SCR009
-       DATA SCR010,SCR011,SCR012,SCR013
-       DATA SCR001,SCR001,SCR001,SCR023
-	   DATA SCR000
-	   
-*	   Road direction list
-RDDXL2 DATA 00,00,00,00,00,00,00,00
-	   DATA -1,-1,01,01,00,00,00,00
-	   DATA -1,-1,01,01,00,00,01,01
-	   DATA -1,-1,00,00,00,00,00,00
-	   DATA 00,00,-1,-1,00,00,00,00
-	   DATA 00,00,01,01,00,00,01,01
-	   DATA -1,-1,00,00,-1,-1,01,01
-	   DATA 00,00,00,00,00,00,01,01
-	   DATA -1,-1,00,00,01,01,-1,-1
-	   DATA 00,00,-1,-1,00,00,00,00
-	   DATA 00,00,00,01,01,00,00,00
-	   DATA 00,00,00,00,00,00,00,01
-	   DATA 01,-1,-1,00,00,00,00,00
-	   DATA 00
+scrl1:
+       data scr000,scr003,scr003,scr001
+       data scr003,scr002,scr003,scr001
+       data scr001,scr003,scr002,scr003
+       data scr001,scr004,scr005,scr006
+       data scr007,scr008,scr009,scr008
+       data scr008,scr008,scr009,scr009
+       data scr009,scr010,scr011,scr012
+       data scr013,scr002,scr002,scr014
+       data scr015,scr016,scr017,scr018
+       data scr018,scr018,scr019,scr020
+       data scr021,scr022,scr023,scr003
+       data scr001,scr003,scr001,scr004
+       data scr005,scr006,scr007,scr010
+       data scr011,scr012,scr013,scr014
+       data scr015,scr016,scr017,scr019
+       data scr020,scr021,scr022,scr023
+       data scr004,scr005,scr006,scr007
+       data scr009,scr009,scr009,scr009
+       data scr008,scr009,scr009,scr010
+       data scr011,scr012,scr013,scr002
+       data scr002,scr002,scr002,scr002
+       data scr003,scr001,scr002,scr001
+       data scr003,scr014,scr015,scr016
+       data scr017,scr018,scr018,scr018
+       data scr018,scr018,scr018,scr019
+       data scr020,scr021,scr022,scr023
+       data scr000
+
+* Road direction list
+rddxl1:
+       data 00,00,00,00,00,00,00,00
+       data 00,00,00,00,00,00,01,01
+       data 00,00,00,00,00,00,00,00
+       data 00,00,-1,-1,00,00,00,00
+       data -1,-1,00,00,00,00,00,01
+       data 01,00,00,00,00,00,00,00
+       data 01,01,00,00,-1,-1,00,00
+       data -1,-1,00,00,01,01,00,00
+       data 00,01,01,00,00,00,00,00
+       data 00,00,00,00,-1,-1,00,00
+       data 00,00,00,00,00,00,00,00
+       data 00,00,-1,-1,00,00,00,00
+       data 00,00,00,00,01,01,00,00
+       data 00
 
 ****************************************
-* Colorset Definitions                  
+* Colorset Definitions
 ****************************************
-CLRSET2 BYTE >1F,>1F,>1F,>1F            ;
-       BYTE >5E,>5E,>5E,>5E            ;
-       BYTE >5E,>5F,>5F,>5F            ;
-       BYTE >5F,>5F,>6F,>7F            ;
-       BYTE >7F,>7F,>7F,>CF            ;
-       BYTE >EF,>EF,>FE,>FE            ;
+clrset1:
+       byte >1e,>6b,>6e,>ab            ;
+       byte >ab,>cb,>f4,>f4            ;
+       byte >f4,>f4,>f4,>fb            ;
+       byte >fb,>fb,>fb,>fb            ;
+       byte >fb,>fe,>fe,>fe            ;
+       byte >fe,>fe,>fe,>fe            ;
 
 ****************************************
-* Original Character Patterns           
+* Original Character Patterns
 ****************************************
-PAT482  DATA >0000,>0000,>0000,>0000    ; 
-PAT492  DATA >0008,>0200,>1040,>0000    ; 
-PAT502  DATA >0128,>E25D,>0700,>2000    ; 
-PAT512  DATA >01D7,>3AB0,>4200,>0020    ; 
-PAT522  DATA >0209,>364B,>6F17,>BF5B    ; 
-PAT532  DATA >224D,>BA57,>EEDB,>FFFF    ; 
-PAT542  DATA >40D8,>B46C,>FADE,>B576    ; 
-PAT552  DATA >7EEF,>7B77,>BF37,>7F3F    ; 
-PAT562  DATA >FEFD,>FBFF,>FFDF,>BFFF    ; 
-PAT572  DATA >FEDD,>FEF7,>EEDC,>BEE8    ; 
-PAT582  DATA >FD7B,>CF7E,>2F35,>1F05    ; 
-PAT592  DATA >FFFF,>FFFB,>DF7A,>D74A    ; 
-PAT602  DATA >FCF6,>FCB6,>ECF4,>D860    ; 
-PAT612  DATA >C793,>89C1,>9009,>83C7    ; 
-PAT622  DATA >0000,>0000,>0000,>0000    ; unused
-PAT632  DATA >0000,>0000,>0000,>0000    ; unused
-PAT642  DATA >011B,>1E73,>7ED4,>6F7A    ; 
-PAT652  DATA >A0F8,>9CEC,>B65E,>EBAD    ; 
-PAT662  DATA >D5EA,>2B7D,>6B35,>1F0B    ; 
-PAT672  DATA >D7D6,>3BD6,>24DE,>F820    ; 
-PAT682  DATA >347E,>EB5F,>EA57,>7E24    ; 
-PAT692  DATA >0000,>0000,>0000,>0000    ; unused
-PAT702  DATA >0000,>0000,>0000,>0000    ; unused
-PAT712  DATA >0000,>0000,>0000,>0000    ; unused
-PAT722  DATA >4068,>ADB6,>5F7F,>3FEF    ; 
-PAT732  DATA >0000,>20A0,>D4F8,>EEBF    ; 
-PAT742  DATA >FF3D,>7F7D,>AB7A,>2040    ; 
-PAT752  DATA >FFFE,>BA60,>2000,>0000    ; 
-PAT762  DATA >143E,>77DD,>D67F,>2A14    ; 
-PAT772  DATA >FFFF,>FFFF,>FFFF,>FFFF    ; 
-PAT782  DATA >1515,>1515,>1515,>1515    ; 
-PAT792  DATA >1515,>17FF,>FFFF,>1715    ; 
-PAT802  DATA >2020,>2172,>7F73,>2120    ; 
-PAT812  DATA >8282,>C2E7,>FFE7,>C282    ; 
-PAT822  DATA >2020,>2020,>2020,>2020    ; 
-PAT832  DATA >8282,>8282,>8282,>8282    ; 
-PAT842  DATA >FF91,>91E6,>8091,>91E6    ; 
-PAT852  DATA >FFBB,>55EE,>55BB,>55EE    ; 
-PAT862  DATA >8091,>91E6,>8091,>91FF    ; 
-PAT872  DATA >55BB,>55EE,>55BB,>55FF    ; 
-PAT882  DATA >FFBB,>55EF,>55BB,>55EF    ; 
-PAT892  DATA >0111,>1167,>0111,>11FF    ; 
-PAT902  DATA >8091,>91E6,>8091,>91E6    ; 
-PAT912  DATA >55BB,>55EF,>55BB,>55EF    ; 
-PAT922  DATA >55BB,>55EF,>55BB,>55FF    ; 
-PAT932  DATA >FF11,>1167,>0111,>1167    ; 
-PAT942  DATA >55BB,>55EE,>55BB,>55EE    ; 
-PAT952  DATA >0111,>1167,>0111,>1167    ; 
-PAT962  DATA >7FC9,>A5A5,>C9A5,>A5C9    ; 
-PAT972  DATA >FEAB,>5DEB,>55AB,>5DEB    ; 
-PAT982  DATA >A5A5,>C9A5,>A5C9,>A5A5    ; 
-PAT992  DATA >55AB,>5DEB,>55AB,>5DEB    ; 
-PAT1002 DATA >C9A5,>A5C9,>A5A5,>C97F    ; 
-PAT1012 DATA >55AB,>5DEB,>55AB,>5DFE    ; 
+pat481:
+       data >0008,>0000,>0240,>0000    ;
+pat491:
+       data >0000,>0000,>0000,>0000    ;
+pat501:
+       data >8010,>8428,>d5aa,>dffe    ;
+pat511:
+       data >0107,>ff3b,>3f6f,>7f1f    ;
+pat521:
+       data >770d,>0703,>1e07,>2107    ;
+pat531:
+       data >0141,>011f,>0327,>0fff    ;
+pat541:
+       data >2404,>4416,>0224,>8c08    ;
+pat551:
+       data >bf7b,>ee3d,>495a,>0808    ;
+pat561:
+       data >0103,>050b,>152b,>55aa    ;
+pat571:
+       data >ab55,>2a15,>0a05,>0201    ;
+pat581:
+       data >aa55,>aa55,>aa55,>aa55    ;
+pat591:
+       data >bdbd,>bdbd,>bdbd,>bdbd    ;
+pat601:
+       data >ff00,>ffff,>ffff,>00ff    ;
+pat611:
+       data >00ff,>0000,>0000,>00ff    ;
+pat621:
+       data >4141,>4141,>4141,>4141    ;
+pat631:
+       data >007e,>4040,>4040,>4000    ;
+pat641:
+       data >8040,>a050,>a854,>aa55    ;
+pat651:
+       data >55aa,>54a8,>50a0,>4080    ;
+pat661:
+       data >0000,>0000,>0000,>0000            ; unused
+pat671:
+       data >0000,>0000,>0000,>0000            ; unused
+pat681:
+       data >0000,>0000,>0000,>0000            ; unused
+pat691:
+       data >0000,>0000,>0000,>0000            ; unused
+pat701:
+       data >0000,>0000,>0000,>0000            ; unused
+pat711:
+       data >0000,>0000,>0000,>0000            ; unused
+pat721:
+       data >0038,>1e07,>0301,>f9ff    ;
+pat731:
+       data >00c0,>783e,>0e87,>fffe    ;
+pat741:
+       data >7f0f,>0101,>0107,>3ffc    ;
+pat751:
+       data >e0f0,>bccc,>cec6,>8604    ;
+pat761:
+       data >0000,>0000,>0000,>00f0    ;
+pat771:
+       data >3078,>7c7c,>fefe,>fefe    ;
+pat781:
+       data >ff0f,>0101,>0101,>0100    ;
+pat791:
+       data >fefe,>fcfc,>f8f8,>f0e0    ;
+pat801:
+       data >183c,>1ae7,>371a,>3c18    ;
+pat811:
+       data >0030,>ff30,>ff30,>ff30    ;
+pat821:
+       data >0000,>0000,>0000,>0000            ; unused
+pat831:
+       data >0000,>0000,>0000,>0000            ; unused
+pat841:
+       data >0000,>0000,>0000,>0000            ; unused
+pat851:
+       data >0000,>0000,>0000,>0000            ; unused
+pat861:
+       data >0000,>0000,>0000,>0000            ; unused
+pat871:
+       data >0000,>0000,>0000,>0000            ; unused
+pat881:
+       data >3078,>e1e1,>f37b,>3f0f    ;
+pat891:
+       data >3cf8,>e0c0,>8000,>83cf    ;
+pat901:
+       data >0f1f,>3d39,>7170,>3c1e    ;
+pat911:
+       data >fefc,>b0c0,>e0fc,>3e0c    ;
+pat921:
+       data >0000,>0000,>0000,>0000            ; unused
+pat931:
+       data >0000,>0000,>0000,>0000            ; unused
+pat941:
+       data >0000,>0000,>0000,>0000            ; unused
+pat951:
+       data >0000,>0000,>0000,>0000            ; unused
+pat961:
+       data >071f,>3f77,>63c3,>f1fd    ;
+pat971:
+       data >e0f8,>dcce,>868f,>3fff    ;
+pat981:
+       data >fffc,>f141,>4333,>0f00    ;
+pat991:
+       data >bf8f,>c3c2,>e2ec,>f000    ;
+pat1001:
+       data >60b6,>fb6f,>3658,>7830    ;
+pat1011:
+       data >0000,>0000,>0000,>0000            ; unused
+pat1021:
+       data >0000,>0000,>0000,>0000            ; unused
+pat1031:
+       data >0000,>0000,>0000,>0000            ; unused
+pat1041:
+       data >070c,>0b1f,>1c18,>1f0a    ;
+pat1051:
+       data >fcfe,>feff,>0703,>ffaa    ;
+pat1061:
+       data >0d0a,>1d1f,>181f,>0f03    ;
+pat1071:
+       data >56aa,>57ff,>03ff,>fef8    ;
+pat1081:
+       data >0000,>0000,>0000,>0000            ; unused
+pat1091:
+       data >0000,>0000,>0000,>0000            ; unused
+pat1101:
+       data >0000,>0000,>0000,>0000            ; unused
+pat1111:
+       data >0000,>0000,>0000,>0000            ; unused
+pat1121:
+       data >6070,>70f0,>d0e8,>d878    ;
+pat1131:
+       data >7878,>f8f0,>f0f0,>6060    ;
+pat1141:
+       data >3078,>fc30,>3030,>3030    ;
+pat1151:
+       data >3030,>3030,>30fc,>7830    ;
+pat1161:
+       data >0000,>0000,>0000,>0000            ; unused
+pat1171:
+       data >0000,>0000,>0000,>0000            ; unused
+pat1181:
+       data >0000,>0000,>0000,>0000            ; unused
+pat1191:
+       data >0000,>0000,>0000,>0000            ; unused
+pat1201:
+       data >ffff,>ffff,>ffff,>ffff    ;
+pat1211:
+       data >0000,>0080,>86ce,>ffff    ;
+pat1221:
+       data >00c0,>e0f8,>e0c0,>80e0    ;
+pat1231:
+       data >fb71,>0120,>0004,>0000    ;
 
 ****************************************
-* Transition Character Pairs (from, to) 
+* Transition Character Pairs (from, to)
 ****************************************
-TCHARS2 BYTE >54,>30                    ; #00 color 1/F
-       BYTE >5D,>30                    ; #01 color 1/F
-       BYTE >55,>30                    ; #02 color 1/F
-       BYTE >58,>30                    ; #03 color 1/F
-       BYTE >5A,>54                    ; #04 color 1/F
-       BYTE >5F,>5D                    ; #05 color 1/F
-       BYTE >5E,>55                    ; #06 color 1/F
-       BYTE >5B,>58                    ; #07 color 1/F
-       BYTE >5A,>5A                    ; #08 color 1/F
-       BYTE >5F,>5F                    ; #09 color 1/F
-       BYTE >5E,>5E                    ; #0A color 1/F
-       BYTE >5B,>5B                    ; #0B color 1/F
-       BYTE >56,>5A                    ; #0C color 1/F
-       BYTE >59,>5F                    ; #0D color 1/F
-       BYTE >57,>5E                    ; #0E color 1/F
-       BYTE >5C,>5B                    ; #0F color 1/F
-       BYTE >30,>56                    ; #10 color 1/F
-       BYTE >30,>59                    ; #11 color 1/F
-       BYTE >30,>57                    ; #12 color 1/F
-       BYTE >30,>5C                    ; #13 color 1/F
-       BYTE >52,>56                    ; #14 color 1/F
-       BYTE >53,>5C                    ; #15 color 1/F
-       BYTE >52,>52                    ; #16 color 1/F
-       BYTE >53,>53                    ; #17 color 1/F
-       BYTE >50,>52                    ; #18 color 1/F
-       BYTE >51,>53                    ; #19 color 1/F
-       BYTE >52,>50                    ; #1A color 1/F
-       BYTE >53,>51                    ; #1B color 1/F
-       BYTE >55,>52                    ; #1C color 1/F
-       BYTE >58,>53                    ; #1D color 1/F
-       BYTE >52,>57                    ; #1E color 1/F
-       BYTE >FF,>FF                    ; #1F unused
-       BYTE >01,>01                    ; #20 color 5/E
-       BYTE >00,>00                    ; #21 color 5/E
-       BYTE >0F,>01                    ; #22 color 5/E
-       BYTE >08,>00                    ; #23 color 5/E
-       BYTE >0E,>0F                    ; #24 color 5/E
-       BYTE >07,>08                    ; #25 color 5/E
-       BYTE >0D,>0E                    ; #26 color 5/E
-       BYTE >06,>07                    ; #27 color 5/E
-       BYTE >0C,>0D                    ; #28 color 5/E
-       BYTE >05,>06                    ; #29 color 5/E
-       BYTE >0B,>0C                    ; #2A color 5/E
-       BYTE >04,>05                    ; #2B color 5/E
-       BYTE >0A,>0B                    ; #2C color 5/E
-       BYTE >03,>04                    ; #2D color 5/E
-       BYTE >09,>0A                    ; #2E color 5/E
-       BYTE >02,>03                    ; #2F color 5/E
-       BYTE >00,>09                    ; #30 color 5/E
-       BYTE >01,>02                    ; #31 color 5/E
-       BYTE >09,>00                    ; #32 color 5/E
-       BYTE >02,>01                    ; #33 color 5/E
-       BYTE >0A,>09                    ; #34 color 5/E
-       BYTE >03,>02                    ; #35 color 5/E
-       BYTE >0B,>0A                    ; #36 color 5/E
-       BYTE >04,>03                    ; #37 color 5/E
-       BYTE >0C,>0B                    ; #38 color 5/E
-       BYTE >05,>04                    ; #39 color 5/E
-       BYTE >0D,>0C                    ; #3A color 5/E
-       BYTE >06,>05                    ; #3B color 5/E
-       BYTE >0E,>0D                    ; #3C color 5/E
-       BYTE >07,>06                    ; #3D color 5/E
-       BYTE >0F,>0E                    ; #3E color 5/E
-       BYTE >08,>07                    ; #3F color 5/E
-       BYTE >01,>0F                    ; #40 color 5/E
-       BYTE >00,>08                    ; #41 color 5/E
-       BYTE >FF,>FF                    ; #42 unused
-       BYTE >FF,>FF                    ; #43 unused
-       BYTE >FF,>FF                    ; #44 unused
-       BYTE >FF,>FF                    ; #45 unused
-       BYTE >FF,>FF                    ; #46 unused
-       BYTE >FF,>FF                    ; #47 unused
-       BYTE >10,>01                    ; #48 color 5/F
-       BYTE >01,>10                    ; #49 color 5/F
-       BYTE >2E,>30                    ; #4A color 5/F
-       BYTE >27,>01                    ; #4B color 5/F
-       BYTE >2D,>2E                    ; #4C color 5/F
-       BYTE >26,>27                    ; #4D color 5/F
-       BYTE >2C,>2D                    ; #4E color 5/F
-       BYTE >25,>26                    ; #4F color 5/F
-       BYTE >2B,>2C                    ; #50 color 5/F
-       BYTE >24,>25                    ; #51 color 5/F
-       BYTE >2A,>2B                    ; #52 color 5/F
-       BYTE >23,>24                    ; #53 color 5/F
-       BYTE >29,>2A                    ; #54 color 5/F
-       BYTE >22,>23                    ; #55 color 5/F
-       BYTE >28,>29                    ; #56 color 5/F
-       BYTE >21,>22                    ; #57 color 5/F
-       BYTE >01,>28                    ; #58 color 5/F
-       BYTE >30,>21                    ; #59 color 5/F
-       BYTE >28,>01                    ; #5A color 5/F
-       BYTE >21,>30                    ; #5B color 5/F
-       BYTE >29,>28                    ; #5C color 5/F
-       BYTE >22,>21                    ; #5D color 5/F
-       BYTE >2A,>29                    ; #5E color 5/F
-       BYTE >23,>22                    ; #5F color 5/F
-       BYTE >2B,>2A                    ; #60 color 5/F
-       BYTE >24,>23                    ; #61 color 5/F
-       BYTE >2C,>2B                    ; #62 color 5/F
-       BYTE >25,>24                    ; #63 color 5/F
-       BYTE >2D,>2C                    ; #64 color 5/F
-       BYTE >26,>25                    ; #65 color 5/F
-       BYTE >2E,>2D                    ; #66 color 5/F
-       BYTE >27,>26                    ; #67 color 5/F
-       BYTE >30,>2E                    ; #68 color 5/F
-       BYTE >01,>27                    ; #69 color 5/F
-       BYTE >FF,>FF                    ; #6A unused
-       BYTE >FF,>FF                    ; #6B unused
-       BYTE >FF,>FF                    ; #6C unused
-       BYTE >FF,>FF                    ; #6D unused
-       BYTE >FF,>FF                    ; #6E unused
-       BYTE >FF,>FF                    ; #6F unused
-       BYTE >60,>30                    ; #70 color 6/F
-       BYTE >61,>30                    ; #71 color 6/F
-       BYTE >62,>60                    ; #72 color 6/F
-       BYTE >63,>61                    ; #73 color 6/F
-       BYTE >64,>62                    ; #74 color 6/F
-       BYTE >65,>63                    ; #75 color 6/F
-       BYTE >30,>64                    ; #76 color 6/F
-       BYTE >30,>65                    ; #77 color 6/F
-       BYTE >30,>30                    ; #78 color 7/F
-       BYTE >31,>30                    ; #79 color 7/F
-       BYTE >32,>30                    ; #7A color 7/F
-       BYTE >33,>30                    ; #7B color 7/F
-       BYTE >30,>31                    ; #7C color 7/F
-       BYTE >30,>32                    ; #7D color 7/F
-       BYTE >30,>33                    ; #7E color 7/F
-       BYTE >34,>30                    ; #7F color 7/F
-       BYTE >36,>30                    ; #80 color 7/F
-       BYTE >38,>34                    ; #81 color 7/F
-       BYTE >38,>36                    ; #82 color 7/F
-       BYTE >38,>38                    ; #83 color 7/F
-       BYTE >39,>36                    ; #84 color 7/F
-       BYTE >37,>34                    ; #85 color 7/F
-       BYTE >3C,>39                    ; #86 color 7/F
-       BYTE >3A,>37                    ; #87 color 7/F
-       BYTE >39,>38                    ; #88 color 7/F
-       BYTE >30,>3C                    ; #89 color 7/F
-       BYTE >30,>3A                    ; #8A color 7/F
-       BYTE >3A,>38                    ; #8B color 7/F
-       BYTE >3B,>38                    ; #8C color 7/F
-       BYTE >30,>3B                    ; #8D color 7/F
-       BYTE >35,>30                    ; #8E color 7/F
-       BYTE >38,>35                    ; #8F color 7/F
-       BYTE >37,>37                    ; #90 color 7/F
-       BYTE >39,>39                    ; #91 color 7/F
-       BYTE >3D,>38                    ; #92 color 7/F
-       BYTE >38,>37                    ; #93 color 7/F
-       BYTE >38,>3D                    ; #94 color 7/F
-       BYTE >38,>39                    ; #95 color 7/F
-       BYTE >37,>38                    ; #96 color 7/F
-       BYTE >3C,>38                    ; #97 color 7/F
-       BYTE >40,>30                    ; #98 color C/F
-       BYTE >41,>30                    ; #99 color C/F
-       BYTE >42,>40                    ; #9A color C/F
-       BYTE >43,>41                    ; #9B color C/F
-       BYTE >30,>42                    ; #9C color C/F
-       BYTE >30,>43                    ; #9D color C/F
-       BYTE >44,>30                    ; #9E color C/F
-       BYTE >30,>44                    ; #9F color C/F
-       BYTE >4D,>30                    ; #A0 color E/F
-       BYTE >4D,>4D                    ; #A1 color E/F
-       BYTE >48,>30                    ; #A2 color E/F
-       BYTE >49,>30                    ; #A3 color E/F
-       BYTE >4A,>48                    ; #A4 color E/F
-       BYTE >4B,>49                    ; #A5 color E/F
-       BYTE >30,>4D                    ; #A6 color E/F
-       BYTE >30,>4A                    ; #A7 color E/F
-       BYTE >30,>4B                    ; #A8 color E/F
-       BYTE >4C,>30                    ; #A9 color E/F
-       BYTE >30,>4C                    ; #AA color E/F
-       BYTE >4E,>4D                    ; #AB color E/F
-       BYTE >4E,>4E                    ; #AC color E/F
-       BYTE >4F,>4E                    ; #AD color E/F
-       BYTE >4E,>4F                    ; #AE color E/F
-       BYTE >4D,>4E                    ; #AF color E/F
-       BYTE >1B,>00                    ; #B0 color F/E
-       BYTE >1B,>1B                    ; #B1 color F/E
-       BYTE >00,>1B                    ; #B2 color F/E
-       BYTE >1A,>1B                    ; #B3 color F/E
-       BYTE >00,>1A                    ; #B4 color F/E
-       BYTE >1E,>00                    ; #B5 color F/E
-       BYTE >1D,>1E                    ; #B6 color F/E
-       BYTE >00,>1D                    ; #B7 color F/E
-       BYTE >1C,>1B                    ; #B8 color F/E
-       BYTE >00,>1C                    ; #B9 color F/E
-       BYTE >18,>00                    ; #BA color F/E
-       BYTE >19,>18                    ; #BB color F/E
-       BYTE >00,>19                    ; #BC color F/E
-       BYTE >1F,>00                    ; #BD color F/E
-       BYTE >1F,>1F                    ; #BE color F/E
-       BYTE >00,>1F                    ; #BF color F/E
-	   
-MAP_A  EQU	>2000
-MAP_B  EQU	>E980
+tchars1:
+       byte >70,>00                            ; #00 color 1/E
+       byte >71,>70                            ; #01 color 1/E
+       byte >00,>71                            ; #02 color 1/E
+       byte >72,>00                            ; #03 color 1/E
+       byte >00,>72                            ; #04 color 1/E
+       byte >73,>00                            ; #05 color 1/E
+       byte >00,>73                            ; #06 color 1/E
+       byte >ff,>ff                            ; #07 unused
+       byte >60,>2f                            ; #08 color 6/B
+       byte >61,>2f                            ; #09 color 6/B
+       byte >62,>60                            ; #0A color 6/B
+       byte >63,>61                            ; #0B color 6/B
+       byte >2f,>62                            ; #0C color 6/B
+       byte >2f,>63                            ; #0D color 6/B
+       byte >64,>2f                            ; #0E color 6/B
+       byte >2f,>64                            ; #0F color 6/B
+       byte >68,>00                            ; #10 color 6/E
+       byte >69,>00                            ; #11 color 6/E
+       byte >6a,>68                            ; #12 color 6/E
+       byte >6b,>69                            ; #13 color 6/E
+       byte >00,>6a                            ; #14 color 6/E
+       byte >00,>6b                            ; #15 color 6/E
+       byte >ff,>ff                            ; #16 unused
+       byte >ff,>ff                            ; #17 unused
+       byte >4c,>2f                            ; #18 color A/B
+       byte >4d,>2f                            ; #19 color A/B
+       byte >4e,>4c                            ; #1A color A/B
+       byte >4f,>4d                            ; #1B color A/B
+       byte >2f,>4e                            ; #1C color A/B
+       byte >2f,>4f                            ; #1D color A/B
+       byte >48,>2f                            ; #1E color A/B
+       byte >49,>2f                            ; #1F color A/B
+       byte >4a,>48                            ; #20 color A/B
+       byte >4b,>49                            ; #21 color A/B
+       byte >2f,>4a                            ; #22 color A/B
+       byte >2f,>4b                            ; #23 color A/B
+       byte >51,>2f                            ; #24 color A/B
+       byte >2f,>51                            ; #25 color A/B
+       byte >50,>2f                            ; #26 color A/B
+       byte >2f,>50                            ; #27 color A/B
+       byte >58,>2f                            ; #28 color C/B
+       byte >59,>2f                            ; #29 color C/B
+       byte >5a,>58                            ; #2A color C/B
+       byte >5b,>59                            ; #2B color C/B
+       byte >2f,>5a                            ; #2C color C/B
+       byte >2f,>5b                            ; #2D color C/B
+       byte >ff,>ff                            ; #2E unused
+       byte >ff,>ff                            ; #2F unused
+       byte >31,>30                            ; #30 color F/4
+       byte >30,>31                            ; #31 color F/4
+       byte >30,>30                            ; #32 color F/4
+       byte >36,>31                            ; #33 color F/4
+       byte >31,>31                            ; #34 color F/4
+       byte >31,>36                            ; #35 color F/4
+       byte >32,>30                            ; #36 color F/4
+       byte >78,>32                            ; #37 color F/4
+       byte >36,>30                            ; #38 color F/4
+       byte >30,>36                            ; #39 color F/4
+       byte >37,>78                            ; #3A color F/4
+       byte >30,>37                            ; #3B color F/4
+       byte >33,>30                            ; #3C color F/4
+       byte >78,>33                            ; #3D color F/4
+       byte >33,>33                            ; #3E color F/4
+       byte >35,>30                            ; #3F color F/4
+       byte >78,>35                            ; #40 color F/4
+       byte >30,>33                            ; #41 color F/4
+       byte >34,>78                            ; #42 color F/4
+       byte >35,>34                            ; #43 color F/4
+       byte >33,>78                            ; #44 color F/4
+       byte >30,>34                            ; #45 color F/4
+       byte >38,>31                            ; #46 color F/4
+       byte >3c,>31                            ; #47 color F/4
+       byte >40,>31                            ; #48 color F/4
+       byte >3b,>38                            ; #49 color F/4
+       byte >3a,>3c                            ; #4A color F/4
+       byte >3e,>40                            ; #4B color F/4
+       byte >3b,>3b                            ; #4C color F/4
+       byte >3a,>3a                            ; #4D color F/4
+       byte >3e,>3e                            ; #4E color F/4
+       byte >39,>3b                            ; #4F color F/4
+       byte >3d,>3a                            ; #50 color F/4
+       byte >41,>3e                            ; #51 color F/4
+       byte >31,>39                            ; #52 color F/4
+       byte >31,>3d                            ; #53 color F/4
+       byte >31,>41                            ; #54 color F/4
+       byte >3f,>3a                            ; #55 color F/4
+       byte >3f,>3f                            ; #56 color F/4
+       byte >3a,>3f                            ; #57 color F/4
+       byte >7b,>78                            ; #58 color F/B
+       byte >20,>7b                            ; #59 color F/B
+       byte >20,>20                            ; #5A color F/B
+       byte >78,>78                            ; #5B color F/B
+       byte >2f,>20                            ; #5C color F/B
+       byte >2f,>2f                            ; #5D color F/B
+       byte >20,>2f                            ; #5E color F/B
+       byte >2e,>20                            ; #5F color F/B
+       byte >27,>01                            ; #60 color F/B
+       byte >2d,>2e                            ; #61 color F/B
+       byte >26,>27                            ; #62 color F/B
+       byte >2c,>2d                            ; #63 color F/B
+       byte >25,>26                            ; #64 color F/B
+       byte >2b,>2c                            ; #65 color F/B
+       byte >24,>25                            ; #66 color F/B
+       byte >2a,>2b                            ; #67 color F/B
+       byte >23,>24                            ; #68 color F/B
+       byte >29,>2a                            ; #69 color F/B
+       byte >22,>23                            ; #6A color F/B
+       byte >28,>29                            ; #6B color F/B
+       byte >21,>22                            ; #6C color F/B
+       byte >01,>28                            ; #6D color F/B
+       byte >20,>21                            ; #6E color F/B
+       byte >01,>20                            ; #6F color F/B
+       byte >20,>01                            ; #70 color F/B
+       byte >28,>01                            ; #71 color F/B
+       byte >21,>20                            ; #72 color F/B
+       byte >29,>28                            ; #73 color F/B
+       byte >22,>21                            ; #74 color F/B
+       byte >2a,>29                            ; #75 color F/B
+       byte >23,>22                            ; #76 color F/B
+       byte >2b,>2a                            ; #77 color F/B
+       byte >24,>23                            ; #78 color F/B
+       byte >2c,>2b                            ; #79 color F/B
+       byte >25,>24                            ; #7A color F/B
+       byte >2d,>2c                            ; #7B color F/B
+       byte >26,>25                            ; #7C color F/B
+       byte >2e,>2d                            ; #7D color F/B
+       byte >27,>26                            ; #7E color F/B
+       byte >20,>2e                            ; #7F color F/B
+       byte >01,>27                            ; #80 color F/B
+       byte >79,>20                            ; #81 color F/B
+       byte >78,>79                            ; #82 color F/B
+       byte >7a,>78                            ; #83 color F/B
+       byte >7a,>7a                            ; #84 color F/B
+       byte >20,>7a                            ; #85 color F/B
+       byte >78,>7a                            ; #86 color F/B
+       byte >7a,>20                            ; #87 color F/B
+       byte >01,>01                            ; #88 color F/E
+       byte >00,>00                            ; #89 color F/E
+       byte >1b,>00                            ; #8A color F/E
+       byte >1b,>1b                            ; #8B color F/E
+       byte >10,>01                            ; #8C color F/E
+       byte >00,>1b                            ; #8D color F/E
+       byte >01,>10                            ; #8E color F/E
+       byte >0f,>01                            ; #8F color F/E
+       byte >1a,>1b                            ; #90 color F/E
+       byte >08,>00                            ; #91 color F/E
+       byte >0e,>0f                            ; #92 color F/E
+       byte >00,>1a                            ; #93 color F/E
+       byte >07,>08                            ; #94 color F/E
+       byte >0d,>0e                            ; #95 color F/E
+       byte >06,>07                            ; #96 color F/E
+       byte >0c,>0d                            ; #97 color F/E
+       byte >1e,>00                            ; #98 color F/E
+       byte >05,>06                            ; #99 color F/E
+       byte >0b,>0c                            ; #9A color F/E
+       byte >1d,>1e                            ; #9B color F/E
+       byte >04,>05                            ; #9C color F/E
+       byte >0a,>0b                            ; #9D color F/E
+       byte >00,>1d                            ; #9E color F/E
+       byte >03,>04                            ; #9F color F/E
+       byte >09,>0a                            ; #A0 color F/E
+       byte >02,>03                            ; #A1 color F/E
+       byte >00,>09                            ; #A2 color F/E
+       byte >01,>02                            ; #A3 color F/E
+       byte >00,>01                            ; #A4 color F/E
+       byte >01,>00                            ; #A5 color F/E
+       byte >09,>00                            ; #A6 color F/E
+       byte >1c,>1b                            ; #A7 color F/E
+       byte >02,>01                            ; #A8 color F/E
+       byte >0a,>09                            ; #A9 color F/E
+       byte >00,>1c                            ; #AA color F/E
+       byte >03,>02                            ; #AB color F/E
+       byte >0b,>0a                            ; #AC color F/E
+       byte >04,>03                            ; #AD color F/E
+       byte >0c,>0b                            ; #AE color F/E
+       byte >18,>00                            ; #AF color F/E
+       byte >05,>04                            ; #B0 color F/E
+       byte >0d,>0c                            ; #B1 color F/E
+       byte >19,>18                            ; #B2 color F/E
+       byte >06,>05                            ; #B3 color F/E
+       byte >0e,>0d                            ; #B4 color F/E
+       byte >00,>19                            ; #B5 color F/E
+       byte >07,>06                            ; #B6 color F/E
+       byte >0f,>0e                            ; #B7 color F/E
+       byte >08,>07                            ; #B8 color F/E
+       byte >01,>0f                            ; #B9 color F/E
+       byte >00,>08                            ; #BA color F/E
+       byte >1f,>00                            ; #BB color F/E
+       byte >1f,>1f                            ; #BC color F/E
+       byte >00,>1f                            ; #BD color F/E
 
-*	   Screen addresses
-SCR000 EQU	24*MAPW*09+MAP_B	
-SCR001 EQU	24*MAPW*08+MAP_B	
-SCR002 EQU	24*MAPW*07+MAP_B	
-SCR003 EQU	24*MAPW*06+MAP_B	
-SCR004 EQU	24*MAPW*05+MAP_B	
-SCR005 EQU	24*MAPW*04+MAP_B	
-SCR006 EQU	24*MAPW*03+MAP_B	
-SCR007 EQU	24*MAPW*02+MAP_B	
-SCR008 EQU	24*MAPW*01+MAP_B	
-SCR009 EQU	24*MAPW*00+MAP_B	
-SCR010 EQU	24*MAPW*13+MAP_A	
-SCR011 EQU	24*MAPW*12+MAP_A	
-SCR012 EQU	24*MAPW*11+MAP_A	
-SCR013 EQU	24*MAPW*10+MAP_A	
-SCR014 EQU	24*MAPW*09+MAP_A	
-SCR015 EQU	24*MAPW*08+MAP_A	
-SCR016 EQU	24*MAPW*07+MAP_A	
-SCR017 EQU	24*MAPW*06+MAP_A	
-SCR018 EQU	24*MAPW*05+MAP_A
-SCR019 EQU	24*MAPW*04+MAP_A
-SCR020 EQU	24*MAPW*03+MAP_A
-SCR021 EQU	24*MAPW*02+MAP_A
-SCR022 EQU	24*MAPW*01+MAP_A
-SCR023 EQU	24*MAPW*00+MAP_A
+****************************************
+* Level 2
+****************************************
+
+scrl2:
+       data scr000,scr001,scr001,scr001
+       data scr023,scr023,scr023,scr002
+       data scr003,scr004,scr005,scr006
+       data scr007,scr001,scr001,scr002
+       data scr003,scr004,scr005,scr006
+       data scr007,scr008,scr009,scr010
+       data scr011,scr012,scr013,scr001
+       data scr023,scr001,scr023,scr001
+       data scr023,scr014,scr015,scr016
+       data scr017,scr018,scr018,scr018
+       data scr018,scr019,scr020,scr021
+       data scr022,scr008,scr009,scr010
+       data scr011,scr012,scr013,scr002
+       data scr003,scr004,scr005,scr006
+       data scr007,scr001,scr023,scr001
+       data scr023,scr008,scr009,scr010
+       data scr011,scr012,scr013,scr008
+       data scr009,scr010,scr011,scr012
+       data scr013,scr014,scr015,scr016
+       data scr017,scr018,scr018,scr018
+       data scr018,scr018,scr019,scr020
+       data scr021,scr007,scr001,scr001
+       data scr001,scr001,scr023,scr023
+       data scr023,scr023,scr008,scr009
+       data scr010,scr011,scr012,scr013
+       data scr001,scr001,scr001,scr023
+       data scr000
+
+* Road direction list
+rddxl2:
+       data 00,00,00,00,00,00,00,00
+       data -1,-1,01,01,00,00,00,00
+       data -1,-1,01,01,00,00,01,01
+       data -1,-1,00,00,00,00,00,00
+       data 00,00,-1,-1,00,00,00,00
+       data 00,00,01,01,00,00,01,01
+       data -1,-1,00,00,-1,-1,01,01
+       data 00,00,00,00,00,00,01,01
+       data -1,-1,00,00,01,01,-1,-1
+       data 00,00,-1,-1,00,00,00,00
+       data 00,00,00,01,01,00,00,00
+       data 00,00,00,00,00,00,00,01
+       data 01,-1,-1,00,00,00,00,00
+       data 00
+
+****************************************
+* Colorset Definitions
+****************************************
+clrset2:
+       byte >1f,>1f,>1f,>1f            ;
+       byte >5e,>5e,>5e,>5e            ;
+       byte >5e,>5f,>5f,>5f            ;
+       byte >5f,>5f,>6f,>7f            ;
+       byte >7f,>7f,>7f,>cf            ;
+       byte >ef,>ef,>fe,>fe            ;
+
+****************************************
+* Original Character Patterns
+****************************************
+pat482:
+       data >0000,>0000,>0000,>0000    ;
+pat492:
+       data >0008,>0200,>1040,>0000    ;
+pat502:
+       data >0128,>e25d,>0700,>2000    ;
+pat512:
+       data >01d7,>3ab0,>4200,>0020    ;
+pat522:
+       data >0209,>364b,>6f17,>bf5b    ;
+pat532:
+       data >224d,>ba57,>eedb,>ffff    ;
+pat542:
+       data >40d8,>b46c,>fade,>b576    ;
+pat552:
+       data >7eef,>7b77,>bf37,>7f3f    ;
+pat562:
+       data >fefd,>fbff,>ffdf,>bfff    ;
+pat572:
+       data >fedd,>fef7,>eedc,>bee8    ;
+pat582:
+       data >fd7b,>cf7e,>2f35,>1f05    ;
+pat592:
+       data >ffff,>fffb,>df7a,>d74a    ;
+pat602:
+       data >fcf6,>fcb6,>ecf4,>d860    ;
+pat612:
+       data >c793,>89c1,>9009,>83c7    ;
+pat622:
+       data >0000,>0000,>0000,>0000            ; unused
+pat632:
+       data >0000,>0000,>0000,>0000            ; unused
+pat642:
+       data >011b,>1e73,>7ed4,>6f7a    ;
+pat652:
+       data >a0f8,>9cec,>b65e,>ebad    ;
+pat662:
+       data >d5ea,>2b7d,>6b35,>1f0b    ;
+pat672:
+       data >d7d6,>3bd6,>24de,>f820    ;
+pat682:
+       data >347e,>eb5f,>ea57,>7e24    ;
+pat692:
+       data >0000,>0000,>0000,>0000            ; unused
+pat702:
+       data >0000,>0000,>0000,>0000            ; unused
+pat712:
+       data >0000,>0000,>0000,>0000            ; unused
+pat722:
+       data >4068,>adb6,>5f7f,>3fef    ;
+pat732:
+       data >0000,>20a0,>d4f8,>eebf    ;
+pat742:
+       data >ff3d,>7f7d,>ab7a,>2040    ;
+pat752:
+       data >fffe,>ba60,>2000,>0000    ;
+pat762:
+       data >143e,>77dd,>d67f,>2a14    ;
+pat772:
+       data >ffff,>ffff,>ffff,>ffff    ;
+pat782:
+       data >1515,>1515,>1515,>1515    ;
+pat792:
+       data >1515,>17ff,>ffff,>1715    ;
+pat802:
+       data >2020,>2172,>7f73,>2120    ;
+pat812:
+       data >8282,>c2e7,>ffe7,>c282    ;
+pat822:
+       data >2020,>2020,>2020,>2020    ;
+pat832:
+       data >8282,>8282,>8282,>8282    ;
+pat842:
+       data >ff91,>91e6,>8091,>91e6    ;
+pat852:
+       data >ffbb,>55ee,>55bb,>55ee    ;
+pat862:
+       data >8091,>91e6,>8091,>91ff    ;
+pat872:
+       data >55bb,>55ee,>55bb,>55ff    ;
+pat882:
+       data >ffbb,>55ef,>55bb,>55ef    ;
+pat892:
+       data >0111,>1167,>0111,>11ff    ;
+pat902:
+       data >8091,>91e6,>8091,>91e6    ;
+pat912:
+       data >55bb,>55ef,>55bb,>55ef    ;
+pat922:
+       data >55bb,>55ef,>55bb,>55ff    ;
+pat932:
+       data >ff11,>1167,>0111,>1167    ;
+pat942:
+       data >55bb,>55ee,>55bb,>55ee    ;
+pat952:
+       data >0111,>1167,>0111,>1167    ;
+pat962:
+       data >7fc9,>a5a5,>c9a5,>a5c9    ;
+pat972:
+       data >feab,>5deb,>55ab,>5deb    ;
+pat982:
+       data >a5a5,>c9a5,>a5c9,>a5a5    ;
+pat992:
+       data >55ab,>5deb,>55ab,>5deb    ;
+pat1002:
+       data >c9a5,>a5c9,>a5a5,>c97f    ;
+pat1012:
+       data >55ab,>5deb,>55ab,>5dfe    ;
+
+****************************************
+* Transition Character Pairs (from, to)
+****************************************
+tchars2:
+       byte >54,>30                            ; #00 color 1/F
+       byte >5d,>30                            ; #01 color 1/F
+       byte >55,>30                            ; #02 color 1/F
+       byte >58,>30                            ; #03 color 1/F
+       byte >5a,>54                            ; #04 color 1/F
+       byte >5f,>5d                            ; #05 color 1/F
+       byte >5e,>55                            ; #06 color 1/F
+       byte >5b,>58                            ; #07 color 1/F
+       byte >5a,>5a                            ; #08 color 1/F
+       byte >5f,>5f                            ; #09 color 1/F
+       byte >5e,>5e                            ; #0A color 1/F
+       byte >5b,>5b                            ; #0B color 1/F
+       byte >56,>5a                            ; #0C color 1/F
+       byte >59,>5f                            ; #0D color 1/F
+       byte >57,>5e                            ; #0E color 1/F
+       byte >5c,>5b                            ; #0F color 1/F
+       byte >30,>56                            ; #10 color 1/F
+       byte >30,>59                            ; #11 color 1/F
+       byte >30,>57                            ; #12 color 1/F
+       byte >30,>5c                            ; #13 color 1/F
+       byte >52,>56                            ; #14 color 1/F
+       byte >53,>5c                            ; #15 color 1/F
+       byte >52,>52                            ; #16 color 1/F
+       byte >53,>53                            ; #17 color 1/F
+       byte >50,>52                            ; #18 color 1/F
+       byte >51,>53                            ; #19 color 1/F
+       byte >52,>50                            ; #1A color 1/F
+       byte >53,>51                            ; #1B color 1/F
+       byte >55,>52                            ; #1C color 1/F
+       byte >58,>53                            ; #1D color 1/F
+       byte >52,>57                            ; #1E color 1/F
+       byte >ff,>ff                            ; #1F unused
+       byte >01,>01                            ; #20 color 5/E
+       byte >00,>00                            ; #21 color 5/E
+       byte >0f,>01                            ; #22 color 5/E
+       byte >08,>00                            ; #23 color 5/E
+       byte >0e,>0f                            ; #24 color 5/E
+       byte >07,>08                            ; #25 color 5/E
+       byte >0d,>0e                            ; #26 color 5/E
+       byte >06,>07                            ; #27 color 5/E
+       byte >0c,>0d                            ; #28 color 5/E
+       byte >05,>06                            ; #29 color 5/E
+       byte >0b,>0c                            ; #2A color 5/E
+       byte >04,>05                            ; #2B color 5/E
+       byte >0a,>0b                            ; #2C color 5/E
+       byte >03,>04                            ; #2D color 5/E
+       byte >09,>0a                            ; #2E color 5/E
+       byte >02,>03                            ; #2F color 5/E
+       byte >00,>09                            ; #30 color 5/E
+       byte >01,>02                            ; #31 color 5/E
+       byte >09,>00                            ; #32 color 5/E
+       byte >02,>01                            ; #33 color 5/E
+       byte >0a,>09                            ; #34 color 5/E
+       byte >03,>02                            ; #35 color 5/E
+       byte >0b,>0a                            ; #36 color 5/E
+       byte >04,>03                            ; #37 color 5/E
+       byte >0c,>0b                            ; #38 color 5/E
+       byte >05,>04                            ; #39 color 5/E
+       byte >0d,>0c                            ; #3A color 5/E
+       byte >06,>05                            ; #3B color 5/E
+       byte >0e,>0d                            ; #3C color 5/E
+       byte >07,>06                            ; #3D color 5/E
+       byte >0f,>0e                            ; #3E color 5/E
+       byte >08,>07                            ; #3F color 5/E
+       byte >01,>0f                            ; #40 color 5/E
+       byte >00,>08                            ; #41 color 5/E
+       byte >ff,>ff                            ; #42 unused
+       byte >ff,>ff                            ; #43 unused
+       byte >ff,>ff                            ; #44 unused
+       byte >ff,>ff                            ; #45 unused
+       byte >ff,>ff                            ; #46 unused
+       byte >ff,>ff                            ; #47 unused
+       byte >10,>01                            ; #48 color 5/F
+       byte >01,>10                            ; #49 color 5/F
+       byte >2e,>30                            ; #4A color 5/F
+       byte >27,>01                            ; #4B color 5/F
+       byte >2d,>2e                            ; #4C color 5/F
+       byte >26,>27                            ; #4D color 5/F
+       byte >2c,>2d                            ; #4E color 5/F
+       byte >25,>26                            ; #4F color 5/F
+       byte >2b,>2c                            ; #50 color 5/F
+       byte >24,>25                            ; #51 color 5/F
+       byte >2a,>2b                            ; #52 color 5/F
+       byte >23,>24                            ; #53 color 5/F
+       byte >29,>2a                            ; #54 color 5/F
+       byte >22,>23                            ; #55 color 5/F
+       byte >28,>29                            ; #56 color 5/F
+       byte >21,>22                            ; #57 color 5/F
+       byte >01,>28                            ; #58 color 5/F
+       byte >30,>21                            ; #59 color 5/F
+       byte >28,>01                            ; #5A color 5/F
+       byte >21,>30                            ; #5B color 5/F
+       byte >29,>28                            ; #5C color 5/F
+       byte >22,>21                            ; #5D color 5/F
+       byte >2a,>29                            ; #5E color 5/F
+       byte >23,>22                            ; #5F color 5/F
+       byte >2b,>2a                            ; #60 color 5/F
+       byte >24,>23                            ; #61 color 5/F
+       byte >2c,>2b                            ; #62 color 5/F
+       byte >25,>24                            ; #63 color 5/F
+       byte >2d,>2c                            ; #64 color 5/F
+       byte >26,>25                            ; #65 color 5/F
+       byte >2e,>2d                            ; #66 color 5/F
+       byte >27,>26                            ; #67 color 5/F
+       byte >30,>2e                            ; #68 color 5/F
+       byte >01,>27                            ; #69 color 5/F
+       byte >ff,>ff                            ; #6A unused
+       byte >ff,>ff                            ; #6B unused
+       byte >ff,>ff                            ; #6C unused
+       byte >ff,>ff                            ; #6D unused
+       byte >ff,>ff                            ; #6E unused
+       byte >ff,>ff                            ; #6F unused
+       byte >60,>30                            ; #70 color 6/F
+       byte >61,>30                            ; #71 color 6/F
+       byte >62,>60                            ; #72 color 6/F
+       byte >63,>61                            ; #73 color 6/F
+       byte >64,>62                            ; #74 color 6/F
+       byte >65,>63                            ; #75 color 6/F
+       byte >30,>64                            ; #76 color 6/F
+       byte >30,>65                            ; #77 color 6/F
+       byte >30,>30                            ; #78 color 7/F
+       byte >31,>30                            ; #79 color 7/F
+       byte >32,>30                            ; #7A color 7/F
+       byte >33,>30                            ; #7B color 7/F
+       byte >30,>31                            ; #7C color 7/F
+       byte >30,>32                            ; #7D color 7/F
+       byte >30,>33                            ; #7E color 7/F
+       byte >34,>30                            ; #7F color 7/F
+       byte >36,>30                            ; #80 color 7/F
+       byte >38,>34                            ; #81 color 7/F
+       byte >38,>36                            ; #82 color 7/F
+       byte >38,>38                            ; #83 color 7/F
+       byte >39,>36                            ; #84 color 7/F
+       byte >37,>34                            ; #85 color 7/F
+       byte >3c,>39                            ; #86 color 7/F
+       byte >3a,>37                            ; #87 color 7/F
+       byte >39,>38                            ; #88 color 7/F
+       byte >30,>3c                            ; #89 color 7/F
+       byte >30,>3a                            ; #8A color 7/F
+       byte >3a,>38                            ; #8B color 7/F
+       byte >3b,>38                            ; #8C color 7/F
+       byte >30,>3b                            ; #8D color 7/F
+       byte >35,>30                            ; #8E color 7/F
+       byte >38,>35                            ; #8F color 7/F
+       byte >37,>37                            ; #90 color 7/F
+       byte >39,>39                            ; #91 color 7/F
+       byte >3d,>38                            ; #92 color 7/F
+       byte >38,>37                            ; #93 color 7/F
+       byte >38,>3d                            ; #94 color 7/F
+       byte >38,>39                            ; #95 color 7/F
+       byte >37,>38                            ; #96 color 7/F
+       byte >3c,>38                            ; #97 color 7/F
+       byte >40,>30                            ; #98 color C/F
+       byte >41,>30                            ; #99 color C/F
+       byte >42,>40                            ; #9A color C/F
+       byte >43,>41                            ; #9B color C/F
+       byte >30,>42                            ; #9C color C/F
+       byte >30,>43                            ; #9D color C/F
+       byte >44,>30                            ; #9E color C/F
+       byte >30,>44                            ; #9F color C/F
+       byte >4d,>30                            ; #A0 color E/F
+       byte >4d,>4d                            ; #A1 color E/F
+       byte >48,>30                            ; #A2 color E/F
+       byte >49,>30                            ; #A3 color E/F
+       byte >4a,>48                            ; #A4 color E/F
+       byte >4b,>49                            ; #A5 color E/F
+       byte >30,>4d                            ; #A6 color E/F
+       byte >30,>4a                            ; #A7 color E/F
+       byte >30,>4b                            ; #A8 color E/F
+       byte >4c,>30                            ; #A9 color E/F
+       byte >30,>4c                            ; #AA color E/F
+       byte >4e,>4d                            ; #AB color E/F
+       byte >4e,>4e                            ; #AC color E/F
+       byte >4f,>4e                            ; #AD color E/F
+       byte >4e,>4f                            ; #AE color E/F
+       byte >4d,>4e                            ; #AF color E/F
+       byte >1b,>00                            ; #B0 color F/E
+       byte >1b,>1b                            ; #B1 color F/E
+       byte >00,>1b                            ; #B2 color F/E
+       byte >1a,>1b                            ; #B3 color F/E
+       byte >00,>1a                            ; #B4 color F/E
+       byte >1e,>00                            ; #B5 color F/E
+       byte >1d,>1e                            ; #B6 color F/E
+       byte >00,>1d                            ; #B7 color F/E
+       byte >1c,>1b                            ; #B8 color F/E
+       byte >00,>1c                            ; #B9 color F/E
+       byte >18,>00                            ; #BA color F/E
+       byte >19,>18                            ; #BB color F/E
+       byte >00,>19                            ; #BC color F/E
+       byte >1f,>00                            ; #BD color F/E
+       byte >1f,>1f                            ; #BE color F/E
+       byte >00,>1f                            ; #BF color F/E
+
+map_a:
+       equ  >2000
+map_b:
+       equ  >e980
+
+* Screen addresses
+scr000:
+       equ  24*mapw*09+map_b
+scr001:
+       equ  24*mapw*08+map_b
+scr002:
+       equ  24*mapw*07+map_b
+scr003:
+       equ  24*mapw*06+map_b
+scr004:
+       equ  24*mapw*05+map_b
+scr005:
+       equ  24*mapw*04+map_b
+scr006:
+       equ  24*mapw*03+map_b
+scr007:
+       equ  24*mapw*02+map_b
+scr008:
+       equ  24*mapw*01+map_b
+scr009:
+       equ  24*mapw*00+map_b
+scr010:
+       equ  24*mapw*13+map_a
+scr011:
+       equ  24*mapw*12+map_a
+scr012:
+       equ  24*mapw*11+map_a
+scr013:
+       equ  24*mapw*10+map_a
+scr014:
+       equ  24*mapw*09+map_a
+scr015:
+       equ  24*mapw*08+map_a
+scr016:
+       equ  24*mapw*07+map_a
+scr017:
+       equ  24*mapw*06+map_a
+scr018:
+       equ  24*mapw*05+map_a
+scr019:
+       equ  24*mapw*04+map_a
+scr020:
+       equ  24*mapw*03+map_a
+scr021:
+       equ  24*mapw*02+map_a
+scr022:
+       equ  24*mapw*01+map_a
+scr023:
+       equ  24*mapw*00+map_a

@@ -1,128 +1,197 @@
 ****************************************
-* Colorset Definitions                  
+* Colorset Definitions
 ****************************************
-CLRST1 BYTE >E1,>E1,>F1,>F1            ;
-       BYTE >F1,>F1,>C1,>41            ;
+clrst1:
+       byte >e1,>e1,>f1,>f1            ;
+       byte >f1,>f1,>c1,>41            ;
 ****************************************
-* Character Patterns                    
+* Character Patterns
 ****************************************
-PAT192 DATA >003C,>7E66,>CCCC,>FC78    ;
-PAT193 DATA >000C,>0C0C,>1818,>1818    ;
-PAT194 DATA >007C,>7E06,>78C0,>FCFC    ;
-PAT195 DATA >007C,>7E06,>380C,>FCF8    ;
-PAT196 DATA >001E,>3666,>FC0C,>0C0C    ;
-PAT197 DATA >007E,>7E60,>7C0C,>FCF8    ;
-PAT198 DATA >003C,>7E60,>F8CC,>FC78    ;
-PAT199 DATA >007E,>7E06,>1830,>6060    ;
-PAT200 DATA >003C,>7E42,>7C84,>FC78    ;
-PAT201 DATA >003C,>7E66,>7C0C,>FC78    ;
-PAT202 DATA >0000,>1818,>0030,>3000    ;
-PAT203 DATA >0000,>0101,>0101,>0100    ;
-PAT204 DATA >0000,>8080,>8080,>8000    ;
-PAT205 DATA >0000,>182C,>3C18,>0000    ;
-PAT206 DATA >003C,>4299,>A199,>423C    ;
-PAT207 DATA >0000,>0000,>0000,>0000    ;
-PAT208 DATA >7F78,>7878,>4747,>477F    ;
-PAT209 DATA >003C,>7E66,>FCFC,>CCCC    ;
-PAT210 DATA >007C,>7E66,>F8CC,>FCF8    ;
-PAT211 DATA >003C,>7E66,>C0CC,>FC78    ;
-PAT212 DATA >007C,>7E66,>CCCC,>FCF8    ;
-PAT213 DATA >007E,>7E60,>F8C0,>FCFC    ;
-PAT214 DATA >007C,>7C60,>F8F8,>C0C0    ;
-PAT215 DATA >003E,>7E60,>DCCC,>FC78    ;
-PAT216 DATA >0066,>6666,>FCFC,>CCCC    ;
-PAT217 DATA >003C,>3C18,>3030,>7878    ;
-PAT218 DATA >0006,>0606,>0CCC,>FC78    ;
-PAT219 DATA >0066,>666C,>F0D8,>CCCC    ;
-PAT220 DATA >0060,>6060,>C0C0,>FCFC    ;
-PAT221 DATA >0066,>7E7E,>CCCC,>CCCC    ;
-PAT222 DATA >0066,>6676,>FCDC,>CCCC    ;
-PAT223 DATA >003C,>7E66,>CCCC,>FC78    ;
-PAT224 DATA >007C,>7E66,>FCF8,>C0C0    ;
-PAT225 DATA >003C,>7E66,>CCDC,>EE7A    ;
-PAT226 DATA >007C,>7E66,>FCF8,>CCCC    ;
-PAT227 DATA >003E,>7E60,>380C,>FCF8    ;
-PAT228 DATA >007E,>7E18,>3030,>3030    ;
-PAT229 DATA >0066,>6666,>CCCC,>FC78    ;
-PAT230 DATA >00CC,>CCCC,>D8D8,>7070    ;
-PAT231 DATA >0066,>6666,>CCFC,>FCCC    ;
-PAT232 DATA >0066,>663C,>3878,>CCCC    ;
-PAT233 DATA >0066,>663C,>1830,>3030    ;
-PAT234 DATA >007E,>7E0C,>3860,>FCFC    ;
-PAT235 DATA >FEE2,>E2E2,>1E1E,>1EFE    ;
-PAT236 DATA >0000,>DD95,>DD51,>D100    ;
-PAT237 DATA >0000,>B625,>B525,>B600    ;
-PAT238 DATA >0000,>7545,>7545,>4700    ;
-PAT239 DATA >0000,>7444,>6444,>7700    ;
-PAT240 DATA >0000,>3F20,>2F28,>2828    ;
-PAT241 DATA >0000,>FF00,>FF00,>0000    ;
-PAT242 DATA >0000,>FC04,>F414,>1414    ;
-PAT243 DATA >2828,>2828,>2828,>2828    ;
-PAT244 DATA >1414,>1414,>1414,>1414    ;
-PAT245 DATA >2828,>282F,>203F,>0000    ;
-PAT246 DATA >0000,>00FF,>00FF,>0000    ;
-PAT247 DATA >1414,>14F4,>04FC,>0000    ;
-PAT248 DATA >0000,>0000,>0000,>0000    ;
-PAT249 DATA >0000,>0000,>0000,>FF00    ;
-PAT250 DATA >0000,>0000,>FF00,>FF00    ;
-PAT251 DATA >0000,>FF00,>FF00,>FF00    ;
-PAT252 DATA >FF00,>FF00,>FF00,>FF00    ;
-PAT253 DATA >070F,>0E05,>070C,>0F0C    ;
-PAT254 DATA >E0F0,>70A0,>E030,>F030    ;
-PAT255 DATA >7CFE,>EE54,>7CC6,>FEC6    ;
+pat192:
+       data >003c,>7e66,>cccc,>fc78    ;
+pat193:
+       data >000c,>0c0c,>1818,>1818    ;
+pat194:
+       data >007c,>7e06,>78c0,>fcfc    ;
+pat195:
+       data >007c,>7e06,>380c,>fcf8    ;
+pat196:
+       data >001e,>3666,>fc0c,>0c0c    ;
+pat197:
+       data >007e,>7e60,>7c0c,>fcf8    ;
+pat198:
+       data >003c,>7e60,>f8cc,>fc78    ;
+pat199:
+       data >007e,>7e06,>1830,>6060    ;
+pat200:
+       data >003c,>7e42,>7c84,>fc78    ;
+pat201:
+       data >003c,>7e66,>7c0c,>fc78    ;
+pat202:
+       data >0000,>1818,>0030,>3000    ;
+pat203:
+       data >0000,>0101,>0101,>0100    ;
+pat204:
+       data >0000,>8080,>8080,>8000    ;
+pat205:
+       data >0000,>182c,>3c18,>0000    ;
+pat206:
+       data >003c,>4299,>a199,>423c    ;
+pat207:
+       data >0000,>0000,>0000,>0000    ;
+pat208:
+       data >7f78,>7878,>4747,>477f    ;
+pat209:
+       data >003c,>7e66,>fcfc,>cccc    ;
+pat210:
+       data >007c,>7e66,>f8cc,>fcf8    ;
+pat211:
+       data >003c,>7e66,>c0cc,>fc78    ;
+pat212:
+       data >007c,>7e66,>cccc,>fcf8    ;
+pat213:
+       data >007e,>7e60,>f8c0,>fcfc    ;
+pat214:
+       data >007c,>7c60,>f8f8,>c0c0    ;
+pat215:
+       data >003e,>7e60,>dccc,>fc78    ;
+pat216:
+       data >0066,>6666,>fcfc,>cccc    ;
+pat217:
+       data >003c,>3c18,>3030,>7878    ;
+pat218:
+       data >0006,>0606,>0ccc,>fc78    ;
+pat219:
+       data >0066,>666c,>f0d8,>cccc    ;
+pat220:
+       data >0060,>6060,>c0c0,>fcfc    ;
+pat221:
+       data >0066,>7e7e,>cccc,>cccc    ;
+pat222:
+       data >0066,>6676,>fcdc,>cccc    ;
+pat223:
+       data >003c,>7e66,>cccc,>fc78    ;
+pat224:
+       data >007c,>7e66,>fcf8,>c0c0    ;
+pat225:
+       data >003c,>7e66,>ccdc,>ee7a    ;
+pat226:
+       data >007c,>7e66,>fcf8,>cccc    ;
+pat227:
+       data >003e,>7e60,>380c,>fcf8    ;
+pat228:
+       data >007e,>7e18,>3030,>3030    ;
+pat229:
+       data >0066,>6666,>cccc,>fc78    ;
+pat230:
+       data >00cc,>cccc,>d8d8,>7070    ;
+pat231:
+       data >0066,>6666,>ccfc,>fccc    ;
+pat232:
+       data >0066,>663c,>3878,>cccc    ;
+pat233:
+       data >0066,>663c,>1830,>3030    ;
+pat234:
+       data >007e,>7e0c,>3860,>fcfc    ;
+pat235:
+       data >fee2,>e2e2,>1e1e,>1efe    ;
+pat236:
+       data >0000,>dd95,>dd51,>d100    ;
+pat237:
+       data >0000,>b625,>b525,>b600    ;
+pat238:
+       data >0000,>7545,>7545,>4700    ;
+pat239:
+       data >0000,>7444,>6444,>7700    ;
+pat240:
+       data >0000,>3f20,>2f28,>2828    ;
+pat241:
+       data >0000,>ff00,>ff00,>0000    ;
+pat242:
+       data >0000,>fc04,>f414,>1414    ;
+pat243:
+       data >2828,>2828,>2828,>2828    ;
+pat244:
+       data >1414,>1414,>1414,>1414    ;
+pat245:
+       data >2828,>282f,>203f,>0000    ;
+pat246:
+       data >0000,>00ff,>00ff,>0000    ;
+pat247:
+       data >1414,>14f4,>04fc,>0000    ;
+pat248:
+       data >0000,>0000,>0000,>0000    ;
+pat249:
+       data >0000,>0000,>0000,>ff00    ;
+pat250:
+       data >0000,>0000,>ff00,>ff00    ;
+pat251:
+       data >0000,>ff00,>ff00,>ff00    ;
+pat252:
+       data >ff00,>ff00,>ff00,>ff00    ;
+pat253:
+       data >070f,>0e05,>070c,>0f0c    ;
+pat254:
+       data >e0f0,>70a0,>e030,>f030    ;
+pat255:
+       data >7cfe,>ee54,>7cc6,>fec6    ;
 
 ****************************************
-* Map Data                              
+* Map Data
 ****************************************
-MCOUNT DATA 1                          ;
-* == Map #0 ==                          
-MC1    DATA 0                          ;
-MS1    DATA >0008,>0018,>00C0          ; Width, Height, Size
-* -- Map Row 0 --                       
-MD1    DATA >F0F1,>F1F1,>F1F1,>F1F2    ;
-* -- Map Row 1 --                       
-       DATA >F3D8,>D9E3,>D3E2,>CAF4    ;
-* -- Map Row 2 --                       
-       DATA >F3C0,>C0C0,>C0C0,>C0F4    ;
-* -- Map Row 3 --                       
-       DATA >F3CF,>CFCF,>CFCF,>CFF4    ;
-* -- Map Row 4 --                       
-       DATA >F3E3,>D3DF,>E2D5,>CAF4    ;
-* -- Map Row 5 --                       
-       DATA >F3C0,>C0C0,>C0C0,>C0F4    ;
-* -- Map Row 6 --                       
-       DATA >F5F6,>F6F6,>F6F6,>F6F7    ;
-* -- Map Row 7 --                       
-       DATA >F0F1,>F1F1,>F1F1,>F1F2    ;
-* -- Map Row 8 --                       
-       DATA >F3CD,>E2DF,>D1D4,>CDF4    ;
-* -- Map Row 9 --                       
-       DATA >F3D8,>E5DE,>E4D5,>E2F4    ;
-* -- Map Row 10 --                      
-       DATA >F5F6,>F6F6,>F6F6,>F6F7    ;
-* -- Map Row 11 --                      
-       DATA >F0F1,>F1F1,>F1F1,>F1F2    ;
-* -- Map Row 12 --                      
-       DATA >F3CF,>FFFF,>FFFF,>CFF4    ;
-* -- Map Row 13 --                      
-       DATA >F3CF,>CFCF,>CFCF,>CFF4    ;
-* -- Map Row 14 --                      
-       DATA >F3CF,>CFD0,>EBFC,>FCF4    ;
-* -- Map Row 15 --                      
-       DATA >F3CF,>CFCB,>CCFC,>FCF4    ;
-* -- Map Row 16 --                      
-       DATA >F3CF,>CFCB,>CCFC,>FCF4    ;
-* -- Map Row 17 --                      
-       DATA >F3CF,>CFCB,>CCFC,>FCF4    ;
-* -- Map Row 18 --                      
-       DATA >F3CF,>CFCB,>CCFC,>FCF4    ;
-* -- Map Row 19 --                      
-       DATA >F3CF,>CFCB,>CCFC,>FCF4    ;
-* -- Map Row 20 --                      
-       DATA >F3CF,>CFCB,>CCFC,>FCF4    ;
-* -- Map Row 21 --                      
-       DATA >F3CF,>CFCB,>CCFC,>FCF4    ;
-* -- Map Row 22 --                      
-       DATA >F3EC,>EDFD,>FEEE,>EFF4    ;
-* -- Map Row 23 --                      
-       DATA >F5F6,>F6F6,>F6F6,>F6F7    ;
+mcount:
+       data 1                          ;
+* == Map #0 ==
+mc1:
+       data 0                          ;
+ms1:
+       data >0008,>0018,>00c0                  ; Width, Height, Size
+* -- Map Row 0 --
+md1:
+       data >f0f1,>f1f1,>f1f1,>f1f2    ;
+* -- Map Row 1 --
+       data >f3d8,>d9e3,>d3e2,>caf4    ;
+* -- Map Row 2 --
+       data >f3c0,>c0c0,>c0c0,>c0f4    ;
+* -- Map Row 3 --
+       data >f3cf,>cfcf,>cfcf,>cff4    ;
+* -- Map Row 4 --
+       data >f3e3,>d3df,>e2d5,>caf4    ;
+* -- Map Row 5 --
+       data >f3c0,>c0c0,>c0c0,>c0f4    ;
+* -- Map Row 6 --
+       data >f5f6,>f6f6,>f6f6,>f6f7    ;
+* -- Map Row 7 --
+       data >f0f1,>f1f1,>f1f1,>f1f2    ;
+* -- Map Row 8 --
+       data >f3cd,>e2df,>d1d4,>cdf4    ;
+* -- Map Row 9 --
+       data >f3d8,>e5de,>e4d5,>e2f4    ;
+* -- Map Row 10 --
+       data >f5f6,>f6f6,>f6f6,>f6f7    ;
+* -- Map Row 11 --
+       data >f0f1,>f1f1,>f1f1,>f1f2    ;
+* -- Map Row 12 --
+       data >f3cf,>ffff,>ffff,>cff4    ;
+* -- Map Row 13 --
+       data >f3cf,>cfcf,>cfcf,>cff4    ;
+* -- Map Row 14 --
+       data >f3cf,>cfd0,>ebfc,>fcf4    ;
+* -- Map Row 15 --
+       data >f3cf,>cfcb,>ccfc,>fcf4    ;
+* -- Map Row 16 --
+       data >f3cf,>cfcb,>ccfc,>fcf4    ;
+* -- Map Row 17 --
+       data >f3cf,>cfcb,>ccfc,>fcf4    ;
+* -- Map Row 18 --
+       data >f3cf,>cfcb,>ccfc,>fcf4    ;
+* -- Map Row 19 --
+       data >f3cf,>cfcb,>ccfc,>fcf4    ;
+* -- Map Row 20 --
+       data >f3cf,>cfcb,>ccfc,>fcf4    ;
+* -- Map Row 21 --
+       data >f3cf,>cfcb,>ccfc,>fcf4    ;
+* -- Map Row 22 --
+       data >f3ec,>edfd,>feee,>eff4    ;
+* -- Map Row 23 --
+       data >f5f6,>f6f6,>f6f6,>f6f7    ;

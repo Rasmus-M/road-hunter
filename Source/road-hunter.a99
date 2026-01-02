@@ -1,0 +1,4763 @@
+*********************************************************************
+* 
+* Road Hunter
+* 
+* For the TI-99/4A home computer.
+* 
+* (c) Rasmus Moustgaard 2014 <rasmus.moustgaard@gmail.com>
+* 
+*********************************************************************
+
+**
+* Configuration
+* 
+finlvs:
+       equ  1                                  ; Finite lives (0 for infinite)
+finful:
+       equ  1                                  ; Finite fuel (0 for infinite)
+finfir:
+       equ  1                                  ; Finite fire  0 for infinite)
+ccrash:
+       equ  1                                  ; Car can crash (0 for invincibility)
+chits:
+       equ  1                                  ; Car can hit other cars (0 to turn off)
+nlives:
+       equ  5                                  ; Number of lives
+xlfsco:
+       equ  3                                  ; Thousands of points between extra lives
+slevel:
+       equ  0                                  ; Starting level
+flickr:
+       equ  1                                  ; Use sprite flicker routine
+; cart:
+;      equ  1                                  ; Assemble cartridge version
+
+**
+* Constants
+* 
+mapw:
+       equ  24                                 ; Map width in characters
+maph:
+       equ  24*104                             ; Map height in characters
+startx:
+       equ  72                                 ; Start x position of car
+starty:
+       equ  128                                ; Start y position of car
+maxspd:
+       equ  64                                 ; Maximum car speed
+chzero:
+       equ  192                                ; Index of 0 character
+sprofs:
+       equ  32                                 ; Offset between sprite color layers
+nsprts:
+       equ  20                                 ; Number of sprites
+nsprps:
+       equ  35                                 ; Number of sprite patterns
+ncars:
+       equ  7                                  ; Number of other cars
+nmaps:
+       equ  3                                  ; Number of maps
+
+**
+* Misc memory addresses
+vdprd:
+       equ  >8800                              ; VDP read data
+vdpsta:
+       equ  >8802                              ; VDP status
+vdpwd:
+       equ  >8c00                              ; VDP write data
+vdpwa:
+       equ  >8c02                              ; VDP set read/write address
+rndsd:
+       equ  >83c0                              ; Random number seed
+sound:
+       equ  >8400                              ; Sound
+
+* VDP Memory Map
+ptrnt0:
+       equ  >0000                              ; Pattern generator table base 0
+ptrnt1:
+       equ  >0800                              ; Pattern generator table base 1
+ptrnt2:
+       equ  >1000                              ; Pattern generator table base 2
+ptrnt3:
+       equ  >1800                              ; Pattern generator table base 3
+namet0:
+       equ  >2000                              ; Name table base 0
+colrtb:
+       equ  >2300                              ; Color table base
+namet1:
+       equ  >2400                              ; Name table base 1
+sprat0:
+       equ  >2700                              ; Sprite attribute table 0
+sprat1:
+       equ  >2780                              ; Sprite attribute table 1
+sprptb:
+       equ  >2800                              ; Sprite pattern table
+                                               ; >3000 - >3600 available
+pab:
+       equ  >3600                              ; Location of PAB
+pabbuf:
+       equ  >3680                              ; Buffer for file reads
+filbuf:
+       equ  >37d8                              ; DSR file buffers (don't erase!)
+
+**
+* Workspace
+wrksp:
+       equ  >8300                              ; Workspace
+r0lb:
+       equ  wrksp+1                            ; R0 low byte reqd for VDP routines
+r1lb:
+       equ  wrksp+3
+r2lb:
+       equ  wrksp+5
+r3lb:
+       equ  wrksp+7
+
+**
+* General Workspace Use:
+* 
+* r10 Stack pointer
+* r11 Return address
+
+**
+* Scratch pad RAM use - Variables
+* 
+pad:
+       equ  >8300                              ; Workspace
+* >831F                                        ; Bottom of workspace
+stack:
+       equ  pad+32                             ; Subroutine stack, grows down (8 words)
+vm8bw:
+       equ  stack+16                           ; Copy routine (22 bytes)
+one:
+       equ  vm8bw+22                           ; Constant 1
+sproff:
+       equ  one+2                              ; Constant >C000
+coinc:
+       equ  sproff+2                           ; Coincidence flag
+tick:
+       equ  coinc+2                            ; Vsync counter
+randno:
+       equ  tick+2                             ; Random number
+scrly:
+       equ  randno+2                           ; Scroll offset (pixels)
+scrlsp:
+       equ  scrly+2                            ; Scroll speed (pixels)
+delay:
+       equ  scrlsp+2                           ; Number of vsyncs to wait
+delayt:
+       equ  delay+2                            ; Temporary delay
+scrptr:
+       equ  delayt+2                           ; Screen list pointer
+rowpos:
+       equ  scrptr+2                           ; Screen row position
+rdxptr:
+       equ  rowpos+2                           ; Road direction list pointer
+roadx:
+       equ  rdxptr+2                           ; Road x position in pixels
+roadw:
+       equ  roadx+2                            ; Road width in pixels - 16
+pgicnt:
+       equ  roadw+2                            ; Progress indicator update count down
+speed:
+       equ  pgicnt+2                           ; Car speed (0 - 63)
+dx:
+       equ  speed+2                            ; Car movement direction (-1, 0, 1)
+fuel:
+       equ  dx+2                               ; Fuel (0 - 63)
+status:
+       equ  fuel+2                             ; Player/car status (see below)
+lives:
+       equ  status+2                           ; Lives left
+xlfcnt:
+       equ  lives+2                            ; Extra life counter
+level:
+       equ  xlfcnt+2                           ; Current level number (zero based)
+lvldat:
+       equ  level+2                            ; Current level data address
+carpth:
+       equ  lvldat+2                           ; Car path pointer
+car1y:
+       equ  carpth+2                           ; Car 1 y position (map coordinates)
+car2y:
+       equ  car1y+2                            ; Car 2 y position (map coordinates)
+car3y:
+       equ  car2y+2                            ; Car 3 y position (map coordinates)
+car4y:
+       equ  car3y+2                            ; Car 4 y position (map coordinates)
+car5y:
+       equ  car4y+2                            ; Car 5 y position (map coordinates)
+car6y:
+       equ  car5y+2                            ; Car 6 y position (map coordinates)
+car7y:
+       equ  car6y+2                            ; Car 7 y position (map coordinates)
+car1dy:
+       equ  car7y+2                            ; Car 1 y speed (-1 = exploded)
+car2dy:
+       equ  car1dy+2                           ; Car 2 y speed (-1 = exploded)
+car3dy:
+       equ  car2dy+2                           ; Car 3 y speed (-1 = exploded)
+car4dy:
+       equ  car3dy+2                           ; Car 4 y speed (-1 = exploded)
+car5dy:
+       equ  car4dy+2                           ; Car 5 y speed (-1 = exploded)
+car6dy:
+       equ  car5dy+2                           ; Car 6 y speed (-1 = exploded)
+car7dy:
+       equ  car6dy+2                           ; Car 7 y speed (-1 = exploded)
+car1pt:
+       equ  car7dy+2                           ; Car 1 path pointer
+car2pt:
+       equ  car1pt+2                           ; Car 2 path pointer
+car3pt:
+       equ  car2pt+2                           ; Car 3 path pointer
+car4pt:
+       equ  car3pt+2                           ; Car 4 path pointer
+car5pt:
+       equ  car4pt+2                           ; Car 5 path pointer
+car6pt:
+       equ  car5pt+2                           ; Car 6 path pointer
+car7pt:
+       equ  car6pt+2                           ; Car 7 path pointer
+carcol:
+       equ  car7pt+2                           ; Color of generated car
+nshots:
+       equ  carcol+2                           ; Number of shots left
+sndad0:
+       equ  nshots+2                           ; Sound player data address channel 0
+sndad1:
+       equ  sndad0+2                           ; Sound player data address channel 1
+sndad2:
+       equ  sndad1+2                           ; Sound player data address channel 2
+sndad3:
+       equ  sndad2+2                           ; Sound player data address channel 3
+sndad4:
+       equ  sndad3+2                           ; Sound player data address channel 4
+sprtbl:
+       equ  sndad4+2                           ; Current sprite attribute table toggle (0, -1)
+spratt:
+       equ  sprtbl+2                           ; Sprite attributes
+padmax:
+       equ  nsprts*4+spratt
+
+* Status
+ok:
+       equ  0
+complt:
+       equ  1                                  ; Level completed
+nofuel:
+       equ  2                                  ; Out of fuel
+nocars:
+       equ  3                                  ; Out of cars
+dmoend:
+       equ  4                                  ; Demo ended
+explod:
+       equ  -1
+
+**
+* Sprite attribute offsets
+* 
+sacar:
+       equ  0
+sacar1:
+       equ  4
+sacar2:
+       equ  8
+sacar3:
+       equ  12
+sacar4:
+       equ  16
+sacar5:
+       equ  20
+sacar6:
+       equ  24
+sacar7:
+       equ  28
+sacas:
+       equ  32
+sacas1:
+       equ  36
+sacas2:
+       equ  40
+sacas3:
+       equ  44
+sacas4:
+       equ  48
+sacas5:
+       equ  52
+sacas6:
+       equ  56
+sacas7:
+       equ  60
+sashot:
+       equ  64
+
+**
+* Sprite pattern offsets
+* 
+spcr00:
+       equ  0                                  ; Car 0 color 0
+spcr01:
+       equ  4                                  ; Car 0 color 1 (shadow)
+spcr10:
+       equ  8                                  ; Car 1 color 0
+spcr11:
+       equ  12                                 ; Car 1 color 1 (shadow)
+spcr20:
+       equ  16                                 ; Car 2 color 0
+spcr21:
+       equ  20                                 ; Car 2 color 1 (shadow)
+spcr30:
+       equ  24                                 ; Car 3 color 0
+spcr31:
+       equ  28                                 ; Car 3 color 1 (shadow)
+spcr40:
+       equ  32                                 ; Car 4 color 0
+spcr41:
+       equ  36                                 ; Car 4 color 1 (shadow)
+spcr50:
+       equ  40                                 ; Car 5 color 0
+spcr51:
+       equ  44                                 ; Car 5 color 1 (shadow)
+spcr60:
+       equ  48                                 ; Car 6 color 0
+spcr61:
+       equ  52                                 ; Car 6 color 1 (shadow)
+spcr70:
+       equ  56                                 ; Car 7 color 0
+spcr71:
+       equ  60                                 ; Car 7 color 1 (shadow)
+spcrg0:
+       equ  64                                 ; Car 8 color 0 (gun)
+spcrg1:
+       equ  68                                 ; Car 8 color 1 (shadow)
+spex00:
+       equ  72                                 ; Explosion 0 color 0
+spex01:
+       equ  76                                 ; Explosion 0 color 1
+spex10:
+       equ  80                                 ; Explosion 1 color 0
+spex11:
+       equ  84                                 ; Explosion 1 color 1
+spex20:
+       equ  88                                 ; Explosion 2 color 0
+spex21:
+       equ  92                                 ; Explosion 2 color 1
+spex30:
+       equ  96                                 ; Explosion 3 color 0
+spex31:
+       equ  100                                ; Explosion 4 color 1
+spful0:
+       equ  104                                ; Fuel color 0
+spful1:
+       equ  108                                ; Fuel color 1
+spgun0:
+       equ  112                                ; Gun color 0
+spgun1:
+       equ  116                                ; Gun color 1
+spoil0:
+       equ  120                                ; Oil color 0
+spoil1:
+       equ  124                                ; Oil color 1
+spshot:
+       equ  128                                ; Shot
+spem00:
+       equ  132                                ; Empty 0
+spem01:
+       equ  132                                ; Empty 1
+
+ypos:
+       equ  spratt+sacar+0                     ; Car y position
+xpos:
+       equ  spratt+sacar+1                     ; Car x position
+carpat:
+       equ  spratt+sacar+2                     ; Car pattern
+
+*********************************************************************
+* 
+* Main program execution starts here
+* 
+       aorg >a000
+
+start:
+       limi 0                                  ; Disable interrupts
+       lwpi tmpws                              ; Use a temporary workspace
+* Prepare for using PAD
+       mov  @rndsd,r15                         ; Save random number seed
+       mov  @>8370,@vdptop                     ; Save highest available address of VDP RAM
+       .ifeq cart,1
+       nop                                     ; No boot tracking for cart
+       .else 
+       bl   @boottr                            ; Boot tracking
+       .endif 
+       bl   @swppad                            ; Save contents of PAD
+       mov  r15,@randno                        ; Save random number seed
+* Ready to go
+       lwpi wrksp
+       li   r10,stack                          ; Set up the stack pointer
+* Init constants
+       li   r0,>0001
+       mov  r0,@one
+       li   r0,>c000
+       mov  r0,@sproff
+* Move copy routine into scratch pad
+       li   r0,vm8bw
+       li   r1,vm8bw8
+       li   r2,vm8bwe-vm8bw8/2
+cpypad:
+       mov  *r1+,*r0+
+       dec  r2
+       jne  cpypad
+* Init graphics mode
+       bl   @gmode
+* Init static chars
+       li   r0,colrtb+24                       ; Colors for static characters
+       li   r1,clrst1
+       li   r2,8
+       bl   @vmbw
+       li   r0,192*8+ptrnt0                    ; Patterns for static characters
+       li   r4,4
+inisc1:
+       li   r1,pat192
+       li   r2,8*64
+       bl   @vmbw
+       ai   r0,>0800
+       dec  r4
+       jne  inisc1
+* Display LOADING
+       li   r0,9*32+10                         ; Box
+       li   r1,11
+       li   r2,5
+       bl   @dspbox
+       li   r0,11*32+12                        ; Text
+       li   r1,txtlod
+       li   r2,7
+       bl   @dsptxt
+* New game
+newgme:
+       li   r0,slevel
+       mov  r0,@level                          ; Set start level
+       li   r0,score                           ; Init score
+       li   r1,sc0000
+       li   r2,6
+inisco:
+       movb *r1+,*r0+
+       dec  r2
+       jne  inisco
+       li   r0,nlives                          ; Init lives
+       mov  r0,@lives
+       li   r0,xlfsco                          ; Extra life counter
+       mov  r0,@xlfcnt
+* Initialize level
+nxtlvl:
+       bl   @rdmap
+       bl   @inilvl
+* Wait 2 seconds
+       li   r2,120
+       bl   @wtkey
+* Display "GET READY"
+       li   r0,19*32+7                         ; Box
+       li   r1,11
+       li   r2,3
+       bl   @dspbox
+       li   r0,20*32+8                         ; Text
+       li   r1,txtrdy
+       li   r2,9
+       bl   @dsptxt
+* Wait for up
+       li   r2,600
+       bl   @wtkey
+       mov  r0,r0                              ; Check if a key way pressed
+       jne  nxtlv1
+* Demo
+       bl   @demo
+       bl   @mtesnd
+       bl   @hidspr
+       jmp  newgme
+nxtlv1:
+       bl   @plymus                            ; Start music
+*********************************************************************
+* 
+* Main loop
+* 
+mainlp:
+       bl   @setspd                            ; Set speed and delay
+       mov  @delay,@delayt
+* Wait for vsync
+main0:
+       bl   @vsync
+       inc  @tick
+* Change name table
+       bl   @chgnt
+* Change pattern table
+       bl   @chgpt
+* Change sprite attribute table
+       bl   @chgst
+* Check for road side collision
+       .ifeq ccrash,1
+       bl   @rdcol
+       .endif 
+* Check for shot collision
+       bl   @shcol
+* Check for player car to sprite collision
+       bl   @spcol
+* Check for collision between other cars
+       bl   @occol
+* Move car
+       bl   @mvcar
+* Create other cars
+       bl   @crcars
+* Move other cars
+       bl   @mvcars
+* Move shot
+       bl   @mvshot
+* Copy sprite attributes
+       bl   @cpyspr
+* Play sound
+       bl   @sndplr
+* Consume fuel
+       bl   @conful
+* Pause key
+       bl   @pkey
+* Check for zero speed
+       mov  @scrlsp,r0
+       jeq  mainlp
+* Delay
+       mov  @delayt,r0
+       jeq  main1
+       dec  @delayt
+       jmp  main0
+* Update off-screen name table buffer
+main1:
+       bl   @updnt
+* Change scroll offset
+       mov  @scrlsp,r0
+       a    r0,@scrly
+* Update progress indicator
+       s    r0,@pgicnt
+       jne  main2
+       bl   @dsppgi
+       li   r0,maph
+       mov  r0,@pgicnt
+* Change screen row position and list pointer
+main2:
+       bl   @updscr
+* Loop
+       jmp  mainlp
+* // Main loop
+
+*********************************************************************
+* 
+* Demo
+* 
+demo:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* Display "DEMO MODE"
+       li   r0,20*32+8                         ; Text
+       li   r1,txtdmo
+       li   r2,9
+       bl   @dsptxt
+       li   r2,60
+demo4:
+       bl   @vsync
+       dec  r2
+       jne  demo4
+* Start music
+       bl   @plymus
+demolp:
+       li   r0,dmoend
+       c    r0,@status
+       jeq  demo3
+       bl   @setspd                            ; Set speed and delay
+       mov  @delay,@delayt
+* Wait for vsync
+demo0:
+       bl   @vsync
+       inc  @tick
+* Change name table
+       bl   @chgnt
+* Change pattern table
+       bl   @chgpt
+* Change sprite attribute table
+       bl   @chgst
+* Check for road side collision
+       bl   @rdcol
+* Check for shot collision
+       bl   @shcol
+* Check for player car to sprite collision
+       bl   @spcol
+* Check for collision between other cars
+       bl   @occol
+* Move car
+       bl   @mvdmo
+* Create other cars
+       bl   @crcars
+* Move other cars
+       bl   @mvcars
+* Move shot
+       bl   @mvshot
+* Copy sprite attributes
+       bl   @cpyspr
+* Play sound
+       bl   @sndplr
+* Consume fuel
+       bl   @conful
+* Check for zero speed
+       mov  @scrlsp,r0
+       jeq  demolp
+* Delay
+       mov  @delayt,r0
+       jeq  demo1
+       dec  @delayt
+       jmp  demo0
+* Update off-screen name table buffer
+demo1:
+       bl   @updnt
+* Change scroll offset
+       mov  @scrlsp,r0
+       a    r0,@scrly
+* Update progress indicator
+       s    r0,@pgicnt
+       jne  demo2
+       bl   @dsppgi
+       li   r0,maph
+       mov  r0,@pgicnt
+* Change screen row position and list pointer
+demo2:
+       bl   @updscr
+* Loop
+       jmp  demolp
+* Return
+demo3:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // Demo
+
+*********************************************************************
+* 
+* Next level initialization
+* 
+inilvl:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* Update level data pointer
+       clr  r0
+       mov  @level,r1                          ; Get the level
+       li   r2,nmaps                           ; Divide by available maps
+       div  r2,r0                              ; Remainder in R1
+       li   r0,lvlsiz                          ; Multiply by structure size
+       mpy  r0,r1                              ; Result in R2
+       ai   r2,levels                          ; Add base address
+       mov  r2,@lvldat                         ; Store it
+* Mute sound
+       bl   @mtesnd
+* Init panel
+       li   r0,namet0+24
+       bl   @inipnl
+       li   r0,namet1+24
+       bl   @inipnl
+* Display score
+       li   r0,32*5+25
+       li   r1,score
+       bl   @dspscr                            ; Display high score
+* Display high score
+       li   r0,32*2+25
+       li   r1,hscore
+       bl   @dspscr                            ; Display high score
+* Display lives
+       bl   @dspliv
+* Black out colors for scrolling tiles
+       li   r0,colrtb
+       clr  r1
+       li   r2,24
+       bl   @vsmw
+* Init scrolling part of name table
+       li   r0,namet0
+       li   r1,scr000
+       li   r2,24
+       bl   @vmlw
+       li   r0,>0208                           ; NAMET0
+       bl   @vwtr
+* Scroll and upload patterns into VDP RAM
+       bl   @scrlpt
+* Color set for scrolling tiles
+       li   r0,colrtb
+       mov  @lvldat,r1                         ; Get level data address
+       mov  @clrst_(r1),r1
+       li   r2,24
+       bl   @vmbw
+* Init sprites
+       clr  @sprtbl
+       bl   @inispr                            ; Upload to SPRTB0
+       bl   @chgst                             ; Change to SPRTB0
+       clr  @sprtbl
+* Reset y coordinates of other cars
+       li   r0,car1y
+       li   r1,caryi
+       li   r2,ncars
+inilv1:
+       mov  *r1+,*r0+
+       dec  r2
+       jne  inilv1
+* Reset speed of other cars
+       li   r0,car1dy
+       li   r1,3
+       li   r2,3
+inilv2:
+       mov  r1,*r0+
+       dec  r2
+       jne  inilv2
+       li   r1,3
+       li   r2,2
+inilv3:
+       mov  r1,*r0+
+       dec  r2
+       jne  inilv3
+       li   r1,3
+       li   r2,2
+inilv4:
+       mov  r1,*r0+
+       dec  r2
+       jne  inilv4
+* Reset path of other cars
+       li   r0,car1pt
+       li   r2,ncars
+inilv5:
+       clr  *r0+
+       dec  r2
+       jne  inilv5
+* Init variables for main loop
+       clr  @tick                              ; Vsync counter
+       clr  @scrly                             ; Scroll offset
+       clr  @scrlsp                            ; Scroll speed
+       mov  @lvldat,r1                         ; Get level data address
+       mov  @scrl_(r1),@scrptr                 ; Screen pointer
+       mov  @rddxl_(r1),@rdxptr                ; Road direction list pointer
+       mov  @roadx_(r1),@roadx                 ; Road x position
+       mov  @roadw_(r1),@roadw                 ; Road width
+       li   r0,23                              ; Screen row position
+       mov  r0,@rowpos
+       li   r0,64                              ; Fuel
+       mov  r0,@fuel
+       clr  @speed                             ; Speed
+       clr  @nshots                            ; Reset shots
+       clr  @dx                                ; Movement direction
+       clr  @status                            ; Set status to OK
+       clr  @carpth                            ; Car path
+       li   r0,maph                            ; Progress indicator
+       mov  r0,@pgicnt
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // INILVL
+
+*********************************************************************
+* 
+* Level complete
+* 
+lvlcmp:
+       bl   @mtesnd
+       bl   @hidspr
+* Display box
+       li   r0,10*32+3
+       li   r1,17
+       li   r2,3
+       bl   @dspbox
+* Display "TRACK COMPLETED"
+       li   r0,11*32+4
+       li   r1,txttrk
+       li   r2,15
+       bl   @dsptxt
+* Bonus for fuel left
+       bl   @plybon
+lvlcm1:
+       mov  @fuel,r0
+       jeq  lvlcm2
+       dec  r0
+       mov  r0,@fuel
+       li   r0,sc0025
+       bl   @addscr
+       bl   @dspful
+       bl   @vsync
+       bl   @sndplr
+       bl   @vsync
+       bl   @sndplr
+       jmp  lvlcm1
+lvlcm2:
+       bl   @mtesnd
+* Next level
+       inc  @level
+       b    @nxtlvl
+* // LVLCMP
+
+*********************************************************************
+* 
+* Game over
+* 
+lvlend:
+       bl   @mtesnd
+       bl   @hidspr
+* Display box
+       li   r0,8*32+4
+       li   r1,15
+       li   r2,6
+       bl   @dspbox
+* Display "GAME OVER"
+       li   r0,10*32+7
+       li   r1,txtgmo
+       li   r2,9
+       bl   @dsptxt
+* Decide which text to display
+       mov  @status,r0
+       ci   r0,nocars
+       jeq  lvlen1
+* Display "OUT OF FUEL"
+       li   r1,txtoof
+       jmp  lvlen2
+* Display "OUT OF CARS"
+lvlen1:
+       li   r1,txtooc
+lvlen2:
+       li   r0,11*32+6
+       li   r2,11
+       bl   @dsptxt
+* New game
+       b    @newgme
+* // LVLEND
+
+*********************************************************************
+* 
+* Wait for vsync
+* 
+vsync:
+       clr  @coinc
+       movb @vdpsta,r0
+vsync1:
+       movb @vdpsta,r0
+       mov  r0,r1
+       andi r1,>2000
+       soc  r1,@coinc                          ; Save coincidence flag
+       andi r0,>8000
+       jeq  vsync1                             ; Wait for vsync
+       b    *r11
+* // VSYNC
+
+*********************************************************************
+* 
+* Change name table
+* 
+* @SCRLY: Scroll offset
+* 
+* Modifies r0
+* 
+chgnt:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  @scrly,r0
+       andi r0,>0008
+       jne  chgnt1
+       li   r0,>0208                           ; NAMET0
+       jmp  chgnt2
+chgnt1:
+       li   r0,>0209                           ; NAMET1
+chgnt2:
+       bl   @vwtr                              ; Set address of name table
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // CHGNT
+
+*********************************************************************
+* 
+* Change pattern table
+* 
+* @SCRLY: Scroll offset
+* 
+* Modifies r0
+* 
+chgpt:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  @scrly,r0
+       andi r0,>0006
+       srl  r0,1
+       ori  r0,>0400                           ; VDP register 4
+       bl   @vwtr                              ; Set address of name table
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // CHGPT
+
+*********************************************************************
+* 
+* Change sprite atttribute table
+* 
+* Modifies r0
+* 
+chgst:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  @sprtbl,r0
+       jne  chgst1
+       li   r0,>054e                           ; SPRAT0 = >2700 (>4E * >80)
+       seto @sprtbl
+       jmp  chgst2
+chgst1:
+       li   r0,>054f                           ; SPRAT1 = >2780 (>4F * >80)
+       clr  @sprtbl
+chgst2:
+       bl   @vwtr                              ; Set sprite attribute table
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // CHGST
+
+*********************************************************************
+* 
+* Update one quarter or one half of the double buffer name table
+* depending on scrolling speed, reparing to move up one character
+* row of 8 pixels
+* 
+* @SCRLY: Scroll offset
+* @SCRLSP: Scroll speed
+* 
+* Modifies r0-r6, r14-r15
+* 
+updnt:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* Row offset from top
+       mov  @scrly,r5
+       andi r5,>0006                           ; 0, 2, 4, 6
+       mov  r5,r0
+       sla  r5,1                               ; 0, 4, 8, 12
+       a    r0,r5                              ; 0, 6, 12, 18
+* Total rows to copy
+       mov  @scrlsp,r6
+       sla  r6,1
+       a    @scrlsp,r6                         ; Speed * 3
+* Destination address
+       mov  r5,r0                              ; Row offset from top
+       sla  r0,5                               ; Byte offset from top
+       mov  @scrly,r1
+       andi r1,>0008
+       jne  updnt1
+       ai   r0,namet1
+       jmp  updnt2
+updnt1:
+       ai   r0,namet0
+* Top part of screen
+updnt2:
+       mov  @rowpos,r1
+       a    r5,r1                              ; Total row offset
+       li   r2,24                              ; Rows on screen
+       s    r1,r2                              ; Rows left
+       jlt  updnt4                             ; If negative or zero
+       jeq  updnt4                             ; there are no rows to display
+       c    r6,r2                              ; Compare to total rows
+       jgt  updnt3
+       mov  r6,r2                              ; Set to total rows
+updnt3:
+       s    r2,r6                              ; Subtract from total rows
+* Source address
+       li   r14,mapw
+       mpy  r1,r14                             ; Byte offset in R15
+       mov  @scrptr,r1                         ; Get screen list pointer
+       inct r1                                 ; Need top (next) screen
+       mov  *r1,r1                             ; Get screen address
+       a    r15,r1                             ; Add byte offset
+* Copy top part
+       bl   @vmlw
+* Bottom part of screen
+updnt4:
+       mov  r6,r2                              ; Get rows left to copy
+       jeq  updnt6
+       mov  @rowpos,r1
+       a    r5,r1
+       ai   r1,-24
+       jgt  updnt5
+       clr  r1                                 ; Start at top
+* Source address
+updnt5:
+       li   r14,mapw
+       mpy  r1,r14                             ; Byte offset in R15
+       mov  @scrptr,r1                         ; Get screen list pointer
+       mov  *r1,r1                             ; Get screen address
+       a    r15,r1                             ; Add byte offset
+* Copy bottom part
+       bl   @vmlw
+* Return
+updnt6:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // UPDNT
+
+*********************************************************************
+* 
+* Check for road side collision
+* 
+* Modifies r0-r4
+* 
+rdcol:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  @status,r0
+       jne  rdcol8                             ; Skip if already exploded/won/lost
+* Check collision with road side
+       li   r0,starty+8/8
+       bl   @rdpos                             ; Get road position in R1
+       clr  r0
+       movb @xpos,@r0lb
+       s    r1,r0
+       ci   r0,-3
+       jlt  rdcol1
+       s    @roadw,r0
+       ci   r0,3
+       jgt  rdcol4
+       jmp  rdcol8
+* Collision
+rdcol1:
+       mov  @scrlsp,r0
+       ci   r0,4
+       jeq  rdcol2
+       ci   r0,2
+       jeq  rdcol3
+       li   r0,cpath5
+       jmp  rdcol7
+rdcol2:
+       seto @status                            ; Set status to exploded
+       bl   @plyxp2                            ; Explosion sound
+       li   r0,cpath9
+       jmp  rdcol7
+rdcol3:
+       li   r0,cpath1
+       jmp  rdcol7
+rdcol4:
+       mov  @scrlsp,r0
+       ci   r0,4
+       jeq  rdcol5
+       ci   r0,2
+       jeq  rdcol6
+       li   r0,cpath6
+       jmp  rdcol7
+rdcol5:
+       seto @status                            ; Set status to exploded
+       bl   @plyxp2                            ; Explosion sound
+       li   r0,cpath8
+       jmp  rdcol7
+rdcol6:
+       li   r0,cpath2
+       jmp  rdcol7
+rdcol7:
+       mov  r0,@carpth
+* Return
+rdcol8:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // RDCOL
+
+*********************************************************************
+* 
+* Check for shot collision
+* 
+* Modifies r0-r9
+* 
+shcol:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* Check for shot in progress
+       cb   @sproff,@sashot+spratt
+       jeq  shcol4
+* Check hardware flag
+* MOV  @COINC,r0
+* JEQ  SHCOL4
+* Find car that shot is hitting
+       clr  r0                                 ; Get shot x
+       movb @sashot+spratt+1,@r0lb
+       clr  r1                                 ; Get shot y
+       movb @sashot+spratt,@r1lb
+       li   r4,ncars                           ; Counter
+       li   r5,spratt+sacar1                   ; Sprite attribute address
+       li   r6,car1pt
+       li   r7,car1dy
+       li   r9,car1y
+shcol2:
+       mov  *r9,r3                             ; Check if visible
+       jeq  shcol3
+       mov  *r7,r3                             ; Check if speed < 0, i.e. exploded
+       jlt  shcol3
+       cb   @opat0b,@2(r5)                     ; Don't shoot the oil spills
+       jeq  shcol3
+       clr  r3                                 ; Get other car y
+       movb *r5,@r3lb
+       s    r1,r3                              ; Distance from main car y
+       ci   r3,15
+       jgt  shcol3
+       ci   r3,-15
+       jlt  shcol3
+       clr  r2                                 ; Get other car x
+       movb @1(r5),@r2lb
+       s    r0,r2                              ; Distance from main car x
+       ci   r2,15
+       jgt  shcol3
+       ci   r2,-15
+       jlt  shcol3
+* Found a car that's hit
+       li   r8,cpath7
+       mov  r8,*r6
+       seto *r7                                ; Zero speed
+       bl   @plyxp1                            ; Explosion sound
+       li   r0,sc0075                          ; Add score
+       bl   @addscr
+* Turn shot off
+       mov  @sproff,@sashot+spratt
+       jmp  shcol4                             ; Break out
+* Next car
+shcol3:
+       ai   r5,4
+       inct r6
+       inct r7
+       inct r9
+       dec  r4
+       jne  shcol2
+* Return
+shcol4:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // SHCOL
+
+*********************************************************************
+* 
+* Check for player car to other car/fuel/gun/oil sprite collision
+* 
+* Modifies r0-r9
+* 
+spcol:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  @coinc,r0                          ; Check hardware flag
+       jne  spcol1
+       b    @spcol8                            ; Return if not set
+* Check if another sprite overlaps with main car
+spcol1:
+       clr  r0
+       movb @xpos,@r0lb                        ; Get main car x
+       clr  r1
+       movb @ypos,@r1lb                        ; Get main car y
+       li   r4,ncars                           ; Counter
+       li   r5,spratt+sacar1                   ; Sprite attribute address
+       li   r6,car1pt
+       li   r7,car1dy
+       li   r9,car1y
+spcol2:
+       mov  *r9,r3                             ; Check if visible
+       jeq  spcol3
+       mov  *r7,r3                             ; Check if speed < 0, i.e. exploded
+       jlt  spcol3
+       clr  r3                                 ; Get other car y
+       movb *r5,@r3lb
+       s    r1,r3                              ; Distance from main car y
+       ci   r3,15
+       jgt  spcol3
+       ci   r3,-15
+       jlt  spcol3
+       clr  r2                                 ; Get other car x
+       movb @1(r5),@r2lb
+       s    r0,r2                              ; Distance from main car x
+       ci   r2,15
+       jgt  spcol3
+       ci   r2,-15
+       jlt  spcol3
+* Found something
+* CLR  @COINC        * No more collision detection this frame
+       cb   @fpat0b,@2(r5)                     ; Check for fuel
+       jeq  spcol4
+       cb   @gpat0b,@2(r5)                     ; Check for gun
+       jeq  spcol6
+       cb   @opat0b,@2(r5)                     ; Check for oil
+       jeq  spcol7
+* Found car
+       .ifeq chits,1
+       bl   @carhit
+       .endif 
+       jmp  spcol8
+* Next car
+spcol3:
+       ai   r5,4
+       inct r6
+       inct r7
+       inct r9
+       dec  r4
+       jne  spcol2
+       jmp  spcol8
+* Found fuel
+spcol4:
+       li   r0,16
+       a    @fuel,r0
+       ci   r0,64
+       jlt  spcol5
+       li   r0,64
+spcol5:
+       mov  r0,@fuel
+       clr  @status                            ; Set status to OK
+       clr  *r9                                ; Disable sprite
+       movb @sproff,*r5
+       movb @sproff,@sprofs(r5)
+       bl   @plybng                            ; Play sound
+       li   r0,sc0025                          ; Add score
+       bl   @addscr
+       jmp  spcol8
+* Found gun
+spcol6:
+       mov  @nshots,r0
+       ai   r0,10
+       mov  r0,@nshots
+       clr  *r9                                ; Disable sprite
+       movb @sproff,*r5
+       movb @sproff,@sprofs(r5)
+       movb @cpat0g,@carpat
+       movb @cpat1g,@carpat+sprofs
+       bl   @plyzzz                            ; Play sound
+       li   r0,sc0050                          ; Add score
+       bl   @addscr
+       jmp  spcol8
+* Found oil
+spcol7:
+       mov  @carpth,r0                         ; Check for exiting path
+       jne  spcol8
+       mov  @delay,r0                          ; or if a delay is effective.
+       jne  spcol8
+       li   r0,cpatha
+       mov  r0,@carpth
+       jmp  spcol8
+* Return
+spcol8:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // SPCOL
+
+*********************************************************************
+* 
+* Other car hit by player car
+* 
+* r2: x distance from main car
+* r3: y distance from main car
+* 
+carhit:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  @scrlsp,r9
+       ci   r9,4                               ; Get scroll speed
+       jeq  carht1
+       clr  r9                                 ; Clear flag if 2 or 0
+       jmp  carht2
+carht1:
+       seto r9                                 ; Set flag if 4
+carht2:
+       ci   r3,-9                              ; Check if hit from back
+       jlt  carht3
+       ci   r3,9                               ; Check if hit from front
+       jgt  carht9
+* Middle hit
+       mov  r2,r2                              ; Check if hit from right or left
+       jgt  carhta                             ; From right
+       jlt  carhtf                             ; From left
+* Middle hit, but not left or right (?)
+       mov  *r7,r0
+       ci   r0,4
+       jgt  carhtk
+       inc  *r7                                ; Increase speed of other car
+       bl   @plyboi                            ; Play sound
+       jmp  carhtk
+* Hit from back
+carht3:
+       mov  r2,r2
+       jgt  carht4
+       jlt  carht6
+* Back center
+       li   r8,cpath0
+       jmp  carht8
+* Back right
+carht4:
+       abs  r9                                 ; Test speed flag
+       jne  carht5
+* Back right speed 2
+       li   r8,cpath2
+       jmp  carht8
+* Back right speed 4
+carht5:
+       li   r8,cpath4
+       jmp  carht8
+* Back left
+carht6:
+       abs  r9                                 ; Test speed flag
+       jne  carht7
+* Back left speed 2
+       li   r8,cpath1
+       jmp  carht8
+* Back left speed 4
+carht7:
+       li   r8,cpath3
+       jmp  carht8
+* Set path
+carht8:
+       mov  @status,r0                         ; Check status
+       jlt  carhtl                             ; Skip if already exploded
+       mov  r8,@carpth                         ; Set new path
+* Hit other car
+carhtl:
+       mov  r2,r2
+       jgt  carhtd                             ; From right
+       jlt  carhti                             ; From left
+* Hit other center, increase speed
+       inc  *r7
+       bl   @plyboi                            ; Play sound
+       jmp  carhtk
+* Hit from front
+carht9:
+       li   r8,cpath7                          ; Explode
+       mov  r8,*r6
+       seto *r7                                ; Set speed to -1, i.e. exploded
+       bl   @plyxp1                            ; Explosion sound
+       li   r0,sc0100                          ; Add score
+       bl   @addscr
+       jmp  carhtk
+* Hit from right
+carhta:
+       abs  r9                                 ; Test speed flag
+       jne  carhtb
+* Right speed 2
+       li   r8,cpath6
+       jmp  carhtc
+* Right speed 4
+carhtb:
+       li   r8,cpath2
+* Set path
+carhtc:
+       mov  r8,@carpth
+       bl   @plyboi                            ; Play sound
+       li   r0,sc0010                          ; Add score
+       bl   @addscr
+* Path of other car
+carhtd:
+       abs  r9                                 ; Test speed flag
+       jne  carhte
+* Right speed 2
+       li   r8,cpath5
+       mov  r8,*r6
+       jmp  carhtk
+* Right speed 4
+carhte:
+       li   r8,cpath1
+       mov  r8,*r6
+       jmp  carhtk
+* Hit from left
+carhtf:
+       abs  r9
+       jne  carhtg
+* Left speed 2
+       li   r8,cpath5
+       jmp  carhth
+* Left speed 4
+carhtg:
+       li   r8,cpath1
+* Set path
+carhth:
+       mov  r8,@carpth
+       bl   @plyboi                            ; Play sound
+       li   r0,sc0010                          ; Add score
+       bl   @addscr
+* Path of other car
+carhti:
+       abs  r9                                 ; Test speed flag
+       jne  carhtj
+* Left speed 2
+       li   r8,cpath6
+       mov  r8,*r6
+       jmp  carhtk
+* Left speed 4
+carhtj:
+       li   r8,cpath2
+       mov  r8,*r6
+       jmp  carhtk
+* Return
+carhtk:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // CARHIT
+
+*********************************************************************
+* 
+* Check for collision between other cars
+* 
+occol:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* MOV  @COINC,r0      * Check hardware flag
+* JEQ  OCCOL5
+       clr  r4                                 ; Outer loop counter
+       li   r5,spratt+sacar1                   ; Outer loop sprite attributes
+* Outer loop
+occol1:
+       mov  @car1y(r4),r8                      ; Check y position
+       jeq  occol4                             ; Zero means not visible
+       s    @scrly,r8                          ; Convert to inverted screen coordinates
+       jlt  occol4                             ; Check of out of screen bottom
+       ci   r8,192+8                           ; Check of out of screen top
+       jgt  occol4                             ; Out if screen top
+       mov  @car1dy(r4),r8                     ; Check y speed
+       jlt  occol4                             ; -1 means exploded
+       cb   @cpat0b,@2(r5)                     ; Check if pattern is a car
+       jne  occol4                             ; Skip sprite if not
+       clr  r0
+       movb @1(r5),@r0lb                       ; Get outer car x
+       clr  r1
+       movb *r5,@r1lb                          ; Get outer car y
+       mov  r4,r6                              ; Inner loop counter
+       inct r6                                 ; Start with next car
+       mov  r5,r7                              ; Inner loop sprite attributes
+       ai   r7,4                               ; Start with next sprite
+* Inner loop
+occol2:
+       mov  @car1y(r6),r8                      ; Check y position
+       jeq  occol3                             ; Zero means not visible
+       mov  @car1dy(r6),r8                     ; Check y speed
+       jlt  occol3                             ; -1 means exploded
+       cb   @cpat0b,@2(r7)                     ; Check if pattern is a car
+       jne  occol3                             ; Skip sprite if not
+       clr  r2                                 ; Get inner car x
+       movb @1(r7),@r2lb
+       s    r0,r2                              ; Distance from outer car x
+       ci   r2,15
+       jgt  occol3                             ; Loop if distance too big
+       ci   r2,-15
+       jlt  occol3                             ; Loop if distance too big
+       clr  r3                                 ; Get inner car y
+       movb *r7,@r3lb
+       s    r1,r3                              ; Distance from other car y
+       ci   r3,15
+       jgt  occol3                             ; Loop if distance too big
+       ci   r3,-15
+       jlt  occol3                             ; Loop if distance too big
+* Found a collision
+       bl   @ochit
+       jmp  occol5                             ; Break out
+* Inner loop end
+occol3:
+       inct r6
+       ai   r7,4                               ; Next sprite
+       ci   r6,ncars*2
+       jne  occol2
+* Outer loop end
+occol4:
+       inct r4
+       ai   r5,4                               ; Next sprite
+       ci   r4,ncars-1*2
+       jne  occol1
+* Return
+occol5:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // OCCOL
+
+*********************************************************************
+* 
+* Other car hit by other car
+* 
+* r2: x distance between cars
+* r3: y distance between cars
+* r4: Index of 1st car * 2
+* r5: Sprite attributes of 1st car
+* r6: Index of 2nd car * 2
+* r7: Sprite attributes of 2nd car
+* 
+ochit:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       ci   r3,-11                             ; Check if 2nd hit from back
+       jlt  ochit3
+       ci   r3,11                              ; Check if 2nd hit from front
+       jgt  ochit6
+* Middle hit
+       mov  r2,r2                              ; Get x distance
+       jgt  ochit1                             ; From right
+       jlt  ochit2                             ; From left
+* Middle center
+       jmp  ochit9                             ; This should not happen
+* Middle right
+ochit1:
+       li   r0,cpath6
+       mov  r0,@car1pt(r4)
+       li   r0,cpath5
+       mov  r0,@car1pt(r6)
+       jmp  ochit9
+* Middle left
+ochit2:
+       li   r0,cpath5
+       mov  r0,@car1pt(r4)
+       li   r0,cpath6
+       mov  r0,@car1pt(r6)
+       jmp  ochit9
+* 2nd car hit from back
+ochit3:
+       mov  r2,r2
+       jgt  ochit4
+       jlt  ochit5
+* Back center
+       inc  @car1dy(r6)                        ; Increase speed of 2nd car
+       jmp  ochit9
+* Back right
+ochit4:
+       li   r0,cpath2
+       mov  r0,@car1pt(r4)
+       li   r0,cpath3
+       mov  r0,@car1pt(r6)
+       jmp  ochit9
+* Back left
+ochit5:
+       li   r0,cpath1
+       mov  r0,@car1pt(r4)
+       li   r0,cpath4
+       mov  r0,@car1pt(r6)
+       jmp  ochit9
+* 2nd car hit from front
+ochit6:
+       mov  r2,r2
+       jgt  ochit7
+       jlt  ochit8
+* Front center
+       inc  @car1dy(r4)                        ; Increase speed of 1st car
+       jmp  ochit9
+* Front right
+ochit7:
+       li   r0,cpath4
+       mov  r0,@car1pt(r4)
+       li   r0,cpath1
+       mov  r0,@car1pt(r6)
+       jmp  ochit9
+* Front left
+ochit8:
+       li   r0,cpath3
+       mov  r0,@car1pt(r4)
+       li   r0,cpath2
+       mov  r0,@car1pt(r6)
+       jmp  ochit9
+* Return
+ochit9:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // OCHIT
+
+*********************************************************************
+* 
+* Check status, move car, read keyboard/joystick
+* 
+mvcar:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* Check if path in progress
+       mov  @carpth,r0
+       jeq  mvcarf
+       b    @mvcar6                            ; Execute path
+* Check if exploded or finished
+mvcarf:
+       mov  @status,r0                         ; Check status
+       jeq  mvcar0                             ; Zero means OK
+       mov  @speed,r0                          ; Check speed
+       jeq  mvcarg
+       b    @mvcara                            ; Slow down until stopped
+* Was exploded or finished
+mvcarg:
+       mov  @status,r0
+       jlt  mvcare                             ; Negative means exploded
+* Level complete or out of fuel
+       dect r10                                ; Adjust stack
+       ci   r0,complt
+       jne  mvcarc
+       b    @lvlcmp                            ; Branch out to level complete
+mvcarc:
+       b    @lvlend                            ; Branch out to level end
+* Exploded
+mvcare:
+       .ifeq finlvs,1
+       dec  @lives                             ; Decrement lives
+       .endif 
+       jne  mvcarb
+       li   r0,nocars                          ; Set status to out of cars
+       mov  r0,@status
+       dect r10                                ; Adjust stack
+       b    @lvlend                            ; Branch out to level end
+* Set back on road
+mvcarb:
+       bl   @dspliv                            ; Display lives
+       clr  @status
+       li   r0,starty+8/8
+       bl   @rdpos                             ; Get road position
+       ai   r1,28                              ; Move to center
+       swpb r1
+       movb r1,@xpos
+       movb r1,@xpos+sprofs
+       movb @cpat0b,@carpat
+       movb @cpat1b,@carpat+sprofs
+       clr  @nshots
+       b    @mvcard                            ; Return
+* Read keyboard column 0 (Space)
+mvcar0:
+       clr  r1                                 ; Test column 0
+       li   r12,>0024                          ; Address for column selection
+       ldcr r1,3                               ; Select column
+       li   r12,>0006                          ; Address to read rows
+       stcr r13,8
+* Read keyboard column 1 (S, X)
+       li   r1,>0100                           ; Test column 1
+       li   r12,>0024                          ; Address for column selection
+       ldcr r1,3                               ; Select column
+       li   r12,>0006                          ; Address to read rows
+       stcr r14,8
+* Read keyboard column 2 (E, D)
+       li   r1,>0200                           ; Test column 2
+       li   r12,>0024                          ; Address for column selection
+       ldcr r1,3                               ; Select column
+       li   r12,>0006                          ; Address to read rows
+       stcr r15,8
+* Read joystick
+       li   r12,>0024                          ; CRU address of the column decoder
+       li   r1,>0600                           ; Column 6, i.e joystick #1
+       ldcr r1,3                               ; Select it
+       li   r12,>0006                          ; Base CRU address for joystick 1
+       clr  @dx
+* Check for right
+       tb   2
+       jne  mvcarh
+       mov  r15,r0                             ; Keyboard column 2
+       andi r0,>2000                           ; Mask off D
+       jne  mvcar1
+mvcarh:
+       mov  @one,@dx
+       jmp  mvcar2
+* Check for left
+mvcar1:
+       tb   1
+       jne  mvcari
+       mov  r14,r0                             ; Keyboard column 1
+       andi r0,>2000                           ; Mask off S
+       jne  mvcar3
+mvcari:
+       seto @dx
+mvcar2:
+       clr  r0
+       movb @xpos,@r0lb
+       a    @dx,r0
+       swpb r0
+       movb r0,@xpos
+       movb r0,@xpos+sprofs
+mvcar3:
+       mov  @tick,r0
+       andi r0,>0003                           ; Only permit speed changes
+       jne  mvcar5                             ; every 4 frames
+* Check for up / speed
+       tb   4
+       jne  mvcarj
+       mov  r15,r0                             ; Keyboard column 2
+       andi r0,>4000                           ; Mask off E
+       jne  mvcar4
+mvcarj:
+       mov  @speed,r0
+       ci   r0,maxspd-1
+       jgt  mvcar5
+       inc  @speed
+       bl   @dspspd
+       jmp  mvcar5
+* Check for down / brake
+mvcar4:
+       tb   3
+       jne  mvcark
+       mov  r14,r0                             ; Keyboard column 2
+       andi r0,>8000                           ; Mask off X
+       jne  mvcara
+mvcark:
+       dect @speed
+       dect @speed
+       jgt  mvcarm
+       jeq  mvcarm
+       clr  @speed
+mvcarm:
+       bl   @dspspd
+       jmp  mvcar5
+* Slow down
+mvcara:
+       mov  @speed,r0
+       ci   r0,1
+       jlt  mvcar5
+       dec  @speed
+       bl   @dspspd
+       jmp  mvcard
+* Move car along path
+mvcar6:
+       mov  @tick,r1                           ; Only move car
+       coc  @one,r1                            ; every 2nd frame
+       jeq  mvcard
+       ab   *r0,@xpos
+       ab   *r0+,@xpos+sprofs
+       movb *r0+,r1
+       movb r1,@carpat
+       ai   r1,>0400
+       movb r1,@carpat+sprofs
+       mov  r0,@carpth
+* Slow down
+       mov  @tick,r0
+       andi r0,>0003                           ; Only permit speed changes
+       jne  mvcar7                             ; every 4 frames
+       mov  @speed,r0
+       ci   r0,2
+       jlt  mvcar8
+       dect @speed
+       jmp  mvcar9
+mvcar8:
+       clr  @speed
+mvcar9:
+       bl   @dspspd
+* Next path segment
+mvcar7:
+       mov  @carpth,r0
+       cb   @sproff,*r0
+       jne  mvcard
+       clr  @carpth
+       clr  @nshots
+       jmp  mvcard
+* Check fire
+mvcar5:
+       tb   0
+       jne  mvcarl
+       andi r13,>0200                          ; Mask off space bar
+       jne  mvcard
+mvcarl:
+       mov  @nshots,r0
+       .ifeq finfir,1
+       jeq  mvcard
+       .endif 
+       cb   @sproff,@sashot+spratt
+       jne  mvcard
+* Fire
+       bl   @plyzap
+       movb @xpos,@sashot+spratt+1
+       li   r0,starty-16*256
+       movb r0,@sashot+spratt
+       dec  @nshots
+       jne  mvcard
+       movb @cpat0b,@carpat
+       movb @cpat1b,@carpat+sprofs
+* Return
+mvcard:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // MVCAR
+
+*********************************************************************
+* 
+* Move car for demo
+* 
+mvdmo:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* Check if path in progress
+       mov  @carpth,r0
+       jeq  mvdmof
+       b    @mvdmo6                            ; Execute path
+* Check if exploded or finished
+mvdmof:
+       mov  @status,r0                         ; Check status
+       jeq  mvdmo0                             ; Zero means OK
+       mov  @speed,r0                          ; Check speed
+       jeq  mvdmog
+       b    @mvdmoa                            ; Slow down until stopped
+* Was exploded or finished
+mvdmog:
+       mov  @status,r0
+       jlt  mvdmoe                             ; Negative means exploded
+       jmp  mvdmoc
+* Exploded
+mvdmoe:
+       dec  @lives                             ; Decrement lives
+       jne  mvdmob
+mvdmoc:
+       li   r0,dmoend
+       mov  r0,@status                         ; Signal end of demo
+       b    @mvdmod                            ; Return
+* Set back on road
+mvdmob:
+       bl   @dspliv                            ; Display lives
+       clr  @status
+       li   r0,starty+8/8
+       bl   @rdpos                             ; Get road position
+       ai   r1,28                              ; Move to center
+       swpb r1
+       movb r1,@xpos
+       movb r1,@xpos+sprofs
+       movb @cpat0b,@carpat
+       movb @cpat1b,@carpat+sprofs
+       clr  @nshots
+       b    @mvdmod                            ; Return
+* Read keyboard column 0 (Space)
+mvdmo0:
+       clr  r1                                 ; Test column 0
+       li   r12,>0024                          ; Address for column selection
+       ldcr r1,3                               ; Select column
+       li   r12,>0006                          ; Address to read rows
+       stcr r13,8
+       andi r13,>0200                          ; Mask off space bar
+       jeq  mvdmoc                             ; Finish demo if pressed
+* Read joystick
+       li   r12,>0024                          ; CRU address of the column decoder
+       li   r1,>0600                           ; Column 6, i.e joystick #1
+       ldcr r1,3                               ; Select it
+       li   r12,>0006                          ; Base CRU address for joystick 1
+       tb   0
+       jne  mvdmoc                             ; Finish demo if fire pressed
+       tb   4
+       jne  mvdmoc                             ; Finish demo if up pressed
+* Move straight ahead
+       clr  @dx
+* Set sprite position (TODO: remove)
+       clr  r0
+       movb @xpos,@r0lb
+       a    @dx,r0
+       swpb r0
+       movb r0,@xpos
+       movb r0,@xpos+sprofs
+mvdmo3:
+       mov  @tick,r0
+       andi r0,>0003                           ; Only permit speed changes
+       jne  mvdmo5                             ; every 4 frames
+* Speed up
+       mov  @speed,r0
+       ci   r0,maxspd-1
+       jgt  mvdmo5
+       inc  @speed
+       bl   @dspspd
+       jmp  mvdmo5
+* Slow down
+mvdmoa:
+       mov  @speed,r0
+       ci   r0,1
+       jlt  mvdmo5
+       dec  @speed
+       bl   @dspspd
+       jmp  mvdmod
+* Move car along path
+mvdmo6:
+       mov  @tick,r1                           ; Only move car
+       coc  @one,r1                            ; every 2nd frame
+       jeq  mvdmod
+       ab   *r0,@xpos
+       ab   *r0+,@xpos+sprofs
+       movb *r0+,r1
+       movb r1,@carpat
+       ai   r1,>0400
+       movb r1,@carpat+sprofs
+       mov  r0,@carpth
+* Slow down
+       mov  @tick,r0
+       andi r0,>0003                           ; Only permit speed changes
+       jne  mvdmo7                             ; every 4 frames
+       mov  @speed,r0
+       ci   r0,2
+       jlt  mvdmo8
+       dect @speed
+       jmp  mvdmo9
+mvdmo8:
+       clr  @speed
+mvdmo9:
+       bl   @dspspd
+* Next path segment
+mvdmo7:
+       mov  @carpth,r0
+       cb   @sproff,*r0
+       jne  mvdmod
+       clr  @carpth
+       clr  @nshots
+       jmp  mvdmod
+* Check fire
+mvdmo5:
+       mov  @nshots,r0
+       jeq  mvdmod
+       cb   @sproff,@sashot+spratt
+       jne  mvdmod
+* Fire
+       bl   @plyzap
+       movb @xpos,@sashot+spratt+1
+       li   r0,starty-16*256
+       movb r0,@sashot+spratt
+       dec  @nshots
+       jne  mvdmod
+       movb @cpat0b,@carpat
+       movb @cpat1b,@carpat+sprofs
+* Return
+mvdmod:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // MVDMO
+
+*********************************************************************
+* 
+* Create other cars
+* 
+crcars:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  @scrly,r0
+       andi r0,>003f                           ; Consider creating car every 64 pixels
+       jne  crcrs8                             ; i.e. every 8 character rows
+       mov  @speed,r0                          ; Don't create if scroll speed = 0
+       jeq  crcrs8
+       mov  @delay,r0                          ; or if a delay is effective.
+       jne  crcrs8
+       bl   @rand                              ; Finally add some randomness
+       mov  @level,r1
+       sla  r1,11                              ; Level * 2048
+       ai   r1,>6000
+       c    r0,r1
+       jh   crcrs8
+* Find an available car
+       li   r5,car1y
+       li   r6,car1dy
+       li   r7,spratt+sacar1
+       li   r2,ncars
+crcrs1:
+       mov  *r5,r1
+       jne  crcrs7
+* Found
+       mov  @scrly,r0                          ; Set y position just outside screen top
+       ai   r0,192+16                          ; in map coordinates
+       mov  r0,*r5
+* Set x position
+       clr  r0                                 ; Top row
+       bl   @rdpos                             ; R1 = road left position
+       mov  r1,r2
+* Find a random position
+       bl   @rand
+       andi r0,>003f                           ; Modulo 64
+       mpy  @roadw,r0                          ; Multiply by road width
+       srl  r1,6                               ; Divide result by 64
+       a    r2,r1                              ; Add road left position
+       swpb r1
+       movb r1,@1(r7)                          ; Set sprite x
+       movb r1,@1+sprofs(r7)                   ; Set sprite x for shadow
+* Check if we should create special item
+       mov  @scrly,r0
+       andi r0,>01ff                           ; Create fuel every 16th times
+       jeq  crcrs3
+       mov  @randno,r0
+       ci   r0,28000
+       jgt  crcrs4                             ; Create other item
+* Create car
+       bl   @crcar
+       jmp  crcrs8                             ; Break out
+* Create fuel
+crcrs3:
+       bl   @crfuel
+       jmp  crcrs8                             ; Break out
+* Create gun or oil
+crcrs4:
+       ci   r0,30000                           ; Otherwise let chance decide
+       jgt  crcrs6                             ; Create oil
+* Create gun
+crcrs5:
+       bl   @crgun
+       jmp  crcrs8                             ; Break out
+* Create oil
+crcrs6:
+       mov  @level,r1                          ; Don't create oil until level 2
+       ci   r1,2
+       jlt  crcrs5
+       bl   @croil
+       jmp  crcrs8                             ; Break out
+* Next car
+crcrs7:
+       inct r5
+       inct r6
+       ai   r7,4
+       dec  r2
+       jne  crcrs1
+* Return
+crcrs8:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // CRCARS
+
+*********************************************************************
+* 
+* Create car
+* 
+crcar:
+       mov  @scrlsp,r0                         ; Set speed
+       ci   r0,4
+       jne  crcar2
+       mov  @randno,r0
+       ci   r0,10000
+       jlt  crcar1
+       li   r0,3
+       jmp  crcar3
+crcar1:
+       li   r0,2
+       jmp  crcar3
+crcar2:
+       li   r0,1
+crcar3:
+       mov  r0,*r6
+* Set pattern
+       movb @cpat0b,@2(r7)
+       movb @cpat1b,@2+sprofs(r7)
+* Set color
+       mov  @carcol,r1
+       andi r1,>0007
+       movb @color0(r1),@3(r7)
+       movb @ccol1b,@3+sprofs(r7)
+       inc  @carcol
+       b    *r11
+* // CRCAR
+
+*********************************************************************
+* 
+* Create fuel
+* 
+crfuel:
+       li   r0,2
+       mov  r0,*r6
+* Set pattern
+       movb @fpat0b,@2(r7)
+       movb @fpat1b,@2+sprofs(r7)
+* Set color
+       movb @fcol0b,@3(r7)
+       movb @fcol1b,@3+sprofs(r7)
+       b    *r11
+* // CRFUEL
+
+*********************************************************************
+* 
+* Create gun
+* 
+crgun:
+       li   r0,2
+       mov  r0,*r6
+* Set pattern
+       movb @gpat0b,@2(r7)
+       movb @gpat1b,@2+sprofs(r7)
+* Set color
+       movb @gcol0b,@3(r7)
+       movb @gcol1b,@3+sprofs(r7)
+       b    *r11
+* // CRGUN
+
+*********************************************************************
+* 
+* Create oil
+* 
+croil:
+       clr  *r6                                ; Zero speed
+* Set pattern
+       movb @opat0b,@2(r7)
+       movb @opat1b,@2+sprofs(r7)
+* Set color
+       movb @ocol0b,@3(r7)
+       movb @ocol1b,@3+sprofs(r7)
+       b    *r11
+
+*********************************************************************
+* 
+* Move other cars
+* 
+mvcars:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       li   r5,car1y
+       li   r6,car1dy
+       li   r7,spratt+sacar1
+       li   r8,car1pt
+       li   r9,ncars
+mvcrs1:
+       mov  *r5,r1                             ; Get y position
+       jne  mvcrsd                             ; If zero the car is not active
+* Next car
+mvcrs6:
+       inct r5
+       inct r6
+       ai   r7,4
+       inct r8
+       dec  r9
+       jne  mvcrs1
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* Move other car
+mvcrsd:
+       s    @scrly,r1                          ; Convert to inverted screen coordinates
+* Check for out of screen
+       jlt  mvcrs7                             ; Out of screen bottom
+       ci   r1,192+16
+       jgt  mvcrs5                             ; Out of screen top
+       li   r0,192                             ; Revert y axis
+       s    r1,r0
+       swpb r0
+       movb r0,*r7                             ; Set y position
+       movb r0,@sprofs(r7)                     ; Set y position for shadow
+* Move car y
+       mov  *r6,r13                            ; Get speed in R13
+       jlt  mvcrs8                             ; Skip adding if speed < 0, i.e. exploded
+       a    r13,*r5                            ; Add speed to position
+* Check for path
+mvcrs8:
+       mov  *r8,r12
+       jne  mvcrs2
+* Move car x every time it has moved 8 pixels y
+       mov  *r5,r1                             ; Get y position (map coordinates)
+       andi r1,>0007                           ; Mod 8
+       c    r1,r13                             ; Compare to speed
+       jhe  mvcrs6
+       mov  r13,r13                            ; Check if exploded
+       jlt  mvcrs6
+       swpb r0                                 ; Calculate row from y
+       ai   r0,8                               ; Middle pixel row
+       srl  r0,3                               ; Convert to character rows
+       bl   @rddx                              ; Get road direction at row in R1
+       mov  r1,r1                              ; Check if road direction is zero
+       jne  mvcrs9
+       cb   @cpat0b,@2(r7)                     ; Check if it's a car
+       jne  mvcrs6
+       bl   @rand                              ; Add some randomness
+       mov  @level,r1
+       inc  r1
+       sla  r1,11                              ; level * 2048
+       c    r0,r1
+       jh   mvcrs6
+* Straight road, move car towards player car
+       movb @xpos,r1                           ; Get player car x position
+       sb   @1(r7),r1                          ; Distance from other car
+       jgt  mvcrsa                             ; Check sign
+       jlt  mvcrsb
+       jmp  mvcrs6                             ; Don't move if centered
+mvcrsa:
+       mov  @one,r1
+       jmp  mvcrs9
+mvcrsb:
+       seto r1
+mvcrs9:
+       mov  *r7,r0                             ; Get car position
+       a    r1,r0                              ; Move x position
+       mov  r0,*r7                             ; Set car position
+       mov  r0,@sprofs(r7)                     ; Set car position for shadow
+       jmp  mvcrs6
+* Move car along path
+mvcrs2:
+       mov  @tick,r1                           ; Only move car
+       coc  @one,r1                            ; every 2nd frame
+       jeq  mvcrs3                             ; else check for collision
+       ab   *r12,@1(r7)
+       ab   *r12+,@1+sprofs(r7)
+       movb *r12+,r1
+       movb r1,@2(r7)
+       ai   r1,>0400
+       movb r1,@2+sprofs(r7)
+       mov  r12,*r8
+       cb   *r12,@sproff
+       jne  mvcrs6
+       clr  *r8                                ; End path
+       jmp  mvcrs6
+* Check for collision with road side
+mvcrs3:
+       mov  *r6,r1                             ; Check if speed < 0, i.e. already exploded
+       jlt  mvcrs6
+       swpb r0                                 ; Calculate row
+       ai   r0,8                               ; Middle pixel row
+       srl  r0,3                               ; Convert to character rows
+       bl   @rdpos                             ; Get left side road position in R1
+       clr  r0
+       movb @1(r7),@r0lb                       ; Get car x position
+       s    r1,r0                              ; Subtract road position
+       ci   r0,-3
+       jlt  mvcrs4
+       s    @roadw,r0
+       ci   r0,3
+       jgt  mvcrs4
+       jmp  mvcrs6
+* Collision with road side
+mvcrs4:
+       li   r0,cpath7
+       mov  r0,*r8                             ; Explosion path
+       seto *r6                                ; Speed = -1, i.e. exploded
+       bl   @plyxp1                            ; Explosion sound
+       li   r0,sc0100                          ; Add score
+       bl   @addscr
+       jmp  mvcrs6
+* Car has moved outside screen
+mvcrs7:
+       mov  *r8,r12                            ; Check for path
+       jne  mvcrs5                             ; Remove if path
+       mov  *r6,r13                            ; Get speed in R13
+       jlt  mvcrs5                             ; Remove if exploded
+       ci   r1,-32                             ; Check for fully out of screen
+       jlt  mvcrs5                             ; Remove if fully out of screen
+* Keep car for now
+       a    *r6,*r5                            ; Move y position
+       b    @mvcrs6
+* Remove car
+mvcrs5:
+       clr  *r5                                ; Clear y position
+       clr  *r8                                ; Clear any path
+       movb @sproff,*r7
+       movb @sproff,@sprofs(r7)
+       b    @mvcrs6
+* // MVCARS
+
+*********************************************************************
+* 
+* Move shot
+* 
+mvshot:
+       cb   @sproff,@sashot+spratt
+       jeq  mvsho2
+       clr  r0
+       movb @sashot+spratt,@r0lb
+       ci   r0,-16
+       jlt  mvsho1
+       ai   r0,-4
+       movb @r0lb,@sashot+spratt
+       jmp  mvsho2
+* Turn shot off
+mvsho1:
+       mov  @sproff,@sashot+spratt
+mvsho2:
+       b    *r11
+* // MVSHOT
+
+*********************************************************************
+* 
+* Consume fuel
+* 
+conful:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  @tick,r0
+       andi r0,>003f
+       ci   r0,1                               ; Frame 1
+       jne  confu2
+       mov  @fuel,r0
+       jne  confu1
+* Out of fuel
+       li   r0,nofuel
+       mov  r0,@status
+       jmp  confu2
+confu1:
+       .ifeq finful,1
+       dect @fuel
+       .endif 
+       bl   @dspful
+* Play sound if fuel is low
+       mov  @fuel,r0
+       ci   r0,7
+       jgt  confu2
+       bl   @plywrn                            ; Play warning sound
+* Return
+confu2:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // CNFUEL
+
+*********************************************************************
+* 
+* Change screen row position and list pointer
+* 
+updscr:
+* Check for row change
+       mov  @scrly,r0
+       andi r0,>0007                           ; Update row every 8 pixels
+       jne  updsc2
+* Next row
+       mov  @rdxptr,r0                         ; Update road x position
+       a    *r0,@roadx
+       dec  @rowpos                            ; Decrement top row position
+       jne  updsc2                             ; Check for end of screen
+* End of screen
+updsc0:
+       li   r0,24
+       mov  r0,@rowpos                         ; Reset row position
+       mov  @scrptr,r0                         ; Get screen pointer
+       inct r0                                 ; Point to next screen
+       mov  *r0,r1                             ; Check for end of map
+       ci   r1,scr000
+       jeq  updsc1
+       mov  r0,@scrptr                         ; Save screen list pointer
+       inct @rdxptr                            ; Update road direction list pointer
+       jmp  updsc2
+* End of level
+updsc1:
+       mov  @lvldat,r1                         ; Get level data address
+       mov  @scrl_(r1),@scrptr                 ; Screen list pointer
+       mov  @rddxl_(r1),@rdxptr                ; Road direction list pointer
+       mov  @roadx_(r1),@roadx                 ; Road x position
+       mov  @one,@status                       ; Set status to completed
+updsc2:
+       b    *r11
+* // UPDSCR
+
+*********************************************************************
+* 
+* Pause key
+* 
+pkey:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* Read keyboard column 5
+pkey1:
+       li   r1,>0500                           ; Test column 5
+       li   r12,>0024                          ; Address for column selection
+       ldcr r1,3                               ; Select column
+       li   r12,>000a                          ; P key
+       tb   0
+       jeq  pkey7
+pkey2:
+       tb   0
+       jne  pkey2                              ; Wait for release
+       bl   @mtesnd                            ; Mute sound
+       li   r2,6
+pkey3:
+       bl   @vsync                             ; Wait to make sure we don't
+       dec  r2                                 ; release straight away
+       jne  pkey3
+pkey4:
+       tb   0
+       jeq  pkey4                              ; Wait for press
+pkey5:
+       tb   0
+       jne  pkey5                              ; Wait for release
+       li   r2,6
+pkey6:
+       bl   @vsync                             ; Wait to make sure we don't go
+       dec  r2                                 ; straight back to pause
+       jne  pkey6
+       bl   @plymus                            ; Restart music
+pkey7:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // PKEY
+
+*********************************************************************
+* 
+* Change delay and scroll speed
+* 
+setspd:
+       mov  @speed,r0
+       ci   r0,maxspd/2
+       jlt  setsp1
+       li   r1,4
+       clr  r2
+       jmp  setsp7
+setsp1:
+       ci   r0,maxspd/4
+       jlt  setsp2
+       li   r1,2
+       clr  r2
+       jmp  setsp7
+setsp2:
+       ci   r0,maxspd/8
+       jlt  setsp3
+       li   r1,2
+       li   r2,1
+       jmp  setsp7
+setsp3:
+       ci   r0,maxspd/16
+       jlt  setsp4
+       li   r1,2
+       li   r2,2
+       jmp  setsp7
+setsp4:
+       ci   r0,maxspd/32
+       jlt  setsp5
+       li   r1,2
+       li   r2,3
+       jmp  setsp7
+setsp5:
+       ci   r0,maxspd/64
+       jlt  setsp6
+       li   r1,2
+       li   r2,4
+       jmp  setsp7
+setsp6:
+       clr  r1
+       clr  r2
+setsp7:
+       c    @scrlsp,r1
+       jeq  setsp8
+       mov  @scrly,r0
+       andi r0,>0007
+       jeq  setsp8
+       jmp  setsp9
+setsp8:
+       mov  r1,@scrlsp
+       mov  r2,@delay
+setsp9:
+       b    *r11
+* // SETSPD
+
+*********************************************************************
+* 
+* Calculate the pixel position of the left edge of the road
+* for the given character row of the currently visible screen.
+* 
+* r0: Character row Y
+* 
+* On return r1 contains the pixel position of the left edge of the road
+* 
+* Changes r2-r4
+* 
+rdpos:
+       mov  @roadx,r1                          ; X0
+       mov  @rdxptr,r2                         ; Road direction list pointer
+       li   r3,24                              ; 24
+       s    @rowpos,r3                         ; 24 - ROWPOS
+       s    r0,r3                              ; 24 - ROWPOS - Y
+       jlt  rdpos4                             ; If negative or zero
+       jeq  rdpos4                             ; the row is in the lower screen
+       mov  *r2,r4                             ; DX1 (-1, 0, 1)
+       jeq  rdpos2                             ; Skip if DX1 = 0
+       jlt  rdpos1
+       a    @rowpos,r1                         ; DX1 = 1: X0 + DX1 * ROWPOS
+       jmp  rdpos2
+rdpos1:
+       s    @rowpos,r1                         ; DX1 = -1: X0 + DX1 * ROWPOS
+rdpos2:
+       mov  @2(r2),r4                          ; DX2 (-1, 0, 1)
+       jeq  rdpos6                             ; Skip if DX2 = 0
+       jlt  rdpos3
+       a    r3,r1                              ; DX2 = 1: X0 + DX1 * ROWPOS + DX2 * (24 - ROWPOS - Y)
+       jmp  rdpos6
+rdpos3:
+       s    r3,r1                              ; DX2 = -1: X0 + DX1 * ROWPOS + DX2 * (24 - ROWPOS - Y)
+       jmp  rdpos6
+* Not in upper screen
+rdpos4:
+       a    @rowpos,r3                         ; 24 - Y
+       mov  *r2,r4                             ; DX1
+       jeq  rdpos6
+       jlt  rdpos5
+       a    r3,r1                              ; X0 + DX1 * (24 - Y)
+       jmp  rdpos6
+rdpos5:
+       s    r3,r1
+rdpos6:
+       b    *r11
+* // RDPOS
+
+*********************************************************************
+* 
+* Get the direction of the road (-1, 0, 1)
+* for the given character row of the currently visible screen.
+* 
+* r0: Character row Y
+* 
+* On return r1 contains the pixel position of the left edge of the road
+* 
+rddx:
+       mov  @rdxptr,r1                         ; Road direction list pointer
+       li   r3,24                              ; 24
+       s    @rowpos,r3                         ; 24 - ROWPOS
+       s    r0,r3                              ; 24 - ROWPOS - Y
+       jlt  rddx1
+       mov  @2(r1),r1                          ; Get DX from top screen
+       jmp  rddx2
+rddx1:
+       mov  *r1,r1                             ; Get DX from bottom screen
+rddx2:
+       b    *r11
+* //
+
+*********************************************************************
+* 
+* Scroll patterns vertically into 4 frames of increasing scroll offset
+* and store in VDP RAM
+* 
+scrlpt:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  @lvldat,r8                         ; Get level data
+       mov  @pats_(r8),r9                      ; Offset to special level patterns
+       clr  r7                                 ; R7 is the scroll offset/frame (0,2,4,6)
+scrlp1:
+       mov  r7,r0                              ; Calculate VDP address
+       sla  r0,10                              ; Multiply by >0400
+       bl   @vwad                              ; Setup VDP write address
+       mov  @tchar_(r8),r2                     ; R2 is the address in the scroll tile map
+       clr  r6                                 ; R6 is index of current scroll tile
+scrlp2:
+       mov  *r2,r3                             ; R3 contains indices of from/to tiles
+* Scroll to tile
+       mov  r7,r7                              ; Check for 0 offset
+       jeq  scrlp4                             ; Skip 'scroll to' tile if offset is 0
+       mov  r3,r4                              ; R4 LSB is index of 'scroll to' tile
+       andi r4,>00ff                           ; Clear MSB
+       li   r12,pat0                           ; Base address of pattern definitions
+       ci   r4,48                              ; Check if it's a shared pattern
+       jlt  scrlp6
+       a    r9,r12                             ; Add offset to special level patterns
+scrlp6:
+       sla  r4,3                               ; Multiply by 8
+       ai   r4,8                               ; Add 8
+       s    r7,r4                              ; Minus offset
+       a    r12,r4                             ; Add base address of CPU RAM patterns
+       mov  r7,r5                              ; Copy 'offset' bytes
+scrlp3:
+       movb *r4+,@vdpwd                        ; Write byte to VDP RAM
+       dec  r5                                 ; Decrement counter
+       jne  scrlp3                             ; Loop
+* Scroll from tile
+scrlp4:
+       swpb r3
+       mov  r3,r4                              ; R4 LSB is index of 'scroll from' tile
+       andi r4,>00ff                           ; Clear MSB
+       li   r12,pat0                           ; Base address of pattern definitions
+       ci   r4,48                              ; Check if it's a shared pattern
+       jlt  scrlp7
+       a    r9,r12                             ; Add offset to special level patterns
+scrlp7:
+       sla  r4,3                               ; Multiply by 8
+       a    r12,r4                             ; Add base address of CPU RAM patterns
+       li   r5,8                               ; Copy 8 bytes
+       s    r7,r5                              ; Minus scroll offset
+scrlp5:
+       movb *r4+,@vdpwd                        ; Write byte to VDP RAM
+       dec  r5                                 ; Decrement counter
+       jne  scrlp5                             ; Loop
+* Loops
+       inct r2                                 ; Next word in scroll tile map
+       inc  r6                                 ; Next scroll tile
+       c    @tchnm_(r8),r6                     ; Check if all tiles done
+       jne  scrlp2                             ; Scroll tile loop
+       inct r7                                 ; Next offset/frame
+       ci   r7,8                               ; Check if last frame
+       jne  scrlp1                             ; Frame loop
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // SCRLP
+
+*********************************************************************
+* 
+* Init status panel
+* 
+* r0 Destination address
+* 
+inipnl:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       li   r1,md1
+       li   r2,24                              ; 24 lines
+       li   r3,vdpwd
+       ori  r0,>4000                           ; Set the two MSbits to 01 for write
+inipn1:
+       movb @r0lb,@vdpwa                       ; Send low byte of VDP RAM write address
+       movb r0,@vdpwa                          ; Send high byte of VDP RAM write address
+       li   r4,1
+       bl   @vm8bw
+       ai   r0,32
+       dec  r2
+       jne  inipn1
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // VMLW8
+
+*********************************************************************
+* 
+* Initialize sprites
+* 
+inispr:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* Upload patterns
+       li   r0,sprptb
+       li   r1,sprpat
+       li   r2,nsprps*32
+       bl   @vmbw
+* Copy intial attributes
+       li   r0,spratt
+       li   r1,sprati
+       li   r2,nsprts*4
+inisp1:
+       movb *r1+,*r0+
+       dec  r2
+       jne  inisp1
+* Disable sprites beyond NSPRTS
+       li   r0,nsprts*4+sprat0
+       li   r1,>d000
+       bl   @vsbw
+       li   r0,nsprts*4+sprat1
+       li   r1,>d000
+       bl   @vsbw
+* Copy to VDP
+       bl   @cpyspr
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // INISPR
+
+*********************************************************************
+* 
+* Hide sprites
+* 
+hidspr:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       li   r0,spratt
+       li   r1,>c000
+       li   r2,nsprts
+hidsp1:
+       movb r1,*r0
+       ai   r0,4
+       dec  r2
+       jne  hidsp1
+       bl   @cpyspr
+       bl   @chgst
+       bl   @cpyspr
+       bl   @chgst
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // HIDSPR
+
+*********************************************************************
+* 
+* Copy sprite attributes to VDP RAM double buffer
+* Implements a simple flicker algorithm where we cycle between the
+* quarter of the table that gets the lowest sprite numbers
+* 
+cpyspr:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  @sprtbl,r0                         ; Check which table to use
+       jeq  cpysp1
+       li   r0,sprat1
+       jmp  cpysp2
+cpysp1:
+       li   r0,sprat0
+cpysp2:
+       bl   @vwad                              ; Setup VDP write address
+       li   r3,vdpwd
+* Flicker routine
+       .ifeq flickr,1
+       mov  @tick,r4
+       andi r2,>0003                           ; n = 0,1,2,3
+       mov  r2,r1
+       sla  r1,4                               ; Multiply by 16 to get source offset
+       ai   r1,spratt                          ; Add address of CPU RAM attributes table
+       sla  r2,1                               ; n * 2 = 0,2,4,6
+       li   r4,8
+       s    r2,r4                              ; Copy (8 - (n * 2)) * 8 bytes
+       jeq  cpysp3
+       bl   @vm8bw                             ; Copy first part
+cpysp3:
+       li   r1,spratt                          ; Copy second part from start of table
+       mov  r2,r4                              ; Copy (n * 2) * 8 bytes
+       jeq  cpysp4
+       bl   @vm8bw                             ; Copy second part
+* Copy remaining sprites (not rotated)
+cpysp4:
+       li   r1,spratt+64
+       li   r4,nsprts-16/2                     ; Groups of 8 bytes to copy
+       bl   @vm8bw                             ; Copy
+* Just copy
+       .else 
+       li   r1,spratt
+       li   r4,nsprts/2
+       bl   @vm8bw                             ; Copy
+       .endif 
+* Return
+cpysp5:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // CPYSPR
+
+*********************************************************************
+* 
+* Display speed
+* 
+dspspd:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  @speed,r1
+       mov  r1,r2
+       srl  r2,3                               ; Speed div 8: Row offset from bottom
+       mov  r2,r3                              ; Save it
+       sla  r2,5                               ; Character offset
+       andi r1,>0007                           ; Speed mod 8: Which character to use
+       mov  r1,r4                              ; Save it
+* Display partial character
+       ci   r3,maxspd/8                        ; Skip for max speed
+       jeq  dspsp0
+       srl  r1,1                               ; Skip odd (only 4 chars)
+       ai   r1,248                             ; Add base char
+       swpb r1
+       li   r0,21*32+25
+       s    r2,r0
+       bl   @mtrrow
+* Display full character below
+dspsp0:
+       ci   r4,1
+       jgt  dspsp1
+       mov  r3,r3
+       jeq  dspsp1
+       li   r1,252*256
+       li   r0,22*32+25
+       s    r2,r0
+       bl   @mtrrow
+* Display space above
+dspsp1:
+       ci   r4,6
+       jlt  dspsp2
+       ci   r3,7
+       jeq  dspsp2
+       li   r1,248*256
+       li   r0,20*32+25
+       s    r2,r0
+       bl   @mtrrow
+* Return
+dspsp2:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // DSPSPD
+
+*********************************************************************
+* 
+* Display fuel
+* 
+dspful:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  @fuel,r2
+       srl  r2,3                               ; Fuel div 8
+       li   r4,21*32+29                        ; Screen offset
+* Display full characters
+       mov  r2,r3
+       jeq  dspfu2
+       li   r1,252*256                         ; Character
+dspfu1:
+       mov  r4,r0
+       bl   @mtrrow
+       ai   r4,-32
+       dec  r3
+       jne  dspfu1
+* Display partial character
+dspfu2:
+       mov  @fuel,r1
+       andi r1,>0007                           ; Fuel mod 8
+       srl  r1,1                               ; Skip odd (only 4 chars)
+       ai   r1,248                             ; Add base char
+       swpb r1
+       mov  r4,r0
+       bl   @mtrrow
+       ai   r4,-32
+* Display empty characters
+       li   r3,7
+       s    r2,r3
+       jeq  dspfu4
+       jlt  dspfu4                             ; Needed if fuel = 64
+       li   r1,248*256                         ; Character
+dspfu3:
+       mov  r4,r0
+       bl   @mtrrow
+       ai   r4,-32
+       dec  r3
+       jne  dspfu3
+* Return
+dspfu4:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // DSPFUL
+
+*********************************************************************
+* 
+* Display one row of a meter (one character repeated twice)
+* in both name table buffers
+* 
+* r0: Screen offset
+* r1: Character to write
+* 
+mtrrow:
+       li   r5,vdpwd
+       ori  r0,>4000                           ; Set the two MSbits to 01 for write
+       ai   r0,namet0
+       movb @r0lb,@vdpwa                       ; Send low byte of VDP RAM write address
+       movb r0,@vdpwa                          ; Send high byte of VDP RAM write address
+       movb r1,*r5
+       movb r1,*r5
+       ai   r0,namet1-namet0
+       movb @r0lb,@vdpwa                       ; Send low byte of VDP RAM write address
+       movb r0,@vdpwa                          ; Send high byte of VDP RAM write address
+       movb r1,*r5
+       movb r1,*r5
+       b    *r11
+* // MTRROW
+
+*********************************************************************
+* 
+* Display lives / cars
+* 
+dspliv:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       li   r0,32*12+26+namet0
+       bl   @vwad
+       bl   @dsplv0
+       ai   r0,namet1-namet0
+       bl   @vwad
+       bl   @dsplv0
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+dsplv0:
+       mov  @lives,r1
+       dec  r1
+       ci   r1,6
+       jlt  dsplv1
+       li   r1,5
+dsplv1:
+       li   r2,5
+       s    r1,r2
+       mov  r1,r1
+       jeq  dsplv3
+       jlt  dsplv3
+dsplv2:
+       movb @chcar,@vdpwd
+       dec  r1
+       jne  dsplv2
+dsplv3:
+       mov  r2,r2
+       jeq  dsplv5
+dsplv4:
+       movb @chspac,@vdpwd
+       dec  r2
+       jne  dsplv4
+dsplv5:
+       b    *r11
+* // DSPLIV
+
+*********************************************************************
+* 
+* Display progress indicator
+* 
+dsppgi:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       clr  r1
+       mov  @scrly,r2
+       li   r3,maph
+       div  r3,r1                              ; Calculate height of progress indicator
+       sla  r1,5                               ; Convert to character offset
+* Name table 0
+       li   r0,22*32+27+namet0
+       s    r1,r0
+       li   r3,vdpwd
+       bl   @vwad
+       movb @chpgi3,*r3
+       movb @chpgi4,*r3
+* Display character below PGI
+       ai   r0,32
+       bl   @vwad
+       movb @chpgi1,*r3
+       movb @chpgi2,*r3
+* Name table 1
+       ai   r0,namet1-namet0-32
+       bl   @vwad
+       movb @chpgi3,*r3
+       movb @chpgi4,*r3
+* Display character below PGI
+       ai   r0,32
+       bl   @vwad
+       movb @chpgi1,*r3
+       movb @chpgi2,*r3
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+
+* // DSPPGI
+
+*********************************************************************
+* 
+* Add to score
+* 
+* r0: Address of low-endian 6 byte digit sequence to add
+* 
+* r0-r4 are changed
+* 
+addscr:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       li   r1,score                           ; Address of score byte sequence
+       movb @3(r1),r13                         ; Save thousands digit
+       li   r2,6
+       clr  r3
+       clr  r4                                 ; Carry
+addsc1:
+       movb *r1,r3                             ; Read digit
+       ab   *r0+,r3                            ; Add digit
+       a    r4,r3                              ; Add old carry
+       ci   r3,>0a00                           ; Check for new carry
+       jlt  addsc2
+       li   r4,>0100                           ; Set carry
+       ai   r3,->0a00
+       jmp  addsc3
+addsc2:
+       clr  r4                                 ; Reset carry
+addsc3:
+       movb r3,*r1+                            ; Write back
+       dec  r2
+       jne  addsc1
+* Display score
+       li   r0,32*5+25                         ; Screen offset
+       li   r1,score
+       bl   @dspscr
+* Check for extra life
+       li   r1,score
+       cb   @3(r1),r13                         ; Check if thousands have changed
+       jeq  addsc4
+       dec  @xlfcnt                            ; Decrement extra life counter
+       jne  addsc4
+* Extra life when counter reaches zero
+       li   r0,xlfsco                          ; Reset extra life counter
+       mov  r0,@xlfcnt
+       inc  @lives
+       bl   @dspliv
+       bl   @plyxlf
+* Check for, and display, high score
+addsc4:
+       bl   @chkhgh
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // ADDSCR
+
+*********************************************************************
+* 
+* Check if score is larger than high score and display it if so
+* 
+chkhgh:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       li   r0,score+5
+       li   r1,hscore+5
+       li   r2,6
+chkhg1:
+       cb   *r0,*r1                            ; Check digit
+       jgt  newhgh
+       jlt  chkhge
+       dec  r0
+       dec  r1
+       dec  r2
+       jne  chkhg1
+       jmp  chkhge
+newhgh:
+       li   r0,score                           ; New high score
+       li   r1,hscore
+       mov  r2,3
+chkhg2:
+       mov  *r0+,*r1+                          ; Copy score to high score
+       dec  r2
+       jne  chkhg2
+       li   r0,32*2+25
+       li   r1,hscore
+       bl   @dspscr                            ; Display high score
+* Return
+chkhge:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // CHKHGH
+
+*********************************************************************
+* 
+* Display score
+* 
+* r0: Screen offset (characters) for displayed score
+* r1: Address of score data structure
+* 
+dspscr:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       ai   r1,5                               ; Begin at the end
+       li   r4,dspbuf                          ; Buffer for displayable characters
+       li   r2,6
+dspsc1:
+       movb *r1,r3                             ; Copy score digit
+       ai   r3,chzero*256                      ; Add offset for zero character
+       movb r3,*r4+                            ; Copy to display buffer
+       dec  r1
+       dec  r2
+       jne  dspsc1
+* Display score
+       ori  r0,>4000                           ; Set the two MSbits to 01 for write
+       li   r3,vdpwd
+       li   r1,dspbuf
+       ai   r0,namet0
+       movb @r0lb,@vdpwa                       ; Send low byte of VDP RAM write address
+       movb r0,@vdpwa                          ; Send high byte of VDP RAM write address
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       li   r1,dspbuf
+       ai   r0,namet1-namet0
+       movb @r0lb,@vdpwa                       ; Send low byte of VDP RAM write address
+       movb r0,@vdpwa                          ; Send high byte of VDP RAM write address
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // DSPSCR
+
+*********************************************************************
+* 
+* Display box
+* 
+* r0: Screen offset (characters) of upper left corner
+* r1: Width  (>=3)
+* r2: Height (>=3)
+* 
+* Modifies r0-r5
+* 
+dspbox:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       dect r1                                 ; Subtract columns for left and right
+       dect r2                                 ; Subtract rows for top and bottom
+* Name table 0
+       mov  r0,r3
+       ai   r0,namet0
+       bl   @dspbo1
+* Name table 1
+       mov  r3,r0
+       ai   r0,namet1
+       bl   @dspbo1
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* Display box in a single name table
+dspbo1:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* Top row
+       bl   @vwad                              ; Setup write address
+       movb @chtopl,@vdpwd
+       mov  r1,r4
+dspbo2:
+       movb @chtopm,@vdpwd
+       dec  r4
+       jne  dspbo2
+       movb @chtopr,@vdpwd
+* Middle rows
+       mov  r2,r5
+dspbo3:
+       ai   r0,32
+       bl   @vwad                              ; Setup write address
+       movb @chleft,@vdpwd
+       mov  r1,r4
+dspbo4:
+       movb @chspac,@vdpwd
+       dec  r4
+       jne  dspbo4
+       movb @chrght,@vdpwd
+       dec  r5
+       jne  dspbo3
+* Bottom row
+       ai   r0,32
+       bl   @vwad                              ; Setup write address
+       movb @chbotl,@vdpwd
+       mov  r1,r4
+dspbo5:
+       movb @chbotm,@vdpwd
+       dec  r4
+       jne  dspbo5
+       movb @chbotr,@vdpwd
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // DSPBOX
+
+*********************************************************************
+* 
+* Display ROAD HUNTER
+* 
+dsprh:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* Display ROAD
+       li   r0,8*32+25
+       li   r1,txtroa
+       li   r2,6
+       bl   @dsptxt
+* Display HUNTER
+       li   r0,9*32+25
+       li   r1,txthun
+       li   r2,6
+       bl   @dsptxt
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // DSPRH
+
+*********************************************************************
+* 
+* Display RASMUS 2014
+* 
+dspras:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* Display RASMUS
+       li   r0,8*32+25
+       li   r1,txtras
+       li   r2,6
+       bl   @dsptxt
+* Display 2014
+       li   r0,9*32+25
+       li   r1,txtyea
+       li   r2,6
+       bl   @dsptxt
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // DSPRAS
+
+*********************************************************************
+* 
+* Copy text from CPU RAM to both screen/name table buffers
+* 
+* r0: Screen offset (0 - 767)
+* r1: Source address in CPU RAM
+* r2: Number of characters to copy
+* 
+* Modifies r0-r5
+* 
+dsptxt:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  r1,r3                              ; Save source address
+       mov  r2,r4                              ; Save number of characters
+       ai   r0,namet0                          ; Add VDP RAM offset of first name table
+       bl   @vwad                              ; Setup write address
+       bl   @dsptx1
+       mov  r3,r1                              ; Restore source address
+       mov  r4,r2                              ; Restore number of characters
+       ai   r0,namet1-namet0                   ; Next name table buffer
+       bl   @vwad                              ; Setup write address
+       bl   @dsptx1
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+dsptx1:
+       movb *r1+,r5
+       cb   @space,r5                          ; Adjust character number of space
+       jne  dsptx2
+       movb @chspac,r5
+       jmp  dsptx3
+dsptx2:
+       ab   @choffs,r5                         ; Adjust character number
+dsptx3:
+       movb r5,@vdpwd
+       dec  r2
+       jne  dsptx1
+       b    *r11
+* // DSPTXT
+
+*********************************************************************
+* 
+* Wait for up or fire
+* 
+* r2: Number of frames to wait before giving up
+* 
+wtkey:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  r2,r6                              ; Vsync counter
+       li   r7,120                             ; Text toggle count down
+       seto r8                                 ; Text toggle flag
+* Read joystick
+wtkey0:
+       li   r12,>0024                          ; CRU address of the column decoder
+       li   r1,>0600                           ; Column 6, i.e joystick #1
+       ldcr r1,3                               ; Select it
+       li   r12,>0006                          ; Base CRU address for joystick 1
+       tb   4                                  ; Test up
+       jne  wtkey1
+       tb   0                                  ; Also test fire
+       jne  wtkey1
+* Read keyboard column 0 (Space)
+       clr  r1                                 ; Test column 0
+       li   r12,>0024                          ; Address for column selection
+       ldcr r1,3                               ; Select column
+       li   r12,>0006                          ; Address to read rows
+       stcr r13,8
+       andi r13,>0200                          ; Mask off space bar
+       jeq  wtkey1
+* Check for vsync
+       movb @vdpsta,r0
+       andi r0,>8000
+       jeq  wtkey0
+       dec  r7
+       jne  wtkey4
+* Display text
+       li   r7,120                             ; Reset counter
+       inv  r8                                 ; Toggle flag
+       jlt  wtkey3
+       bl   @dspras
+       jmp  wtkey4
+wtkey3:
+       bl   @dsprh
+* Loop
+wtkey4:
+       dec  r6
+       jne  wtkey0
+       bl   @dsprh
+       clr  r0                                 ; Signal no press
+       jmp  wtkey2
+wtkey1:
+       bl   @dsprh
+       seto r0                                 ; Signal press
+* Return
+wtkey2:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // WTKEY
+
+*********************************************************************
+* 
+* Generate a pseudo random number
+* 
+* On return r0 contains the number, which is also stored at @RANDNO
+* 
+* r14 and r15 are modified
+* 
+rand:
+       li   r14,28643                          ; A prime number to multiply by
+       mpy  @randno,r14                        ; Multiply by last random number
+       ai   r15,31873                          ; Add a prime number
+       mov  @tick,r0                           ; Use the VSYNC tick to mix it up a little
+* ANDI  r0,>000F      * Check if shift count is 0
+* JEQ  RAND1        * A 0 count means shift 16, which is a wash
+       src  r15,0                              ; Mix up the number to break odd/even pattern
+rand1:
+       mov  r15,@randno                        ; Save this number for next time
+       mov  r15,r0
+       b    *r11
+* // RAND
+
+*********************************************************************
+* 
+* Set graphics mode
+* 
+gmode:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       li   r0,>0000                           ; Reg 0: Graphics 1 mode,
+       bl   @vwtr                              ; external video off.
+       li   r0,>01c2                           ; Reg 1: 16K, display on, no interrupt,
+       bl   @vwtr                              ; size = 1, mag = 0.
+       li   r0,>0208                           ; Reg 2: Screen Image (Name) Table
+       bl   @vwtr                              ; NAMET0 = >2000 (>08 x >400), >300 bytes
+       li   r0,>038c                           ; Reg 3: Color Table
+       bl   @vwtr                              ; COLRTB = >2300 (>8C x >40), >20 bytes
+       li   r0,>0400                           ; Reg 4: Pattern Table
+       bl   @vwtr                              ; PTRNT0 = >0000, >0800 bytes
+       li   r0,>054e                           ; Reg 5: Sprite Attribute Table
+       bl   @vwtr                              ; SPRATB = >2700 (>4E * >80)
+       li   r0,>0605                           ; Reg 6: Sprite Pattern Table
+       bl   @vwtr                              ; SPRPTB = >2800 (>05 * >800)
+       li   r0,>0700                           ; Reg 7: text-mode color and backdrop color
+       bl   @vwtr                              ; Black border
+* Clear VDP RAM
+       clr  r0
+       clr  r1
+       li   r2,>3000
+       bl   @vsmw
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // GMODE
+
+*********************************************************************
+* 
+* VDP Multiple Lines Write
+* 
+* r0   VDP write address
+* r1   Starting read address in CPU RAM
+* r2   Number of lines (of 24 bytes) to send to the VDP RAM
+* 
+* r0 is next write address, r1 address of last byte read, r2 is 0, r3 is modified, r4 is 0
+* 
+vmlw:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       li   r3,vdpwd
+       ori  r0,>4000                           ; Set the two MSbits to 01 for write
+vmlw1:
+       movb @r0lb,@vdpwa                       ; Send low byte of VDP RAM write address
+       movb r0,@vdpwa                          ; Send high byte of VDP RAM write address
+       li   r4,3                               ; 4 loops per line
+       bl   @vm8bw
+       ai   r0,32
+       dec  r2
+       jne  vmlw1
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // VMLW
+
+*********************************************************************
+* 
+* Write sequences of 8 bytes to the address pointed to by r3
+* Copied to scratch pad as VM8BW
+* 
+* r1   Source adddress
+* r3   Destination address (VDPWD)
+* r4   Number of sequences to write
+* 
+vm8bw8:
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       movb *r1+,*r3                           ; Write byte to VDP RAM
+       dec  r4
+       jne  vm8bw8
+       b    *r11
+vm8bwe:
+       equ  $
+* // WM8BW
+
+*********************************************************************
+* 
+* VDP Set Write Address
+* 
+* r0   Address to set VDP address counter to
+* 
+vwad:
+       swpb r0
+       movb r0,@vdpwa                          ; Send low byte of VDP RAM write address
+       swpb r0
+       ori  r0,>4000                           ; Set the two MSbits to 01 for write
+       movb r0,@vdpwa                          ; Send high byte of VDP RAM write address
+       andi r0,>3fff                           ; Restore R0 top two MSbits
+       b    *r11
+* // VWAD
+
+*********************************************************************
+* 
+* VDP Single Byte Write
+* 
+* r0   Write address in VDP RAM
+* r1   MSB of r1 sent to VDP RAM
+* 
+* r0 is modified, but can be restored with: ANDI r0,>3FFF
+* 
+vsbw:
+       swpb r0
+       movb r0,@vdpwa                          ; Send low byte of VDP RAM write address
+       swpb r0
+       ori  r0,>4000                           ; Set read/write bits 14 and 15 to write (01)
+       movb r0,@vdpwa                          ; Send high byte of VDP RAM write address
+       movb r1,@vdpwd                          ; Write byte to VDP RAM
+       b    *r11
+* // VSBW
+
+*********************************************************************
+* 
+* VDP Single Byte Multiple Write
+* 
+* r0   Starting write address in VDP RAM
+* r1   MSB of r1 sent to VDP RAM
+* r2   Number of times to write the MSB byte of r1 to VDP RAM
+* 
+* r0 is modified, but can be restored with: ANDI r0,>3FFF
+* 
+vsmw:
+       swpb r0
+       movb r0,@vdpwa                          ; Send low byte of VDP RAM write address
+       swpb r0
+       ori  r0,>4000                           ; Set read/write bits 14 and 15 to write (01)
+       movb r0,@vdpwa                          ; Send high byte of VDP RAM write address
+vsmwlp:
+       movb r1,@vdpwd                          ; Write byte to VDP RAM
+       dec  r2                                 ; Byte counter
+       jne  vsmwlp                             ; Check if done
+       b    *r11
+* // VSMW
+
+*********************************************************************
+* 
+* VDP Multiple Byte Write
+* 
+* r0   Starting write address in VDP RAM
+* r1   Starting read address in CPU RAM
+* r2   Number of bytes to send to the VDP RAM
+* 
+* r0 is modified, but can be restored with: ANDI r0,>3FFF
+* 
+vmbw:
+       swpb r0
+       movb r0,@vdpwa                          ; Send low byte of VDP RAM write address
+       swpb r0
+       ori  r0,>4000                           ; Set read/write bits 14 and 15 to write (01)
+       movb r0,@vdpwa                          ; Send high byte of VDP RAM write address
+vmbwlp:
+       movb *r1+,@vdpwd                        ; Write byte to VDP RAM
+       dec  r2                                 ; Byte counter
+       jne  vmbwlp                             ; Check if done
+       b    *r11
+* // VMBW
+
+*********************************************************************
+* 
+* VDP Single Byte Read
+* 
+* r0   Read address in VDP RAM
+* r1   MSB of r1 set to byte from VDP RAM
+* 
+vsbr:
+       swpb r0
+       movb r0,@vdpwa                          ; Send low byte of VDP RAM write address
+       swpb r0
+       movb r0,@vdpwa                          ; Send high byte of VDP RAM write address
+       movb @vdprd,r1                          ; Read byte from VDP RAM
+       b    *r11
+* // VSBR
+
+*********************************************************************
+* 
+* VDP Multiple Byte Read
+* 
+* r0   Starting read address in VDP RAM
+* r1   Starting write address in CPU RAM
+* r2   Number of bytes to read from VDP RAM
+* 
+vmbr:
+       swpb r0
+       movb r0,@vdpwa                          ; Send low byte of VDP RAM write address
+       swpb r0
+       movb r0,@vdpwa                          ; Send high byte of VDP RAM write address
+vmbrlp:
+       movb @vdprd,*r1+                        ; Read byte from VDP RAM
+       dec  r2                                 ; Byte counter
+       jne  vmbrlp                             ; Check if finished
+       b    *r11
+* // VMBR
+
+*********************************************************************
+* 
+* VDP Write To Register
+* 
+* r0 MSB  VDP register to write to
+* r0 LSB  Value to write
+* 
+vwtr:
+       swpb r0
+       movb r0,@vdpwa                          ; Send low byte (value) to write to VDP register
+       swpb r0
+       ori  r0,>8000                           ; Set up a VDP register write operation (10)
+       movb r0,@vdpwa                          ; Send high byte (address) of VDP register
+       b    *r11
+* // VWTR
+
+*********************************************************************
+* 
+* Play music, channel 1 and 2 + drums 4
+* 
+plymus:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       li   r0,sndtrb
+       li   r1,1
+       bl   @plysnd
+       li   r0,sndbas
+       li   r1,2
+       bl   @plysnd
+       li   r0,snddrm
+       li   r1,4
+       bl   @plysnd
+* Return
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* // PLYMUS
+
+*********************************************************************
+* 
+* Play zap sound, channel 0
+* 
+plyzap:
+       li   r0,sndzap
+       li   r1,0
+       jmp  plysnd
+* // PLYZAP
+
+*********************************************************************
+* 
+* Play zzz sound, channel 0
+* 
+plyzzz:
+       li   r0,sndzzz
+       li   r1,0
+       jmp  plysnd
+* // PLYZZZ
+
+*********************************************************************
+* 
+* Play bing sound, channel 0
+* 
+plybng:
+       li   r0,sndbng
+       li   r1,0
+       jmp  plysnd
+* // PLYBNG
+
+*********************************************************************
+* 
+* Play extra life sound, channel 0
+* 
+plyxlf:
+       li   r0,sndxlf
+       li   r1,0
+       jmp  plysnd
+* // PLYXLF
+
+*********************************************************************
+* 
+* Play bonus sound, channel 0
+* 
+plybon:
+       li   r0,sndbon
+       li   r1,0
+       jmp  plysnd
+* // PLYBON
+
+*********************************************************************
+* 
+* Play warning sound, channel 0
+* 
+plywrn:
+       li   r0,sndwrn
+       li   r1,0
+       jmp  plysnd
+* // PLYWRN
+
+*********************************************************************
+* 
+* Play boing sound, channel 0
+* 
+plyboi:
+       li   r0,sndboi
+       li   r1,0
+       jmp  plysnd
+* // PLYBOI
+
+*********************************************************************
+* 
+* Play explosion sound 1, channel 3
+* 
+plyxp1:
+       li   r0,sndxp1
+       li   r1,3
+       jmp  plysnd
+* // PLYXP1
+
+*********************************************************************
+* 
+* Play explosion sound 2, channel 3
+* 
+plyxp2:
+       li   r0,sndxp2
+       li   r1,3
+       jmp  plysnd
+* // PLYXP2
+
+*********************************************************************
+* 
+* Play sound
+* 
+* r0:  Address of sound data to play
+* r1:  Channel to use (0-3)
+* 
+plysnd:
+       sla  r1,1
+       mov  r0,@sndad0(r1)
+       mov  @one,@sndct0(r1)
+       b    *r11
+* // PLYSND
+
+*********************************************************************
+* 
+* Mute sound
+* 
+mtesnd:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       clr  @sndad0                            ; Sound address channel 0
+       clr  @sndad1                            ; Sound address channel 1
+       clr  @sndad2                            ; Sound address channel 2
+       clr  @sndad3                            ; Sound address channel 3
+       clr  @sndad4                            ; Sound address channel 4
+       clr  @sndrp0                            ; Repeat counters
+       clr  @sndrp1
+       clr  @sndrp2
+       clr  @sndrp3
+       clr  @sndrp4
+       li   r0,mutetb                          ; Mute all
+       movb *r0+,@sound
+       movb *r0+,@sound
+       movb *r0+,@sound
+       movb *r0+,@sound
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+mutetb:
+       byte >9f,>bf,>df,>ff
+* //MTESND
+
+*********************************************************************
+* 
+* Sound player
+* 
+* Modifies r0-r3
+* 
+sndplr:
+       li   r2,8                               ; R2 is the channel offset
+sndpl0:
+       mov  @sndad0(r2),r0                     ; R0 is the source address
+       jeq  sndpl3                             ; Skip channel if zero
+       dec  @sndct0(r2)                        ; Decrement counter
+       jgt  sndpl3                             ; Skip channel if counter not zero
+sndplb:
+       clr  r1
+       movb *r0+,r1                            ; Get number of bytes to read
+       jne  sndpl4                             ; If zero it's a repeat, otherwise call or normal
+* Repeat command found
+       movb *r0+,r3                            ; Get loop address MSB
+       movb *r0+,@r3lb                         ; Get loop address LSB
+       mov  @sndrp0(r2),r1                     ; Get repeat counter
+       jne  sndpl6                             ; Check for repeat in progress
+* New repeat
+       movb *r0,r1                             ; Get 'number of repeats' byte
+       ci   r1,>ff00                           ; If repeat counter is >FF it's an infinite repeat
+       jeq  sndpl8                             ; Then don't record it
+       movb r1,@sndrp0+1(r2)                   ; Set repeat counter
+sndpl8:
+       mov  r3,@sndad0(r2)                     ; Set player address to loop address
+       jmp  sndpl0
+* Repeat in progress
+sndpl6:
+       dec  @sndrp0(r2)                        ; Decrement repeat counter
+       jeq  sndpl7                             ; Check if last repetition
+       mov  r3,@sndad0(r2)                     ; Set player address to loop address
+       jmp  sndpl0
+* Repeat done
+sndpl7:
+       inc  r0                                 ; Skip 'number of repeats' byte
+       mov  r0,@sndad0(r2)
+       jmp  sndpl0
+sndpl4:
+       jgt  sndpl5                             ; If positive it's normal sound bytes
+* Call or return found
+       ci   r1,>ff00                           ; Check if it's a call
+       jne  sndpla
+* Call found
+       movb *r0+,r3                            ; Get call address MSB
+       movb *r0+,@r3lb                         ; Get call address LSB
+       mov  r3,@sndad0(r2)                     ; Set player address to call address
+       mov  r0,@sndra0(r2)                     ; Set return address
+       jmp  sndpl0                             ; Next command
+* Return found
+sndpla:
+       mov  @sndra0(r2),@sndad0(r2)            ; Set player address to return address
+       jmp  sndpl0                             ; Next command
+* Play sound
+sndpl5:
+       swpb r1
+**** Special code to stop drums during explosions (channel 3)
+       ci   r2,8                               ; Check for channel 4 (drums)
+       jne  sndpl1                             ; If not, move on to play sound
+       mov  @sndad3,r3                         ; Check if channel 3 is active
+       jeq  sndpl1                             ; If not, move on to play sound
+* Skip sound bytes  if channel 3 is active
+       a    r1,r0
+       clr  r1
+       jmp  sndpl9
+**** Special code end
+sndpl1:
+       movb *r0+,@sound                        ; Play
+       dec  r1
+       jne  sndpl1
+sndpl9:
+       movb *r0+,r1                            ; Read duration
+       jne  sndpl2
+* End of sound data
+       clr  @sndad0(r2)
+       jmp  sndpl3
+* More sound data
+sndpl2:
+       swpb r1
+       mov  r1,@sndct0(r2)
+       mov  r0,@sndad0(r2)
+sndpl3:
+       dect r2
+       jlt  sndple
+       jmp  sndpl0
+sndple:
+       b    *r11
+* // SNDPLR
+
+*********************************************************************
+* 
+* Swap contents of PAD RAM and buffer
+* Must be called from a workspace outside PAD
+* 
+swppad:
+       li   r0,pad
+       li   r1,padbuf
+       li   r2,128
+swppd1:
+       mov  *r0,r3
+       mov  *r1,*r0+
+       mov  r3,*r1+
+       dec  r2
+       jne  swppd1
+       b    *r11
+* // SWPPAD
+
+*********************************************************************
+* 
+* Read map file into CPU RAM at MAP_A / MAP_B
+* 
+rdmap:
+       mov  r11,*r10+                          ; Push return address onto the stack
+* Set file name number
+       clr  r0
+       mov  @level,r1
+       li   r2,nmaps
+       div  r2,r0                              ; Wrap to available maps
+       c    @memmap,r1                         ; Check if map is already loaded
+       jeq  rdmap1                             ; Return if it is
+       mov  r1,@memmap                         ; Store the number of the new map
+       .ifeq cart,1
+       mov  r1,r12
+       sla  r12,4
+       ai   r12,cmap1a
+       bl   @romcpy
+       ai   r12,csize
+       bl   @romcpy
+       jmp  rdmap1
+       .else 
+       ai   r1,49
+       swpb r1
+       movb r1,@fileno
+* Setup variables and callback
+       li   r1,map_a                           ; Destination address
+       mov  r1,@dstadr
+       li   r1,108                             ; 108 records x 128 bytes = 13.5k
+       mov  r1,@reccnt
+       li   r1,mapcb
+       mov  r1,@filecb                         ; Setup callback from RDFILE
+       li   r0,fnmap
+       li   r2,6
+* Call the generic file reading routine
+       bl   @rdfile
+       jmp  rdmap3
+       .endif 
+* Wait 2 seconds to compensate for missing loading time
+rdmap1:
+       li   r2,120
+rdmap2:
+       bl   @vsync
+       dec  r2
+       jne  rdmap2
+rdmap3:
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+* Callback
+mapcb:
+       mov  r11,@rtaddr                        ; Save return address. No stack!
+       li   r0,pabbuf
+       mov  @dstadr,r1
+       li   r2,128
+       bl   @vmbr                              ; Copy to CPU RAM
+       mov  r1,@dstadr
+       mov  @reccnt,r0                         ; Switch to upper memory
+       ci   r0,46                              ; when there are 45 records left
+       jne  mapcb1
+       li   r1,map_b                           ; Destination address
+       mov  r1,@dstadr
+mapcb1:
+       mov  @rtaddr,r11
+       b    *r11
+* // RDMAP
+
+***************************************************************
+* 
+       .ifeq cart,1
+* 
+***************************************************************
+
+***************************************************************
+* 
+* ROM to RAM copy
+* 
+* r12: Contains address of copy info structure
+* 
+* Copy info structure
+cbank:
+       equ  0                                  ; Bank select address
+coffs:
+       equ  2                                  ; Bank offset
+clen:
+       equ  4                                  ; Total size
+cdest:
+       equ  6                                  ; Destination address
+csize:
+       equ  8                                  ; Structure size
+* 
+* Single cart
+* BOFFS  EQU  >2A          * Bank offset where data starts
+* BOFFSL EQU  >116        * Bank offset for highest bank
+* Scrolling trilogy cart
+boffs:
+       equ  >64                                ; Bank offset where data starts
+boffsl:
+       equ  >170                               ; Bank offset for highest bank
+* 
+bsize:
+       equ  >2000                              ; Bank size
+bdata:
+       equ  bsize-boffs                        ; Bank space for data and programs
+* 
+romcpy:
+       mov  @cbank(r12),r3                     ; Bank
+       jeq  romcp4                             ; Skip if null
+       li   r0,>6000                           ; Source address
+       a    @coffs(r12),r0                     ; Add offset in bank
+       mov  @clen(r12),r4                      ; Total bytes to copy
+       li   r2,bsize                           ; Max bytes to copy in bank
+       s    @coffs(r12),r2                     ; Bank size minus offset
+       mov  @cdest(r12),r1                     ; Destination address
+romcp1:
+       mov  *r3,*r3                            ; Select ROM bank
+romcp2:
+       movb *r0+,*r1+                          ; Copy byte to RAM
+       dec  r4
+       jeq  romcp4                             ; End of data?
+       dec  r2
+       jne  romcp2                             ; End of bank?
+       dect r3                                 ; Next bank
+       li   r2,bdata                           ; Max bytes to copy in bank
+       ci   r3,>6000                           ; Check for highest bank
+       jeq  romcp3
+       li   r0,>6000+boffs                     ; Reset source address
+       jmp  romcp1
+romcp3:
+       li   r0,>6000+boffsl                    ; Reset source address
+       jmp  romcp1
+romcp4:
+       b    *r11                               ; Return
+
+* Single cart
+* CMAP1A DATA >600e,>002a,>1f80,MAP_A
+* CMAP1B DATA >600e,>1faa,>1680,MAP_B
+* CMAP2A DATA >600c,>1654,>1f80,MAP_A
+* CMAP2B DATA >600a,>15fe,>1680,MAP_B
+* CMAP3A DATA >6008,>0ca8,>1f80,MAP_A
+* CMAP3B DATA >6006,>0c52,>1680,MAP_B
+
+* Scrolling trilogy cart
+cmap1a:
+       data >6010,>1f48,>1f80,map_a
+cmap1b:
+       data >600e,>1f2c,>1680,map_b
+cmap2a:
+       data >600c,>1610,>1f80,map_a
+cmap2b:
+       data >600a,>15f4,>1680,map_b
+cmap3a:
+       data >6008,>0cd8,>1f80,map_a
+cmap3b:
+       data >6006,>0cbc,>1680,map_b
+
+* // ROMCPY
+
+***************************************************************
+* 
+       .else 
+* 
+***************************************************************
+
+*********************************************************************
+* 
+* Read file
+* 
+* r0:  Address of file name
+* r2:  Length of file name
+* @RECCNT contains number of records to read
+* @FILECB contains address of routine to call when a record is read
+* 
+rdfile:
+       mov  r11,*r10+                          ; Push return address onto the stack
+       mov  r2,r1
+       ai   r1,5
+       mov  r1,@filenl                         ; Set file name length
+       li   r1,filenm
+setfnm:
+       movb *r0+,*r1+                          ; Set the file name
+       dec  r2
+       jne  setfnm
+       li   r0,>2000                           ; Pad with spaces
+setfn1:
+       ci   r1,pabdte
+       jeq  setfn2
+       movb r0,*r1+
+       jmp  setfn1
+* Change to temporary workspace
+setfn2:
+       lwpi tmpws
+* Swap back original contents of PAD RAM
+       bl   @swppad
+* Copy PAB data into VDP RAM
+       li   r0,pab
+       li   r1,pabdat
+       li   r2,pabdte-pabdat
+       bl   @vmbw
+* Open
+       li   r0,pab+9                           ; Pointer to name length
+       mov  r0,@>8356                          ; Store in >8356
+       blwp @dsrlnk                            ; Open file
+       data 8
+* Check for errors
+       li   r0,pab+1
+       bl   @vsbr
+       andi r1,>e000                           ; Mask off error code
+       jne  ferror
+* Read
+       li   r0,pab
+       li   r1,>0200                           ; READ op-code
+       bl   @vsbw                              ; Change op-code to READ
+rdloop:
+       li   r0,pab+9                           ; Pointer to name length
+       mov  r0,@>8356                          ; Store in >8356
+       blwp @dsrlnk                            ; Read record from file
+       data 8
+       mov  @filecb,r0
+       bl   *r0                                ; Call callback routine
+       dec  @reccnt
+       jne  rdloop
+* Close
+       li   r0,pab
+       li   r1,>0100                           ; CLOSE op-code
+       bl   @vsbw                              ; Change op-code to READ
+       li   r0,pab+9                           ; Pointer to name length
+       mov  r0,@>8356                          ; Store in >8356
+       blwp @dsrlnk                            ; Close file
+       data 8
+* Swap contents of PAD RAM
+rdend:
+       bl   @swppad
+* Restore workspace
+       lwpi wrksp
+       dect r10                                ; Pop return address off the stack
+       mov  *r10,r11
+       b    *r11
+ferror:
+       srl  r1,5                               ; Convert error code to displayable char
+       ai   r1,chzero*256
+       movb r1,@txterr+12
+* Display error
+       li   r0,10*32+9                         ; Box
+       li   r1,14
+       li   r2,3
+       bl   @dspbox
+       li   r0,11*32+10                        ; Text
+       li   r1,txterr
+       li   r2,12
+       bl   @dsptxt
+* Wait for quit
+       clr  r1                                 ; Test column 0
+       li   r12,>0024                          ; Address for column selection
+       ldcr r1,3                               ; Select column
+       li   r12,>0006                          ; Address to read rows
+wtquit:
+       stcr r1,8
+       andi r1,>1100
+       jne  wtquit
+* Quit
+quit:
+       bl   @mtesnd
+       lwpi tmpws
+       bl   @swppad
+       lwpi >83e0
+       limi 2
+       blwp @>0000
+* // RDFILE
+
+pabdat:
+       data >000c                              ; Op-code 0 OPEN, Flags: Fixed, Int, Input, Seq
+       data pabbuf                             ; Data buffer address (VDP RAM)
+       data >8000                              ; 128 bytes record length
+       data >0000                              ; Record number (not used for sequential)
+filenl:
+       data >0009                              ; File name length
+filedv:
+       text 'DSK1.'                            ; File device
+filenm:
+       text '          '                       ; File name
+pabdte:
+       equ  $
+fnmap:
+       text 'RDMAP'                            ; Map file name
+fileno:
+       text '1'                                ; Map file number
+
+*********************************************************************
+* 
+* All-purpose 'DSRLNK'
+* 
+* Found at http://atariage.com/forums/topic/163692-ea-file-access/#entry2071618
+* 
+dregs:
+       bss  >20
+dsrlnk:
+       data dregs,dsr1
+save1:
+       data >0000
+save2:
+       data >0000
+save3:
+       data >0000
+save4:
+       data >0000
+save5:
+       data >0000
+nambuf:
+       bss  6                                  ; SINCE WE KNOW WERE USING "DSKn."
+* 
+hex20:
+       data >2020
+hexaa:
+       data >aaaa
+period:
+       byte '.','.'
+h2000:
+       data >2000
+cyc1:
+       data 0
+h1300:
+       data >1300
+
+dsr1:
+       mov  *r14+,r5
+       szcb @hex20,r15
+       mov  @>8356,r0
+       mov  r0,r9
+       ai   r9,>fff8
+       swpb r0
+       movb r0,@vdpwa
+       swpb r0
+       movb r0,@vdpwa
+       nop  
+       movb @vdprd,r1
+       movb r1,r3
+       srl  r3,>8
+       seto r4
+       li   r2,nambuf
+dloop1:
+       inc  r0
+       inc  r4
+       c    r4,r3
+       jeq  djump1
+       swpb r0
+       movb r0,@vdpwa
+       swpb r0
+       movb r0,@vdpwa
+       nop  
+       movb @vdprd,r1
+       movb r1,*r2+
+       cb   r1,@period
+       jne  dloop1
+djump1:
+       mov  r4,r4
+       jeq  djump6
+       ci   r4,>0007
+       jgt  djump6
+       clr  @>83d0
+       mov  r4,@>8354
+       mov  r4,@save3
+       inc  r4
+       a    r4,@>8356
+       mov  @>8356,@save4
+srom:
+       lwpi >83e0
+       clr  r1
+       mov  @h2000,@cyc1
+       li   r12,>1100
+       jmp  dloop2
+srom1:
+       li   r12,>0f00
+       mov  @h1300,@cyc1
+dloop2:
+       mov  r12,r12
+       jeq  djump2
+       sbz  >00
+djump2:
+       ai   r12,>0100
+       clr  @>83d0
+       ci   r12,>2000
+       jeq  srom1
+       c    r12,@cyc1
+       jeq  djump5
+       mov  r12,@>83d0
+       sbo  >00
+       li   r2,>4000
+       cb   *r2,@hexaa
+       jne  dloop2
+       a    @5*2+dregs,r2
+       jmp  djump3
+dloop3:
+       mov  @>83d2,r2
+       sbo  >00
+djump3:
+       mov  *r2,r2
+       jeq  dloop2
+       mov  r2,@>83d2
+       inct r2
+       mov  *r2+,r9
+       movb @>8355,r5
+       jeq  djump4
+       cb   r5,*r2+
+       jne  dloop3
+       srl  r5,>8
+       li   r6,nambuf
+dloop4:
+       cb   *r6+,*r2+
+       jne  dloop3
+       dec  r5
+       jne  dloop4
+djump4:
+       inc  r1
+       mov  r1,@save5
+       mov  r9,@save2
+       mov  r12,@save1
+       bl   *r9
+       jmp  dloop3
+       sbz  >00
+       lwpi dregs
+       mov  r9,r0
+       swpb r0
+       movb r0,@vdpwa
+       swpb r0
+       movb r0,@vdpwa
+       nop  
+       movb @vdprd,r1
+       srl  r1,>d
+       jne  djump7
+       rtwp 
+djump5:
+       lwpi dregs
+djump6:
+       clr  r1
+djump7:
+       swpb r1
+       movb r1,*r13
+       socb @hex20,r15
+       rtwp 
+* // DSRLNK
+
+*********************************************************************
+* 
+* Boot tracking
+* 
+* Code copied more or less verbatim from:
+* 1.7. The Art Of Assembly - Part 7. Why A Duck?
+* By Bruce Harrison 1991
+* 
+* THE SECTION HERE AT LABEL OPEN PERFORMS "BOOT TRACKING"
+* THAT IS, IT TELLS OUR PROGRAM WHICH DRIVE IT WAS LOADED FROM
+* 
+boottr:
+       mov  @>83d0,r12                         ; GET THE CRU BASE IN R12
+       mov  @>83d2,r9                          ; GET THE ROM ADDRESS FOR DEVICE
+       sbo  0                                  ; ENABLE THE ROM
+       ai   r9,4                               ; ADDING FOUR PUTS US AT THE LENGTH BYTE
+       movb *r9+,r4                            ; PLACE THAT IN R4 AND INCREMENT R9
+       srl  r4,8                               ; RIGHT JUSTIFY LENGTH IN R4
+       li   r10,filedv                         ; POINT TO TEXT BUFFER
+movit:
+       movb *r9+,*r10+                         ; MOV ONE BYTE FROM ROM TO TEXT BUFFER
+       dec  r4                                 ; FINISHED?
+       jne  movit                              ; NO, DO ANOTHER BYTE
+       sbz  0                                  ; DISABLE THE ROM
+       b    *r11                               ; BRANCH TO NEXT SECTION OF CODE
+* // BOOTTR
+
+***************************************************************
+* 
+       .endif 
+* 
+***************************************************************
+
+*********************************************************************
+* 
+* Data section
+* 
+
+* Misc variables
+vdptop:
+       data >0000                              ; Copy of 'Highest available address of VDP RAM' from >8370
+reccnt:
+       data >0000                              ; Record counter for disk access
+dstadr:
+       data >0000                              ; Destination buffer address for disk access
+filecb:
+       data >0000                              ; Address of file read callback routine
+rtaddr:
+       data >0000                              ; For storing return address when stack unavailable
+memmap:
+       data -1                                 ; The currently loaded map
+
+* Sound player
+sndct0:
+       data 0                                  ; Sound player counter channel 0
+sndct1:
+       data 0                                  ; Sound player counter channel 1
+sndct2:
+       data 0                                  ; Sound player counter channel 2
+sndct3:
+       data 0                                  ; Sound player counter channel 3
+sndct4:
+       data 0                                  ; Sound player counter channel 4
+sndrp0:
+       data 0                                  ; Sound player repeat counter channel 0
+sndrp1:
+       data 0                                  ; Sound player repeat counter channel 1
+sndrp2:
+       data 0                                  ; Sound player repeat counter channel 2
+sndrp3:
+       data 0                                  ; Sound player repeat counter channel 3
+sndrp4:
+       data 0                                  ; Sound player repeat counter channel 4
+sndra0:
+       data 0                                  ; Sound player return address channel 0
+sndra1:
+       data 0                                  ; Sound player return address channel 1
+sndra2:
+       data 0                                  ; Sound player return address channel 2
+sndra3:
+       data 0                                  ; Sound player return address channel 3
+sndra4:
+       data 0                                  ; Sound player return address channel 4
+
+* Scores
+* Stored as low-endian 6 byte digit sequences
+score:
+       byte 0,0,0,0,0,0                        ; Score current player
+hscore:
+       byte 0,0,0,5,0,0                        ; High score
+dspbuf:
+       bss  6                                  ; Display buffer
+sc0000:
+       byte 0,0,0,0,0,0                        ; 0 points
+sc0010:
+       byte 0,1,0,0,0,0                        ; 10 points
+sc0025:
+       byte 5,2,0,0,0,0                        ; 25 points
+sc0050:
+       byte 0,5,0,0,0,0                        ; 50 points
+sc0075:
+       byte 5,7,0,0,0,0                        ; 75 points
+sc0100:
+       byte 0,0,1,0,0,0                        ; 100 points
+
+
+space:
+       byte 32
+chpgi1:
+       byte 203
+chpgi2:
+       byte 204
+chpgi3:
+       byte 253
+chpgi4:
+       byte 254
+chspac:
+       byte 207
+chtopl:
+       byte 240
+chtopm:
+       byte 241
+chtopr:
+       byte 242
+chleft:
+       byte 243
+chrght:
+       byte 244
+chbotl:
+       byte 245
+chbotm:
+       byte 246
+chbotr:
+       byte 247
+chcar:
+       byte 255
+
+choffs:
+       byte chzero-48
+
+txtlod:
+       text 'LOADING'
+txtroa:
+       text '=ROAD='
+txthun:
+       text 'HUNTER'
+txtras:
+       text 'RASMUS'
+txtyea:
+       text '=2014='
+txtrdy:
+       text 'GET READY'
+txtdmo:
+       text 'DEMO MODE'
+txtgmo:
+       text 'GAME OVER'
+txtoof:
+       text 'OUT OF FUEL'
+txtooc:
+       text 'OUT OF CARS'
+txttrk:
+       text 'TRACK COMPLETED'
+txterr:
+       text 'FILE ERROR 0'
+
+* Initial car y map coordinates
+caryi:
+       data 192-starty
+       data 192-starty+24,192-starty+24
+       data 192-starty+48,192-starty+48
+       data 192-starty+72,192-starty+72
+
+* Car paths
+cpthdx:
+       equ  0                                  ; X increment
+cpthsp:
+       equ  1                                  ; Sprite pattern
+cpthsz:
+       equ  2                                  ; Structure size
+* Spin on the spot
+cpath0:
+       byte 0,spcr70,0,spcr70
+       byte 0,spcr60,0,spcr60
+       byte 0,spcr50,0,spcr50
+       byte 0,spcr40,1,spcr40
+       byte 0,spcr30,0,spcr30
+       byte 0,spcr20,0,spcr20
+       byte 0,spcr10,0,spcr10
+       byte 0,spcr00,1,spcr00
+       byte >c0,00
+* Tilt right
+cpath1:
+       byte 4,spcr70,2,spcr70
+       byte 2,spcr70,1,spcr70
+       byte 1,spcr70,1,spcr00
+       byte 1,spcr00,1,spcr00
+* BYTE 1,SPCr00,1,SPCr00
+* BYTE 1,SPCr00,1,SPCr00
+       byte >c0,00
+* Tilt left
+cpath2:
+       byte -4,spcr10,-2,spcr10
+       byte -2,spcr10,-1,spcr10
+       byte -1,spcr10,-1,spcr00
+       byte -1,spcr00,-1,spcr00
+* BYTE -1,SPCr00,-1,SPCr00
+* BYTE -1,SPCr00,-1,SPCr00
+       byte >c0,00
+* Full spin right
+cpath3:
+       byte 4,spcr70,2,spcr70
+       byte 2,spcr60,1,spcr60
+       byte 1,spcr50,1,spcr50
+       byte 1,spcr40,1,spcr40
+       byte 1,spcr30,1,spcr30
+       byte 1,spcr20,1,spcr20
+       byte 1,spcr10,1,spcr10
+       byte 1,spcr00,1,spcr00
+       byte >c0,00
+* Full spin left
+cpath4:
+       byte -4,spcr10,-2,spcr10
+       byte -2,spcr20,-1,spcr20
+       byte -1,spcr30,-1,spcr30
+       byte -1,spcr40,-1,spcr40
+       byte -1,spcr50,-1,spcr50
+       byte -1,spcr60,-1,spcr60
+       byte -1,spcr70,-1,spcr70
+       byte -1,spcr00,-1,spcr00
+       byte >c0,00
+* Small movement right
+cpath5:
+       byte 2,spcr00,1,spcr00
+       byte 1,spcr00,1,spcr00
+       byte >c0,00
+* Small movement left
+cpath6:
+       byte -2,spcr00,-1,spcr00
+       byte -1,spcr00,-1,spcr00
+       byte >c0,00
+* Explosion 1
+cpath7:
+       byte 0,spex00,0,spex00
+       byte 0,spex00,0,spex00
+       byte 0,spex10,0,spex10
+       byte 0,spex10,0,spex10
+       byte 0,spex20,0,spex20
+       byte 0,spex20,0,spex20
+       byte 0,spex30,0,spex30
+       byte 0,spex30,0,spex30
+       byte 0,spem00,>c0,00
+* Explosion 2
+cpath8:
+       byte 1,spex00,1,spex00
+       byte 1,spex00,1,spex00
+       byte 0,spex00,0,spex00
+       byte 0,spex10,0,spex10
+       byte 0,spex10,0,spex10
+       byte 0,spex10,0,spex10
+       byte 0,spex20,0,spex20
+       byte 0,spex20,0,spex20
+       byte 0,spex20,0,spex20
+       byte 0,spex30,0,spex30
+       byte 0,spex30,0,spex30
+       byte 0,spex30,0,spex30
+       byte 0,spem00,>c0,00
+* Explosion 3
+cpath9:
+       byte -1,spex00,-1,spex00
+       byte -1,spex00,-1,spex00
+       byte 0,spex00,0,spex00
+       byte 0,spex10,0,spex10
+       byte 0,spex10,0,spex10
+       byte 0,spex10,0,spex10
+       byte 0,spex20,0,spex20
+       byte 0,spex20,0,spex20
+       byte 0,spex20,0,spex20
+       byte 0,spex30,0,spex30
+       byte 0,spex30,0,spex30
+       byte 0,spex30,0,spex30
+       byte 0,spem00,>c0,00
+* Double spin
+cpatha:
+       byte 1,spcr70,1,spcr70
+       byte 1,spcr60,1,spcr60
+       byte 1,spcr50,1,spcr50
+       byte 1,spcr40,1,spcr40
+       byte 0,spcr30,0,spcr30
+       byte 0,spcr20,0,spcr20
+       byte 0,spcr10,0,spcr10
+       byte 0,spcr00,0,spcr00
+       byte -1,spcr70,-1,spcr70
+       byte -1,spcr60,-1,spcr60
+       byte -1,spcr50,0,spcr50
+       byte -1,spcr40,0,spcr40
+       byte 0,spcr30,0,spcr30
+       byte 0,spcr20,0,spcr20
+       byte 0,spcr10,1,spcr10
+       byte 0,spcr00,1,spcr00
+       byte >c0,00
+
+**
+* Sprites
+
+* Car colors
+color0:
+       byte >06
+color1:
+       byte >02
+color2:
+       byte >07
+color3:
+       byte >08
+color4:
+       byte >0a
+color5:
+       byte >0d
+color6:
+       byte >0c
+color7:
+       byte >0f
+
+* Initial sprite attributes
+sprati:
+       byte starty,startx,spcr00,>04
+       byte starty,startx+40,spcr00,>02
+       byte starty-24,startx,spcr00,>07
+       byte starty-24,startx+40,spcr00,>08
+       byte starty-48,startx,spcr00,>0a
+       byte starty-48,startx+40,spcr00,>0d
+       byte starty-72,startx,spcr00,>0c
+       byte starty-72,startx+40,spcr00,>0f
+       byte starty,startx,spcr01,>01
+       byte starty,startx+40,spcr01,>01
+       byte starty-24,startx,spcr01,>01
+       byte starty-24,startx+40,spcr01,>01
+       byte starty-48,startx,spcr01,>01
+       byte starty-48,startx+40,spcr01,>01
+       byte starty-72,startx,spcr01,>01
+       byte starty-72,startx+40,spcr01,>01
+       byte >c0,0,spshot,1
+       byte >c0,0,0,0
+       byte >c0,0,0,0
+       byte >c0,0,0,0
+
+* Initialisation of sprite patterns and colors
+cpat0b:
+       byte spcr00
+cpat1b:
+       byte spcr01
+cpat0g:
+       byte spcrg0
+cpat1g:
+       byte spcrg1
+fpat0b:
+       byte spful0
+fpat1b:
+       byte spful1
+gpat0b:
+       byte spgun0
+gpat1b:
+       byte spgun1
+opat0b:
+       byte spoil0
+opat1b:
+       byte spoil1
+ccol0b:
+       byte 4
+ccol1b:
+       byte 1
+fcol0b:
+       byte 4
+fcol1b:
+       byte 5
+gcol0b:
+       byte 1
+gcol1b:
+       byte 4
+ocol0b:
+       byte 1
+ocol1b:
+       byte 4
+
+* Sprite patterns
+sprpat:
+       equ  $
+car000:
+       data >070f,>1717,>171f,>1c08            ; Color 6
+       data >030f,>1f10,>141f,>1f18
+       data >c0e0,>d0d0,>f0f0,>7020
+       data >80e0,>f030,>50d0,>f030
+car001:
+       data >0000,>0000,>0000,>0307            ; Color 1
+       data >0c00,>0007,>0300,>0007
+       data >0010,>2828,>0808,>8ccc
+       data >6c0c,>0ccc,>ac28,>08c0
+car010:
+       data >1f3b,>7d7e,>7f5e,>6c38            ; Color 6
+       data >190b,>0303,>0301,>0000
+       data >0080,>c0c0,>6000,>78fc
+       data >e6ca,>9e3c,>f870,>c000
+car011:
+       data >0000,>0000,>0021,>1307            ; Color 1
+       data >0604,>0400,>0000,>0000
+       data >c060,>3038,>1cfc,>8603
+       data >1131,>61c2,>0488,>3060
+car020:
+       data >0000,>0000,>3e4f,>fefc            ; Color 6
+       data >fcfc,>fe47,>3e00,>0000
+       data >0000,>0000,>3f73,>6ee6
+       data >e6e6,>6e67,>3f00,>0000
+car021:
+       data >0000,>0000,>0030,>0103            ; Color 1
+       data >0303,>0100,>000f,>0100
+       data >0000,>0000,>008c,>9119
+       data >1919,>9180,>00ff,>fc00
+car030:
+       data >0001,>0303,>0b3b,>71e8            ; Color 6
+       data >dcbe,>fffd,>7b3e,>0000
+       data >e0b0,>783c,>9cce,>eafc
+       data >7800,>c080,>0000,>0000
+car031:
+       data >0000,>0000,>0404,>0607            ; Color 1
+       data >0301,>0002,>0401,>0f00
+       data >1008,>04c2,>6331,>1503
+       data >86ec,>1c78,>c080,>0000
+car040:
+       data >0c0f,>0b0a,>0c0f,>0701            ; Color 6
+       data >040e,>0f0f,>0b0b,>0703
+       data >18f8,>f828,>08f8,>f0c0
+       data >1038,>f8e8,>e8e8,>f0e0
+car041:
+       data >0300,>0405,>0300,>0006            ; Color 1
+       data >0301,>0000,>0404,>0000
+       data >e004,>04c6,>e606,>0636
+       data >e6c4,>0404,>0404,>0800
+car050:
+       data >030e,>1f3c,>7953,>673f            ; Color 6
+       data >1e00,>0603,>0301,>0000
+       data >0080,>c0c0,>c0d0,>981c
+       data >367a,>fe7e,>bedc,>f800
+car051:
+       data >0c11,>2043,>060c,>0800            ; Color 1
+       data >0107,>0000,>0000,>0000
+       data >c060,>381c,>2c2c,>66e3
+       data >c985,>0101,>0102,>0438
+car060:
+       data >0000,>00fc,>e676,>6767            ; Color 6
+       data >6776,>cefc,>0000,>0000
+       data >0000,>007c,>e27f,>3f3f
+       data >3f7f,>f27c,>0000,>0000
+car061:
+       data >0000,>0000,>0189,>9898            ; Color 1
+       data >9889,>3100,>3f03,>0000
+       data >0000,>0002,>0180,>c0c0
+       data >c080,>0d02,>fcf0,>0000
+car070:
+       data >0000,>0103,>0700,>3c7e            ; Color 6
+       data >afe7,>7379,>3d1b,>0e00
+       data >00f8,>bc7e,>fefa,>762e
+       data >1cb8,>a080,>8000,>0000
+car071:
+       data >0000,>0000,>000f,>0301            ; Color 1
+       data >5018,>8c86,>4020,>110f
+       data >0000,>4080,>0101,>81c1
+       data >c346,>5c70,>70e0,>c000
+car080:
+       data >060e,>1416,>1c1e,>1d09            ; Color 6
+       data >080d,>1f10,>141f,>1f18
+       data >4060,>3070,>3070,>3000
+       data >00a0,>f030,>50d0,>f030
+car081:
+       data >0101,>0301,>0301,>0206            ; Color 1
+       data >0702,>0007,>0300,>0007
+       data >8090,>c888,>c888,>ccec
+       data >ec4c,>0ccc,>ac28,>08c0
+expl00:
+       data >0004,>0227,>0894,>311c            ; Color 6
+       data >2244,>0841,>0608,>3240
+       data >8284,>d854,>2802,>244f
+       data >1410,>9dc8,>c4d6,>4241
+expl01:
+       data >0040,>3118,>560b,>8603            ; Color 1
+       data >1d33,>0226,>0814,>0800
+       data >0052,>04a0,>d1f4,>d8b0
+       data >e8ed,>6030,>1808,>0402
+expl10:
+       data >0018,>3000,>4604,>c381            ; Color 6
+       data >040e,>0642,>c860,>0703
+       data >401a,>0c44,>0060,>3103
+       data >a01a,>b011,>440c,>9a00
+expl11:
+       data >0002,>0902,>2813,>0c12            ; Color 1
+       data >4a10,>2904,>2002,>1000
+       data >0080,>10aa,>d400,>c46c
+       data >44e0,>04c4,>0890,>2000
+expl20:
+       data >0010,>2000,>4200,>4081            ; Color 6
+       data >0402,>0442,>0840,>0401
+       data >4008,>0400,>0060,>0102
+       data >a01a,>a011,>4004,>9200
+expl21:
+       data >0002,>0902,>2811,>0c12            ; Color 1
+       data >4810,>2904,>2002,>1000
+       data >0080,>10aa,>5400,>8468
+       data >0440,>04c4,>0890,>2000
+expl30:
+       data >0000,>0000,>0204,>4100            ; Color 6
+       data >0402,>0002,>0800,>0002
+       data >4000,>0400,>0020,>1002
+       data >a012,>2011,>0400,>0000
+expl31:
+       data >0002,>0902,>2000,>0012            ; Color 1
+       data >4000,>0900,>0002,>0000
+       data >0000,>108a,>1000,>4400
+       data >0440,>0040,>0090,>0000
+fuel0:
+       data >0000,>0000,>84bd,>8484            ; Color 4
+       data >84ad,>94ad,>bdbd,>bd84
+       data >0000,>0000,>42de,>4242
+       data >424a,>d64a,>dede,>de42
+fuel1:
+       data >0000,>0000,>4242,>7b42            ; Color 5
+       data >7b52,>6b52,>4242,>4242
+       data >0000,>0000,>2121,>bd21
+       data >bdb5,>29b5,>2121,>2121
+gun0:
+       data >0202,>0205,>0502,>0205            ; Color 1
+       data >0502,>060d,>1d1d,>1c0c
+       data >c0c0,>c0e0,>e0c0,>c0e0
+       data >e0c0,>e0d0,>e8d0,>e890
+gun1:
+       data >0101,>0102,>0201,>0102            ; Color 4
+       data >0201,>0102,>0202,>0301
+       data >0000,>0000,>0000,>0000
+       data >0000,>0020,>1028,>1020
+oil0:
+       data >041e,>1f0f,>5bfb,>e7ff            ; Color 1
+       data >3f1f,>1f3f,>6f33,>3e08
+       data >181e,>3e7e,>f6ec,>e8ec
+       data >f4fe,>fefb,>fa66,>3c08
+oil1:
+       data >0a01,>0030,>2404,>1800            ; Color 4
+       data >4020,>2000,>104c,>0114
+       data >0420,>c181,>0812,>1410
+       data >0a00,>0100,>0180,>c214
+shot:
+       data >0000,>0000,>0101,>0100            ; Color 1
+       data >0001,>0101,>0000,>0000
+       data >0000,>0000,>8080,>8000
+       data >0080,>8080,>0000,>0000
+empty:
+       data >0000,>0000,>0000,>0000
+       data >0000,>0000,>0000,>0000
+       data >0000,>0000,>0000,>0000
+       data >0000,>0000,>0000,>0000
+       data >0000,>0000,>0000,>0000
+       data >0000,>0000,>0000,>0000
+       data >0000,>0000,>0000,>0000
+       data >0000,>0000,>0000,>0000
+
+* Include sound file
+       copy "sound.a99"
+
+* Include panel map file
+       copy "panel.a99"
+
+* Include levels file
+       copy "levels.a99"
+
+* Buffer for saving PAD RAM
+padbuf:
+       bss  256
+
+* Temporary workspace for disk I/O
+tmpws:
+       bss  32
+
+theend:
+       end  start

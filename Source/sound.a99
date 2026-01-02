@@ -1,51 +1,51 @@
 **
-* Sound effect/music data
+* Sound effect // music data
 
 **
-* Node frequencies	   
-*
-* A01	>89,>3F
-* B01	>80,>3C
-* H01	>8A,>38
-* C11	>87,>35
-* C#11	>87,>32
-* D11	>8A,>2F
-* D#11	>8F,>2C
-* E11	>87,>2A
-* F11	>81,>28
-* F#11	>8D,>25
-* G11	>8B,>23
-* G#11	>8B,>21
-* A11	>8C,>1F
-* B11	>80,>1E
-* H11	>85,>1C
-* C21	>8C,>1A
-* C#21	>84,>19
-* D21	>8D,>17
-* D#21	>88,>16
-* E21	>83,>15
-* F21	>80,>14
-* F#21	>8E,>12
-* G21	>8D,>11
-* G#21	>8D,>10
-* A21	>8E,>0F
-* B21	>80,>0F
-* H21	>82,>0E
-* C31	>86,>0D
-* C#31	>8A,>0C
-* D31	>8E,>0B
-* D#31	>84,>0B
-* E31	>8A,>0A
-* F31	>80,>0A
-* F#31	>87,>09
-* G31	>8F,>08
-* G#31	>87,>08
-* A31	>8F,>07
-* B31	>88,>07
+* Node frequencies
+* 
+* A01  >89,>3F
+* B01  >80,>3C
+* H01  >8A,>38
+* C11  >87,>35
+* C#11  >87,>32
+* D11  >8A,>2F
+* D#11  >8F,>2C
+* E11  >87,>2A
+* F11  >81,>28
+* F#11  >8D,>25
+* G11  >8B,>23
+* G#11  >8B,>21
+* A11  >8C,>1F
+* B11  >80,>1E
+* H11  >85,>1C
+* C21  >8C,>1A
+* C#21  >84,>19
+* D21  >8D,>17
+* D#21  >88,>16
+* E21  >83,>15
+* F21  >80,>14
+* F#21  >8E,>12
+* G21  >8D,>11
+* G#21  >8D,>10
+* A21  >8E,>0F
+* B21  >80,>0F
+* H21  >82,>0E
+* C31  >86,>0D
+* C#31  >8A,>0C
+* D31  >8E,>0B
+* D#31  >84,>0B
+* E31  >8A,>0A
+* F31  >80,>0A
+* F#31  >87,>09
+* G31  >8F,>08
+* G#31  >87,>08
+* A31  >8F,>07
+* B31  >88,>07
 
 **
 * Sound operations
-*
+* 
 * 1000 8 Tone 1 frequency
 * 1001 9 Tone 1 attenuation
 * 1010 A Tone 2 frequency
@@ -66,844 +66,873 @@
 * Byte 1-2: Call address
 * For return (where byte 0 is >FE): no more bytes.
 
-*	   Treble track, generator 2
-	   EVEN
-SNDTRB
-TRB0   BYTE 1,>BF,96			* Pause
-*	   ----
-	   BYTE 1,>BF,96			* Pause
-*	   ----
-	   BYTE 1,>BF,96			* Pause
-*	   ----
-	   BYTE 1,>BF,96			* Pause
-*	   ----
-	   BYTE 1,>BF,96			* Pause
-*	   ----
-	   BYTE 1,>BF,96			* Pause
-*	   ----
-	   BYTE 1,>BF,96			* Pause
-*	   ----
-	   BYTE 1,>BF,96			* Pause
-*	   ----
-	   BYTE >FF,TRB1/256,TRB1 MOD 256	* Call TRB1
-*	   ----	   
-	   BYTE 1,>BF,96			* Pause	   
-*	   ----	   
-	   BYTE >FF,TRB1/256,TRB1 MOD 256	* Call TRB1
-*	   ----	   
-	   BYTE 1,>BF,60			* Pause
-	   BYTE 3,>A3,>15,>B4,6		* E2
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 3,>A3,>15,>B4,6		* E2
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 3,>A3,>15,>B4,6		* E2
-	   BYTE 1,>B6,6				* Vol	   
-*	   ----	 
-	   BYTE 3,>A3,>15,>B4,6		* E2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,6		* A2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AD,>11,>B4,4		* G2
-	   BYTE 2,>AE,>0F,4			* A2
-	   BYTE 2,>AD,>11,4			* G2
-	   BYTE 2,>A3,>15,6			* E2
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 3,>A5,>1C,>B4,4		* H1
-	   BYTE 2,>AC,>1A,8			* C2
-	   BYTE 3,>AC,>1F,>B4,6		* A1
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 1,>BF,24			* Pause
-*	   ----	 
-	   BYTE 3,>A3,>15,>B4,6		* E2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,6		* A2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AD,>11,>B4,4		* G2
-	   BYTE 2,>AE,>0F,4			* A2
-	   BYTE 2,>AD,>11,4			* G2
-	   BYTE 3,>AD,>17,>B4,6		* D2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>A3,>15,>B4,6		* E2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 1,>BF,36			* Pause
-*	   ----	
-	   BYTE 3,>A3,>15,>B4,6		* E2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,6		* A2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AD,>11,>B4,4		* G2
-	   BYTE 2,>AE,>0F,4			* A2
-	   BYTE 2,>AD,>11,4			* G2
-	   BYTE 2,>A3,>15,6			* E2
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 3,>A5,>1C,>B4,4		* H1
-	   BYTE 2,>AC,>1A,8			* C2
-	   BYTE 3,>AC,>1F,>B4,6		* A1
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 3,>AC,>1A,>B4,6		* C2
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 3,>AD,>17,>B4,6		* D2
-	   BYTE 1,>B6,6				* Vol	   
-*	   ----	
-	   BYTE 3,>A3,>15,>B4,6		* E2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,6		* A2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,6		* A2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,6		* A2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,6		* A2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,6		* A2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,6		* A2
-	   BYTE 1,>B6,6				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,6		* A2
-	   BYTE 1,>B6,6				* Vol	   
-*	   ----	 
-	   BYTE 3,>AF,>07,>B8,6		* A3
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 1,>B4,36			* Vol   
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 1,>B8,6				* Vol
-	   BYTE 3,>AF,>07,>B4,4		* A3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AF,>08,>B4,4		* G3
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AA,>0A,>B4,4		* E3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-*	   ----	 
-	   BYTE 3,>AF,>07,>B4,4		* A3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AF,>07,>B4,4		* A3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AF,>08,>B4,4		* G3
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AA,>0A,>B4,4		* E3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 1,>BA,4				* Vol	   
-	   BYTE 1,>BC,4				* Vol	   
-	   BYTE 1,>BE,4				* Vol	   
-	   BYTE 3,>AF,>07,>B4,4		* A3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AF,>07,>B4,4		* A3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AF,>07,>B4,4		* A3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-*	   ----	 
-	   BYTE 3,>AF,>07,>B4,4		* A3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 1,>BA,4				* Vol	   
-	   BYTE 1,>BC,4				* Vol	   
-	   BYTE 1,>BE,4				* Vol	   
-	   BYTE 3,>AF,>08,>B4,4		* G3
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AA,>0A,>B4,4		* E3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AF,>07,>B4,4		* A3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 1,>BA,4				* Vol	   
-	   BYTE 1,>BC,4				* Vol	   
-	   BYTE 1,>BE,4				* Vol	   
-	   BYTE 3,>AF,>08,>B4,4		* G3
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AA,>0A,>B4,4		* E3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-*	   ----	 
-	   BYTE 3,>AF,>07,>B4,4		* A3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AF,>07,>B4,4		* A3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AF,>08,>B4,4		* G3
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AA,>0A,>B4,36	* E3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 1,>BA,4				* Vol	   
-	   BYTE 1,>BC,4				* Vol	   
-	   BYTE 1,>BE,4				* Vol	   
-	   BYTE 1,>BF,4				* Pause
-*	   ----	
-	   BYTE 3,>AE,>0B,>B8,6		* D3
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 1,>B4,36			* Vol   
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 1,>B8,6				* Vol
-	   BYTE 3,>AE,>0B,>B4,4		* D3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A6,>0D,>B4,4		* C3
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	
-*	   ----	
-	   BYTE 1,>BF,96			* Pause
-*	   ----	
-	   BYTE 3,>AE,>0B,>B4,4		* D3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0B,>B4,4		* D3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A6,>0D,>B4,4		* C3
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 1,>BA,4				* Vol	   
-	   BYTE 1,>BC,4				* Vol	   
-	   BYTE 1,>BE,4				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0B,>B4,4		* D3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A6,>0D,>B4,4		* C3
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	 
-*	   ----		   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 1,>BA,4				* Vol	   
-	   BYTE 1,>BC,4				* Vol	   
-	   BYTE 1,>BE,4				* Vol
-	   BYTE 1,>BF,72			* Pause
-*	   ----		   
-	   BYTE 3,>AE,>0F,>B8,6		* A2
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 1,>B4,36			* Vol   
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 1,>B8,6				* Vol
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AD,>11,>B4,4		* G2
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A3,>15,>B4,4		* E2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-*      ----	
-	   BYTE 1,>BF,96			* Pause
-*	   ----	
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AD,>11,>B4,4		* G2
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A3,>15,>B4,4		* E2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 1,>BA,4				* Vol	   
-	   BYTE 1,>BC,4				* Vol	   
-	   BYTE 1,>BE,4				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AD,>11,>B4,4		* G2
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A3,>15,>B4,4		* E2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-*	   ----	
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AD,>11,>B4,4		* G2
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A3,>15,>B4,4		* E2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 1,>BA,4				* Vol	   
-	   BYTE 1,>BC,4				* Vol	   
-	   BYTE 1,>BE,4				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AD,>11,>B4,4		* G2
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A3,>15,>B4,4		* E2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-*      ----	
-	   BYTE 3,>AA,>0A,>B4,4		* E3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AA,>0A,>B4,4		* E3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0B,>B4,4		* D3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A2,>0E,>B4,4		* H2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A0,>0F,>B4,4		* B2
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AD,>11,>B4,4		* G2
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A3,>15,>B4,4		* E2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-*      ----	
-	   BYTE 3,>AE,>0B,>B4,4		* D3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0B,>B4,4		* D3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A6,>0D,>B4,4		* C3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AD,>10,>B4,4		* G#2
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AD,>11,>B4,4		* G2
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A0,>14,>B4,4		* F2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AD,>17,>B4,4		* D2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-*      ----	
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AD,>11,>B4,4		* G2
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A3,>15,>B4,4		* E2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AE,>0F,>B4,4		* A2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AD,>11,>B4,4		* G2
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A3,>15,>B4,4		* E2	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-*      ----	
-	   BYTE 1,>BF,12			* Pause
-	   BYTE 3,>AE,>0B,>B4,4		* D3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>A4,>0B,>B4,4		* D#3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 3,>AA,>0A,>B4,4		* E3	
-	   BYTE 1,>B6,4				* Vol	   
-	   BYTE 1,>B8,4				* Vol	   
-	   BYTE 1,>B9,4				* Vol	   
-	   BYTE 1,>BA,4				* Vol	   
-	   BYTE 1,>BB,4				* Vol	   
-	   BYTE	1,>BA,36			* Pause
-*	   ----	
-	   BYTE	0,SNDTRB/256,SNDTRB MOD 256	* Repeat
-	   BYTE	-1							*forever
+* Treble track, generator 2
+       even 
+sndtrb:
+       equ  $
+trb0:
+       byte 1,>bf,96                           ; Pause
+* ----
+       byte 1,>bf,96                           ; Pause
+* ----
+       byte 1,>bf,96                           ; Pause
+* ----
+       byte 1,>bf,96                           ; Pause
+* ----
+       byte 1,>bf,96                           ; Pause
+* ----
+       byte 1,>bf,96                           ; Pause
+* ----
+       byte 1,>bf,96                           ; Pause
+* ----
+       byte 1,>bf,96                           ; Pause
+* ----
+       byte >ff,trb1 // 256,trb1 %% 256        ; Call TRB1
+* ----
+       byte 1,>bf,96                           ; Pause
+* ----
+       byte >ff,trb1 // 256,trb1 %% 256        ; Call TRB1
+* ----
+       byte 1,>bf,60                           ; Pause
+       byte 3,>a3,>15,>b4,6                    ; E2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>a3,>15,>b4,6                    ; E2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>a3,>15,>b4,6                    ; E2
+       byte 1,>b6,6                            ; Vol
+* ----
+       byte 3,>a3,>15,>b4,6                    ; E2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ae,>0f,>b4,6                    ; A2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ad,>11,>b4,4                    ; G2
+       byte 2,>ae,>0f,4                        ; A2
+       byte 2,>ad,>11,4                        ; G2
+       byte 2,>a3,>15,6                        ; E2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>a5,>1c,>b4,4                    ; H1
+       byte 2,>ac,>1a,8                        ; C2
+       byte 3,>ac,>1f,>b4,6                    ; A1
+       byte 1,>b6,6                            ; Vol
+       byte 1,>bf,24                           ; Pause
+* ----
+       byte 3,>a3,>15,>b4,6                    ; E2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ae,>0f,>b4,6                    ; A2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ad,>11,>b4,4                    ; G2
+       byte 2,>ae,>0f,4                        ; A2
+       byte 2,>ad,>11,4                        ; G2
+       byte 3,>ad,>17,>b4,6                    ; D2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>a3,>15,>b4,6                    ; E2
+       byte 1,>b6,6                            ; Vol
+       byte 1,>bf,36                           ; Pause
+* ----
+       byte 3,>a3,>15,>b4,6                    ; E2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ae,>0f,>b4,6                    ; A2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ad,>11,>b4,4                    ; G2
+       byte 2,>ae,>0f,4                        ; A2
+       byte 2,>ad,>11,4                        ; G2
+       byte 2,>a3,>15,6                        ; E2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>a5,>1c,>b4,4                    ; H1
+       byte 2,>ac,>1a,8                        ; C2
+       byte 3,>ac,>1f,>b4,6                    ; A1
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ac,>1a,>b4,6                    ; C2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ad,>17,>b4,6                    ; D2
+       byte 1,>b6,6                            ; Vol
+* ----
+       byte 3,>a3,>15,>b4,6                    ; E2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ae,>0f,>b4,6                    ; A2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ae,>0f,>b4,6                    ; A2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ae,>0f,>b4,6                    ; A2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ae,>0f,>b4,6                    ; A2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ae,>0f,>b4,6                    ; A2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ae,>0f,>b4,6                    ; A2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>ae,>0f,>b4,6                    ; A2
+       byte 1,>b6,6                            ; Vol
+* ----
+       byte 3,>af,>07,>b8,6                    ; A3
+       byte 1,>b6,6                            ; Vol
+       byte 1,>b4,36                           ; Vol
+       byte 1,>b6,6                            ; Vol
+       byte 1,>b8,6                            ; Vol
+       byte 3,>af,>07,>b4,4                    ; A3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>af,>08,>b4,4                    ; G3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>aa,>0a,>b4,4                    ; E3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+* ----
+       byte 3,>af,>07,>b4,4                    ; A3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>af,>07,>b4,4                    ; A3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>af,>08,>b4,4                    ; G3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>aa,>0a,>b4,4                    ; E3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 1,>ba,4                            ; Vol
+       byte 1,>bc,4                            ; Vol
+       byte 1,>be,4                            ; Vol
+       byte 3,>af,>07,>b4,4                    ; A3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>af,>07,>b4,4                    ; A3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>af,>07,>b4,4                    ; A3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+* ----
+       byte 3,>af,>07,>b4,4                    ; A3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 1,>ba,4                            ; Vol
+       byte 1,>bc,4                            ; Vol
+       byte 1,>be,4                            ; Vol
+       byte 3,>af,>08,>b4,4                    ; G3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>aa,>0a,>b4,4                    ; E3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>af,>07,>b4,4                    ; A3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 1,>ba,4                            ; Vol
+       byte 1,>bc,4                            ; Vol
+       byte 1,>be,4                            ; Vol
+       byte 3,>af,>08,>b4,4                    ; G3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>aa,>0a,>b4,4                    ; E3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+* ----
+       byte 3,>af,>07,>b4,4                    ; A3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>af,>07,>b4,4                    ; A3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>af,>08,>b4,4                    ; G3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>aa,>0a,>b4,36                   ; E3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 1,>ba,4                            ; Vol
+       byte 1,>bc,4                            ; Vol
+       byte 1,>be,4                            ; Vol
+       byte 1,>bf,4                            ; Pause
+* ----
+       byte 3,>ae,>0b,>b8,6                    ; D3
+       byte 1,>b6,6                            ; Vol
+       byte 1,>b4,36                           ; Vol
+       byte 1,>b6,6                            ; Vol
+       byte 1,>b8,6                            ; Vol
+       byte 3,>ae,>0b,>b4,4                    ; D3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a6,>0d,>b4,4                    ; C3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+* ----
+       byte 1,>bf,96                           ; Pause
+* ----
+       byte 3,>ae,>0b,>b4,4                    ; D3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0b,>b4,4                    ; D3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a6,>0d,>b4,4                    ; C3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 1,>ba,4                            ; Vol
+       byte 1,>bc,4                            ; Vol
+       byte 1,>be,4                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0b,>b4,4                    ; D3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a6,>0d,>b4,4                    ; C3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+* ----
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 1,>ba,4                            ; Vol
+       byte 1,>bc,4                            ; Vol
+       byte 1,>be,4                            ; Vol
+       byte 1,>bf,72                           ; Pause
+* ----
+       byte 3,>ae,>0f,>b8,6                    ; A2
+       byte 1,>b6,6                            ; Vol
+       byte 1,>b4,36                           ; Vol
+       byte 1,>b6,6                            ; Vol
+       byte 1,>b8,6                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ad,>11,>b4,4                    ; G2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a3,>15,>b4,4                    ; E2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+* ----
+       byte 1,>bf,96                           ; Pause
+* ----
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ad,>11,>b4,4                    ; G2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a3,>15,>b4,4                    ; E2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 1,>ba,4                            ; Vol
+       byte 1,>bc,4                            ; Vol
+       byte 1,>be,4                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ad,>11,>b4,4                    ; G2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a3,>15,>b4,4                    ; E2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+* ----
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ad,>11,>b4,4                    ; G2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a3,>15,>b4,4                    ; E2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 1,>ba,4                            ; Vol
+       byte 1,>bc,4                            ; Vol
+       byte 1,>be,4                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ad,>11,>b4,4                    ; G2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a3,>15,>b4,4                    ; E2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+* ----
+       byte 3,>aa,>0a,>b4,4                    ; E3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>aa,>0a,>b4,4                    ; E3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0b,>b4,4                    ; D3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a2,>0e,>b4,4                    ; H2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a0,>0f,>b4,4                    ; B2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ad,>11,>b4,4                    ; G2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a3,>15,>b4,4                    ; E2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+* ----
+       byte 3,>ae,>0b,>b4,4                    ; D3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0b,>b4,4                    ; D3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a6,>0d,>b4,4                    ; C3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ad,>10,>b4,4                    ; G#2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ad,>11,>b4,4                    ; G2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a0,>14,>b4,4                    ; F2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ad,>17,>b4,4                    ; D2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+* ----
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ad,>11,>b4,4                    ; G2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a3,>15,>b4,4                    ; E2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ae,>0f,>b4,4                    ; A2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>ad,>11,>b4,4                    ; G2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a3,>15,>b4,4                    ; E2
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+* ----
+       byte 1,>bf,12                           ; Pause
+       byte 3,>ae,>0b,>b4,4                    ; D3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>a4,>0b,>b4,4                    ; D#3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 3,>aa,>0a,>b4,4                    ; E3
+       byte 1,>b6,4                            ; Vol
+       byte 1,>b8,4                            ; Vol
+       byte 1,>b9,4                            ; Vol
+       byte 1,>ba,4                            ; Vol
+       byte 1,>bb,4                            ; Vol
+       byte 1,>ba,36                           ; Pause
+* ----
+       byte 0,sndtrb // 256,sndtrb %% 256      ; Repeat
+       byte -1                                 ; forever
 
-*	   Treble part 1
-TRB1   BYTE 3,>AD,>11,>BA,12	* G2
-	   BYTE 1,>B9,12			* Vol
-	   BYTE 1,>B8,12			* Vol
-	   BYTE 1,>B7,12			* Vol
-	   BYTE 1,>B6,12			* Vol
-	   BYTE 1,>B5,12			* Vol
-	   BYTE 1,>B4,12			* Vol
-	   BYTE 3,>A3,>15,>B4,6		* E2
-	   BYTE 1,>B6,6				* Vol
-*	   ----
-	   BYTE 1,>B8,6				* Vol
-	   BYTE 1,>BA,6				* Vol
-	   BYTE 1,>BF,84			* Pause 
-*	   ----
-	   BYTE 3,>AD,>11,>BA,12	* G2
-	   BYTE 1,>B9,12			* Vol 9
-	   BYTE 1,>B8,12			* Vol 8 
-	   BYTE 1,>B7,12			* Vol 7 
-	   BYTE 1,>B6,12			* Vol 6 
-	   BYTE 1,>B5,12			* Vol 5 
-	   BYTE 1,>B4,24			* Vol 4
-*	   ----
-	   BYTE 3,>AA,>0A,>B4,6		* E3
-	   BYTE 1,>B4,6				* Vol
-	   BYTE 3,>A0,>0F,>B4,6		* B2
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 1,>B8,6				* Vol
-	   BYTE 1,>BA,6				* Vol
-	   BYTE 1,>BF,60			* Pause
-*	   ----
-	   BYTE 1,>BF,12			* Pause
-	   BYTE 3,>AD,>11,>B4,6		* G2
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 3,>A0,>0F,>B4,6		* B2
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 3,>A6,>0D,>B4,6		* C3
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 3,>AA,>0C,>B4,8		* C#3
-	   BYTE 1,>B6,8				* Vol
-	   BYTE 3,>A6,>0D,>B4,4		* C3
-	   BYTE 2,>AA,>0C,4			* C#3
-	   BYTE 1,>B6,8				* Vol	   
-	   BYTE 3,>A6,>0D,>B4,4		* C3
-	   BYTE 2,>AA,>0C,4			* C#3
-	   BYTE 1,>B6,8				* Vol	   
-*	   ----
-	   BYTE 3,>A6,>0D,>B4,4		* C3
-	   BYTE 2,>AA,>0C,4			* C#3
-	   BYTE 1,>B6,8				* Vol	   
-	   BYTE 3,>A6,>0D,>B4,8		* C3
-	   BYTE 1,>B6,8				* Vol
-	   BYTE 3,>A0,>0F,>B4,8		* B2
-	   BYTE 1,>B6,8				* Vol
-	   BYTE 3,>AD,>11,>B4,8		* G2   
-	   BYTE 1,>B6,8				* Vol
-	   BYTE 3,>A0,>14,>B4,8		* F2
-	   BYTE 1,>B6,8				* Vol
-	   BYTE 3,>AD,>11,>B4,8		* G2
-	   BYTE 1,>B6,8				* Vol
-*	   ----	   
-	   BYTE 3,>A8,>16,>B4,6		* D#2
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 3,>A3,>15,>B4,6		* E2
-	   BYTE 1,>B6,6				* Vol
-	   BYTE 1,>B8,6				* Vol   
-	   BYTE 1,>BA,6				* Vol   
-	   BYTE 1,>BF,60			* Pause	   
-*	   ----	   
-	   BYTE >FE					* Return
-	   
+* Treble part 1
+trb1:
+       byte 3,>ad,>11,>ba,12                   ; G2
+       byte 1,>b9,12                           ; Vol
+       byte 1,>b8,12                           ; Vol
+       byte 1,>b7,12                           ; Vol
+       byte 1,>b6,12                           ; Vol
+       byte 1,>b5,12                           ; Vol
+       byte 1,>b4,12                           ; Vol
+       byte 3,>a3,>15,>b4,6                    ; E2
+       byte 1,>b6,6                            ; Vol
+* ----
+       byte 1,>b8,6                            ; Vol
+       byte 1,>ba,6                            ; Vol
+       byte 1,>bf,84                           ; Pause
+* ----
+       byte 3,>ad,>11,>ba,12                   ; G2
+       byte 1,>b9,12                           ; Vol 9
+       byte 1,>b8,12                           ; Vol 8
+       byte 1,>b7,12                           ; Vol 7
+       byte 1,>b6,12                           ; Vol 6
+       byte 1,>b5,12                           ; Vol 5
+       byte 1,>b4,24                           ; Vol 4
+* ----
+       byte 3,>aa,>0a,>b4,6                    ; E3
+       byte 1,>b4,6                            ; Vol
+       byte 3,>a0,>0f,>b4,6                    ; B2
+       byte 1,>b6,6                            ; Vol
+       byte 1,>b8,6                            ; Vol
+       byte 1,>ba,6                            ; Vol
+       byte 1,>bf,60                           ; Pause
+* ----
+       byte 1,>bf,12                           ; Pause
+       byte 3,>ad,>11,>b4,6                    ; G2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>a0,>0f,>b4,6                    ; B2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>a6,>0d,>b4,6                    ; C3
+       byte 1,>b6,6                            ; Vol
+       byte 3,>aa,>0c,>b4,8                    ; C#3
+       byte 1,>b6,8                            ; Vol
+       byte 3,>a6,>0d,>b4,4                    ; C3
+       byte 2,>aa,>0c,4                        ; C#3
+       byte 1,>b6,8                            ; Vol
+       byte 3,>a6,>0d,>b4,4                    ; C3
+       byte 2,>aa,>0c,4                        ; C#3
+       byte 1,>b6,8                            ; Vol
+* ----
+       byte 3,>a6,>0d,>b4,4                    ; C3
+       byte 2,>aa,>0c,4                        ; C#3
+       byte 1,>b6,8                            ; Vol
+       byte 3,>a6,>0d,>b4,8                    ; C3
+       byte 1,>b6,8                            ; Vol
+       byte 3,>a0,>0f,>b4,8                    ; B2
+       byte 1,>b6,8                            ; Vol
+       byte 3,>ad,>11,>b4,8                    ; G2
+       byte 1,>b6,8                            ; Vol
+       byte 3,>a0,>14,>b4,8                    ; F2
+       byte 1,>b6,8                            ; Vol
+       byte 3,>ad,>11,>b4,8                    ; G2
+       byte 1,>b6,8                            ; Vol
+* ----
+       byte 3,>a8,>16,>b4,6                    ; D#2
+       byte 1,>b6,6                            ; Vol
+       byte 3,>a3,>15,>b4,6                    ; E2
+       byte 1,>b6,6                            ; Vol
+       byte 1,>b8,6                            ; Vol
+       byte 1,>ba,6                            ; Vol
+       byte 1,>bf,60                           ; Pause
+* ----
+       byte >fe                                ; Return
+
 **
-*	   Bass track, generator 3
-	   EVEN
-SNDBAS 
-BASSA1 BYTE >FF,BASSA/256,BASSA MOD 256		* Call bass A
-	   BYTE 0,BASSA1/256,BASSA1 MOD 256,23	* Repeat
-	   BYTE 23								* 24 times
-*	   ----	 
-	   BYTE	3,>C9,>3F,>D4,3		* A0
-	   BYTE	1,>D6,3
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DF,60			* Pause
-	   BYTE	3,>C9,>3F,>D2,3		* A0
-	   BYTE	1,>D4,3
-	   BYTE	1,>D6,3
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	1,>DF,6				* Pause
-*	   ----	 
-	   BYTE	1,>DF,60
-	   BYTE	3,>C7,>2A,>D4,3		* E1
-	   BYTE	1,>D6,3
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	3,>C7,>2A,>D4,3		* E1
-	   BYTE	1,>D6,3
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DF,12	   		* Pause
-*	   ----	 
-	   BYTE	1,>DF,96			* Pause
-*	   ----	 
-	   BYTE	1,>DF,12			* Pause
-BASS1  BYTE	3,>C9,>3F,>D2,3		* A0
-	   BYTE	1,>D4,3
-	   BYTE	1,>D6,3
-	   BYTE	1,>D8,3
-	   BYTE 0,BASS1/256,BASS1 MOD 256		* Repeat
-	   BYTE 6								* 7 times
-*	   ----	 
-BASSA2 BYTE >FF,BASSA/256,BASSA MOD 256		* Call bass A
-	   BYTE 0,BASSA2/256,BASSA2 MOD 256		* Repeat
-	   BYTE 3								* 4 times
-*	   ----	 
-BASSD1 BYTE >FF,BASSD/256,BASSD MOD 256		* Call bass D
-	   BYTE 0,BASSD1/256,BASSD1 MOD 256		* Repeat
-	   BYTE 3								* 4 times
-*	   ----	 
-BASSA3 BYTE >FF,BASSA/256,BASSA MOD 256		* Call bass A
-	   BYTE 0,BASSA3/256,BASSA3 MOD 256		* Repeat
-	   BYTE 3								* 4 times
-*	   ----	 
-BASSE1 BYTE >FF,BASSE/256,BASSE MOD 256		* Call bass E
-*	   ----	 
-BASSD2 BYTE >FF,BASSD/256,BASSD MOD 256		* Call bass D
-*	   ----	 
-BASSA4 BYTE >FF,BASSA/256,BASSA MOD 256		* Call bass A
-*	   ----
-	   BYTE	3,>C9,>3F,>D6,3		* A0	
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>C9,>3F,>D6,3		* A0	
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>CA,>38,>D6,3		* H0	
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3	   	   
-	   BYTE	3,>C7,>2A,>D6,3		* E1	
-	   BYTE	1,>D7,3
-	   BYTE	1,>D8,3
-	   BYTE	1,>D9,3	   	   
-	   BYTE	1,>DA,3
-	   BYTE	1,>DB,3
-	   BYTE	1,>DC,3
-	   BYTE	1,>DD,3	   	   
-	   BYTE	1,>DF,36			* Pause
-*	   ---
-SNDBAE BYTE	0,SNDBAS/256,SNDBAS MOD 256	* Repeat
-	   BYTE	-1							* forever
- 
-*	   Bass A
-BASSA  BYTE	3,>C9,>3F,>D6,3		* A0	
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>C9,>3F,>D6,3		* A0	
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>CA,>38,>D6,3		* H0	
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>C9,>3F,>D6,3		* A0
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>C7,>35,>D6,3		* C1
-	   BYTE	1,>D8,3
-	   BYTE	3,>C7,>32,>D6,3		* C#1
-	   BYTE	1,>D8,3
-	   BYTE	3,>C9,>3F,>D6,3		* A0	
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>CA,>2F,>D6,3		* D1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>C7,>32,>D6,3		* C#1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE >FE					* Return
-	   
-*	   Bass D
-BASSD  BYTE	3,>CA,>2F,>D6,3		* D1	
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>CA,>2F,>D6,3		* D1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>C7,>2A,>D6,3		* E1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>CA,>2F,>D6,3		* D1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>C1,>28,>D6,3		* F1
-	   BYTE	1,>D8,3
-	   BYTE	3,>CD,>25,>D6,3		* F#1
-	   BYTE	1,>D8,3
-	   BYTE	3,>CA,>2F,>D6,3		* D1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>CB,>23,>D6,3		* G1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>CD,>25,>D6,3		* F#1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE >FE					* Return
+* Bass track, generator 3
+       even 
+sndbas:
+       equ  $
+bassa1:
+       byte >ff,bassa // 256,bassa %% 256      ; Call bass A
+       byte 0,bassa1 // 256,bassa1 %% 256      ; Repeat
+       byte 23                                 ; 24 times
+* ----
+       byte 3,>c9,>3f,>d4,3                    ; A0
+       byte 1,>d6,3
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>df,60                           ; Pause
+       byte 3,>c9,>3f,>d2,3                    ; A0
+       byte 1,>d4,3
+       byte 1,>d6,3
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 1,>df,6                            ; Pause
+* ----
+       byte 1,>df,60
+       byte 3,>c7,>2a,>d4,3                    ; E1
+       byte 1,>d6,3
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 3,>c7,>2a,>d4,3                    ; E1
+       byte 1,>d6,3
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>df,12                           ; Pause
+* ----
+       byte 1,>df,96                           ; Pause
+* ----
+       byte 1,>df,12                           ; Pause
+bass1:
+       byte 3,>c9,>3f,>d2,3                    ; A0
+       byte 1,>d4,3
+       byte 1,>d6,3
+       byte 1,>d8,3
+       byte 0,bass1 // 256,bass1 %% 256        ; Repeat
+       byte 6                                  ; 7 times
+* ----
+bassa2:
+       byte >ff,bassa // 256,bassa %% 256      ; Call bass A
+       byte 0,bassa2 // 256,bassa2 %% 256      ; Repeat
+       byte 3                                  ; 4 times
+* ----
+bassd1:
+       byte >ff,bassd // 256,bassd %% 256      ; Call bass D
+       byte 0,bassd1 // 256,bassd1 %% 256      ; Repeat
+       byte 3                                  ; 4 times
+* ----
+bassa3:
+       byte >ff,bassa // 256,bassa %% 256      ; Call bass A
+       byte 0,bassa3 // 256,bassa3 %% 256      ; Repeat
+       byte 3                                  ; 4 times
+* ----
+basse1:
+       byte >ff,basse // 256,basse %% 256      ; Call bass E
+* ----
+bassd2:
+       byte >ff,bassd // 256,bassd %% 256      ; Call bass D
+* ----
+bassa4:
+       byte >ff,bassa // 256,bassa %% 256      ; Call bass A
+* ----
+       byte 3,>c9,>3f,>d6,3                    ; A0
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>c9,>3f,>d6,3                    ; A0
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>ca,>38,>d6,3                    ; H0
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>c7,>2a,>d6,3                    ; E1
+       byte 1,>d7,3
+       byte 1,>d8,3
+       byte 1,>d9,3
+       byte 1,>da,3
+       byte 1,>db,3
+       byte 1,>dc,3
+       byte 1,>dd,3
+       byte 1,>df,36                           ; Pause
+* ---
+sndbae:
+       byte 0,sndbas // 256,sndbas %% 256      ; Repeat
+       byte -1                                 ; forever
 
-*	   Bass E
-BASSE  BYTE	3,>C7,>2A,>D6,3		* E1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>C7,>2A,>D6,3		* E1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>CD,>25,>D6,3		* F#1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>C7,>2A,>D6,3		* E1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>CB,>23,>D6,3		* G1
-	   BYTE	1,>D8,3
-	   BYTE	3,>CB,>21,>D6,3		* G#1
-	   BYTE	1,>D6,3
-	   BYTE	3,>C7,>2A,>D6,3		* E1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>CC,>1F,>D6,3		* A1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE	3,>CB,>21,>D6,3		* G#1
-	   BYTE	1,>D8,3
-	   BYTE	1,>DA,3
-	   BYTE	1,>DC,3
-	   BYTE >FE					* Return
-	   	   
-*	   Drums, noise
-	   EVEN
-SNDDRM BYTE	1,>FF,96			* Pause
-*	   ---
-	   BYTE	1,>FF,96			* Pause
-*	   ---
-	   BYTE	1,>FF,96			* Pause
-*	   ---
-	   BYTE	1,>FF,96			* Pause
-*	   ---
-SNDDR1 BYTE >FF,DRUMS1/256,DRUMS1 MOD 256	* Call drums
-	   BYTE 0,SNDDR1/256,SNDDR1 MOD 256		* Repeat
-	   BYTE 19								* 20 times
-*	   ---
-	   BYTE	1,>FF,96			* Pause
-*	   ---
-	   BYTE	1,>FF,96			* Pause
-*	   ---
-	   BYTE	1,>FF,96			* Pause
-*	   ---
-	   BYTE	1,>FF,96			* Pause
-*	   ---
-SNDDR2 BYTE >FF,DRUMS1/256,DRUMS1 MOD 256	* Call drums
-	   BYTE 0,SNDDR2/256,SNDDR2 MOD 256		* Repeat
-	   BYTE	14								* 15 times
-*	   ---
-	   BYTE	1,>FF,96			* Pause
-*	   ---
-	   BYTE 0					* Repeat
-	   BYTE	SNDDRM/256,SNDDRM MOD 256
-	   BYTE	-1					* Repeat forever
+* Bass A
+bassa:
+       byte 3,>c9,>3f,>d6,3                    ; A0
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>c9,>3f,>d6,3                    ; A0
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>ca,>38,>d6,3                    ; H0
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>c9,>3f,>d6,3                    ; A0
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>c7,>35,>d6,3                    ; C1
+       byte 1,>d8,3
+       byte 3,>c7,>32,>d6,3                    ; C#1
+       byte 1,>d8,3
+       byte 3,>c9,>3f,>d6,3                    ; A0
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>ca,>2f,>d6,3                    ; D1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>c7,>32,>d6,3                    ; C#1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte >fe                                ; Return
 
-DRUMS1 BYTE	2,>E6,>F6,2			* Bass drum
-	   BYTE	1,>F8,2
-	   BYTE	1,>FA,2 
-	   BYTE	1,>FF,6
-	   BYTE	2,>E6,>F6,2			* Bass drum
-	   BYTE	1,>F8,2
-	   BYTE	1,>FA,2 
-	   BYTE	1,>FF,6
-	   BYTE	2,>E4,>F6,2			* High hat
-	   BYTE	1,>F7,2
-	   BYTE	1,>F8,2 
-	   BYTE	1,>F9,2 
-	   BYTE	1,>FA,2 
-	   BYTE	1,>FF,2
-	   BYTE	2,>E6,>F6,2			* Bass drum
-	   BYTE	1,>F8,2
-	   BYTE	1,>FA,2 
-	   BYTE	1,>FF,6
-	   BYTE	2,>E6,>F6,2			* Bass drum
-	   BYTE	1,>F8,2
-	   BYTE	1,>FA,2 
-	   BYTE	1,>FF,6
-	   BYTE	2,>E6,>F6,2			* Bass drum
-	   BYTE	1,>F8,2
-	   BYTE	1,>FA,2 
-	   BYTE	1,>FF,6
-	   BYTE	2,>E4,>F6,2			* High hat
-	   BYTE	1,>F7,2
-	   BYTE	1,>F8,2 
-	   BYTE	1,>F9,2 
-	   BYTE	1,>FA,2 
-	   BYTE	1,>FF,2
-	   BYTE	2,>E4,>F6,2			* High hat
-	   BYTE	1,>F7,2
-	   BYTE	1,>F8,2 
-	   BYTE	1,>F9,2 
-	   BYTE	1,>FA,2 
-	   BYTE	1,>FF,2   
-	   BYTE >FE
-	   
-*	   Zap sound, generator 1
-	   EVEN
-SNDZAP BYTE 3,>90,>80,>29,1
-	   BYTE	2,>80,>2B,1
-	   BYTE	2,>80,>2D,1
-	   BYTE	2,>80,>2F,1
-	   BYTE	2,>80,>31,1
-	   BYTE	2,>80,>33,1
-	   BYTE	2,>80,>35,1
-	   BYTE	2,>80,>37,1
-	   BYTE	2,>80,>39,1
-	   BYTE	2,>80,>3B,1
-	   BYTE	2,>80,>3D,1
-	   BYTE	2,>80,>3F,1
-	   BYTE	1,>9F,0
+* Bass D
+bassd:
+       byte 3,>ca,>2f,>d6,3                    ; D1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>ca,>2f,>d6,3                    ; D1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>c7,>2a,>d6,3                    ; E1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>ca,>2f,>d6,3                    ; D1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>c1,>28,>d6,3                    ; F1
+       byte 1,>d8,3
+       byte 3,>cd,>25,>d6,3                    ; F#1
+       byte 1,>d8,3
+       byte 3,>ca,>2f,>d6,3                    ; D1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>cb,>23,>d6,3                    ; G1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>cd,>25,>d6,3                    ; F#1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte >fe                                ; Return
 
-*	   Zzz sound, generator 1
-	   EVEN
-SNDZZZ BYTE 3,>90,>80,>29,1
-	   BYTE	2,>80,>2D,1
-	   BYTE	2,>80,>31,1
-	   BYTE	2,>80,>35,1
-	   BYTE	2,>80,>39,1
-	   BYTE	2,>80,>3D,1
-	   BYTE 0					* Repeat
-	   BYTE	SNDZZZ/256,SNDZZZ MOD 256
-	   BYTE	4					* Repeat 5 times
-	   BYTE	1,>9F,0
+* Bass E
+basse:
+       byte 3,>c7,>2a,>d6,3                    ; E1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>c7,>2a,>d6,3                    ; E1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>cd,>25,>d6,3                    ; F#1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>c7,>2a,>d6,3                    ; E1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>cb,>23,>d6,3                    ; G1
+       byte 1,>d8,3
+       byte 3,>cb,>21,>d6,3                    ; G#1
+       byte 1,>d6,3
+       byte 3,>c7,>2a,>d6,3                    ; E1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>cc,>1f,>d6,3                    ; A1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte 3,>cb,>21,>d6,3                    ; G#1
+       byte 1,>d8,3
+       byte 1,>da,3
+       byte 1,>dc,3
+       byte >fe                                ; Return
 
-*	   Bing sound, generator 1
-	   EVEN
-SNDBNG BYTE	3,>8F,>07,>92,8
-	   BYTE	1,>94,8
-	   BYTE	1,>96,6
-	   BYTE	1,>98,6
-	   BYTE	1,>9A,4
-	   BYTE	1,>9C,4
-	   BYTE	1,>9E,2
-	   BYTE	1,>9F,0
-	   
-*	   Extra life sound, generator 1
-	   EVEN
-SNDXLF BYTE	3,>8D,>06,>90,4
-	   BYTE	1,>92,4
-	   BYTE	1,>94,3
-	   BYTE	1,>96,3
-	   BYTE 0					* Repeat
-	   BYTE	SNDXLF/256,SNDXLF MOD 256
-	   BYTE	1					* Repeat 2 times
-	   BYTE	1,>90,8
-	   BYTE	1,>94,8
-	   BYTE	1,>96,6
-	   BYTE	1,>98,6
-	   BYTE	1,>9A,4
-	   BYTE	1,>9C,4
-	   BYTE	1,>9E,2
-	   BYTE	1,>9F,0
-	   
-*	   Bonus sound, generator 1
-	   EVEN
-SNDBON BYTE	3,>8C,>1A,>90,1
-	   BYTE	1,>92,1
-	   BYTE	1,>94,1
-	   BYTE	1,>96,1
-	   BYTE 0					* Repeat
-	   BYTE	SNDBON/256,SNDBON MOD 256
-	   BYTE	-1					* Repeat forever
-	   BYTE	1,>9F,0
+* Drums, noise
+       even 
+snddrm:
+       byte 1,>ff,96                           ; Pause
+* ---
+       byte 1,>ff,96                           ; Pause
+* ---
+       byte 1,>ff,96                           ; Pause
+* ---
+       byte 1,>ff,96                           ; Pause
+* ---
+snddr1:
+       byte >ff,drums1 // 256,drums1 %% 256    ; Call drums
+       byte 0,snddr1 // 256,snddr1 %% 256      ; Repeat
+       byte 19                                 ; 20 times
+* ---
+       byte 1,>ff,96                           ; Pause
+* ---
+       byte 1,>ff,96                           ; Pause
+* ---
+       byte 1,>ff,96                           ; Pause
+* ---
+       byte 1,>ff,96                           ; Pause
+* ---
+snddr2:
+       byte >ff,drums1 // 256,drums1 %% 256    ; Call drums
+       byte 0,snddr2 // 256,snddr2 %% 256      ; Repeat
+       byte 14                                 ; 15 times
+* ---
+       byte 1,>ff,96                           ; Pause
+* ---
+       byte 0                                  ; Repeat
+       byte snddrm // 256,snddrm %% 256
+       byte -1                                 ; Repeat forever
 
-*	   Warning sound, generator 1
-	   EVEN
-SNDWRN BYTE	3,>8D,>11,>94,24
-	   BYTE	2,>8C,>1A,24
-	   BYTE	1,>9F,0
+drums1:
+       byte 2,>e6,>f6,2                        ; Bass drum
+       byte 1,>f8,2
+       byte 1,>fa,2
+       byte 1,>ff,6
+       byte 2,>e6,>f6,2                        ; Bass drum
+       byte 1,>f8,2
+       byte 1,>fa,2
+       byte 1,>ff,6
+       byte 2,>e4,>f6,2                        ; High hat
+       byte 1,>f7,2
+       byte 1,>f8,2
+       byte 1,>f9,2
+       byte 1,>fa,2
+       byte 1,>ff,2
+       byte 2,>e6,>f6,2                        ; Bass drum
+       byte 1,>f8,2
+       byte 1,>fa,2
+       byte 1,>ff,6
+       byte 2,>e6,>f6,2                        ; Bass drum
+       byte 1,>f8,2
+       byte 1,>fa,2
+       byte 1,>ff,6
+       byte 2,>e6,>f6,2                        ; Bass drum
+       byte 1,>f8,2
+       byte 1,>fa,2
+       byte 1,>ff,6
+       byte 2,>e4,>f6,2                        ; High hat
+       byte 1,>f7,2
+       byte 1,>f8,2
+       byte 1,>f9,2
+       byte 1,>fa,2
+       byte 1,>ff,2
+       byte 2,>e4,>f6,2                        ; High hat
+       byte 1,>f7,2
+       byte 1,>f8,2
+       byte 1,>f9,2
+       byte 1,>fa,2
+       byte 1,>ff,2
+       byte >fe
 
-*	   Boing sound, generator 1
-	   EVEN
-SNDBOI BYTE	3,>89,>3F,>90,1
-	   BYTE	3,>80,>3C,>91,1
-	   BYTE	3,>8A,>38,>92,1
-	   BYTE	3,>87,>35,>93,1
-	   BYTE	3,>87,>32,>94,1
-	   BYTE	3,>8A,>2F,>95,1
-	   BYTE	3,>8F,>2C,>96,1
-	   BYTE	3,>87,>2A,>97,1
-	   BYTE	3,>81,>28,>98,1
-	   BYTE	3,>8D,>25,>99,1
-	   BYTE	3,>8B,>23,>9A,1
-	   BYTE	3,>8B,>21,>9B,1
-	   BYTE	3,>8C,>1F,>9C,1
-	   BYTE	1,>9F,0	   
-	   	   
-*	   Explosion 1, noise
-	   EVEN
-SNDXP1 BYTE	2,>E5,>F0,4
-	   BYTE	1,>F2,8
-	   BYTE	1,>F4,8
-	   BYTE	1,>F6,4
-	   BYTE	1,>F8,4
-	   BYTE	1,>FA,2
-	   BYTE	1,>FF,0
+* Zap sound, generator 1
+       even 
+sndzap:
+       byte 3,>90,>80,>29,1
+       byte 2,>80,>2b,1
+       byte 2,>80,>2d,1
+       byte 2,>80,>2f,1
+       byte 2,>80,>31,1
+       byte 2,>80,>33,1
+       byte 2,>80,>35,1
+       byte 2,>80,>37,1
+       byte 2,>80,>39,1
+       byte 2,>80,>3b,1
+       byte 2,>80,>3d,1
+       byte 2,>80,>3f,1
+       byte 1,>9f,0
 
-*	   Explosion 2, noise
-	   EVEN
-SNDXP2 BYTE	2,>E6,>F0,6
-	   BYTE	1,>F1,6
-	   BYTE	1,>F2,6
-	   BYTE	1,>F3,6
-	   BYTE	1,>F4,6
-	   BYTE	1,>F5,6
-	   BYTE	1,>F6,6
-	   BYTE	1,>F7,6
-	   BYTE	1,>F8,6
-	   BYTE	1,>F9,6
-	   BYTE	1,>FA,6
-	   BYTE	1,>FB,6
-	   BYTE	1,>FC,6
-	   BYTE	1,>FD,6
-	   BYTE	1,>FE,6
-	   BYTE	1,>FF,0
+* Zzz sound, generator 1
+       even 
+sndzzz:
+       byte 3,>90,>80,>29,1
+       byte 2,>80,>2d,1
+       byte 2,>80,>31,1
+       byte 2,>80,>35,1
+       byte 2,>80,>39,1
+       byte 2,>80,>3d,1
+       byte 0                                  ; Repeat
+       byte sndzzz // 256,sndzzz %% 256
+       byte 4                                  ; Repeat 5 times
+       byte 1,>9f,0
+
+* Bing sound, generator 1
+       even 
+sndbng:
+       byte 3,>8f,>07,>92,8
+       byte 1,>94,8
+       byte 1,>96,6
+       byte 1,>98,6
+       byte 1,>9a,4
+       byte 1,>9c,4
+       byte 1,>9e,2
+       byte 1,>9f,0
+
+* Extra life sound, generator 1
+       even 
+sndxlf:
+       byte 3,>8d,>06,>90,4
+       byte 1,>92,4
+       byte 1,>94,3
+       byte 1,>96,3
+       byte 0                                  ; Repeat
+       byte sndxlf // 256,sndxlf %% 256
+       byte 1                                  ; Repeat 2 times
+       byte 1,>90,8
+       byte 1,>94,8
+       byte 1,>96,6
+       byte 1,>98,6
+       byte 1,>9a,4
+       byte 1,>9c,4
+       byte 1,>9e,2
+       byte 1,>9f,0
+
+* Bonus sound, generator 1
+       even 
+sndbon:
+       byte 3,>8c,>1a,>90,1
+       byte 1,>92,1
+       byte 1,>94,1
+       byte 1,>96,1
+       byte 0                                  ; Repeat
+       byte sndbon // 256,sndbon %% 256
+       byte -1                                 ; Repeat forever
+       byte 1,>9f,0
+
+* Warning sound, generator 1
+       even 
+sndwrn:
+       byte 3,>8d,>11,>94,24
+       byte 2,>8c,>1a,24
+       byte 1,>9f,0
+
+* Boing sound, generator 1
+       even 
+sndboi:
+       byte 3,>89,>3f,>90,1
+       byte 3,>80,>3c,>91,1
+       byte 3,>8a,>38,>92,1
+       byte 3,>87,>35,>93,1
+       byte 3,>87,>32,>94,1
+       byte 3,>8a,>2f,>95,1
+       byte 3,>8f,>2c,>96,1
+       byte 3,>87,>2a,>97,1
+       byte 3,>81,>28,>98,1
+       byte 3,>8d,>25,>99,1
+       byte 3,>8b,>23,>9a,1
+       byte 3,>8b,>21,>9b,1
+       byte 3,>8c,>1f,>9c,1
+       byte 1,>9f,0
+
+* Explosion 1, noise
+       even 
+sndxp1:
+       byte 2,>e5,>f0,4
+       byte 1,>f2,8
+       byte 1,>f4,8
+       byte 1,>f6,4
+       byte 1,>f8,4
+       byte 1,>fa,2
+       byte 1,>ff,0
+
+* Explosion 2, noise
+       even 
+sndxp2:
+       byte 2,>e6,>f0,6
+       byte 1,>f1,6
+       byte 1,>f2,6
+       byte 1,>f3,6
+       byte 1,>f4,6
+       byte 1,>f5,6
+       byte 1,>f6,6
+       byte 1,>f7,6
+       byte 1,>f8,6
+       byte 1,>f9,6
+       byte 1,>fa,6
+       byte 1,>fb,6
+       byte 1,>fc,6
+       byte 1,>fd,6
+       byte 1,>fe,6
+       byte 1,>ff,0
