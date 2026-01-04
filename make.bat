@@ -19,7 +19,7 @@ xdm99.py roadhunter.dsk -a TI-files/LOAD -t
 
 REM Cartridge
 
-xas99.py -i -M -q -R -D cart=1 -L roadhunter.lst -E symbols.txt Source/road-hunter.a99 -o bin/ROADHUNT
+xas99.py -i -M -q -R -D cart=1 -L roadhunter-cart.lst -E symbols.txt Source/road-hunter.a99 -o bin/ROADHUNT
 java -jar tools/ea5tocart.jar bin\ROADHUNT "ROAD HUNTER" > make.log
 
 tools\sfk split 8064 -yes Map/rdmap1.bin bin/rdmap1

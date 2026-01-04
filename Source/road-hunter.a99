@@ -4011,6 +4011,7 @@ filedv:
        text 'DSK1.'                            ; File device
 filenm:
        text '          '                       ; File name
+       byte 0
 pabdte:
        equ  $
 fnmap:
